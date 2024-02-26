@@ -19,6 +19,7 @@ class DeviceManager:
         if (network):
             print("ERROR: NOT IMPLEMENTED")
             return
+        self.devices.clear()
         connected_devices = usbmux.list_devices()
         # Connect via usbmuxd
         for device in connected_devices:
@@ -31,7 +32,10 @@ class DeviceManager:
             except:
                 print(f"ERROR with lockdown device with UUID {device.serial}")
         
-        self.data_singleton.current_device = connected_devices[0]
+        if len(connected_devices) > 0:
+            self.data_singleton.current_device = connected_devices[0]
+        else:
+            self.data_singleton.current_device = None
 
     def setup_workspace(self, uuid: str):
         # create the workspace for the uuid
