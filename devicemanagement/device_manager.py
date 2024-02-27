@@ -33,14 +33,23 @@ class DeviceManager:
                 print(f"ERROR with lockdown device with UUID {device.serial}")
         
         if len(connected_devices) > 0:
-            self.data_singleton.current_device = connected_devices[0]
+            self.set_current_device(index=0)
         else:
+            self.set_current_device(index=None)
+
+    def set_current_device(self, index: int = None):
+        if index == None:
             self.data_singleton.current_device = None
+            self.data_singleton.current_workspace = None
+        else:
+            self.data_singleton.current_device = self.devices[index]
+            self.setup_workspace(uuid=self.devices[index].uuid)
 
     def setup_workspace(self, uuid: str):
         # create the workspace for the uuid
         path: Path = Path(os.getcwd()).joinpath("CowabungaLiteData").joinpath("Workspace").joinpath(uuid)
         path.mkdir(parents=True, exist_ok=True)
-        files_path: Path = Path(os.getcwd()).joinpath("file_folders").joinpath("files")
-        copytree(src=files_path, dst=path)
+        # TODO: Copy subfolders of files into path if not there
+        #files_path: Path = Path(os.getcwd()).joinpath("file_folders").joinpath("files")
+        #copytree(src=files_path, dst=path)
         self.data_singleton.current_workspace = path
