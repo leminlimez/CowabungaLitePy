@@ -17,15 +17,21 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui = Ui_CowabungaLite()
         self.ui.setupUi(self)
 
+        self.refresh_devices()
+
+        ## DEVICE BAR
+        self.ui.refreshBtn.clicked.connect(self.refresh_devices)
+        self.ui.devicePicker.currentIndexChanged.connect(self.change_selected_device)
+
     @QtCore.Slot()
     def refresh_devices(self):
         self.device_manager.get_devices()
-        self.devices.clear()
+        self.ui.devicePicker.clear()
         if len(self.device_manager.devices) == 0:
-            self.devices.addItem('None')
+            self.ui.devicePicker.addItem('None')
         else:
             for device in self.device_manager.devices:
-                self.devices.addItem(device.name)
+                self.ui.devicePicker.addItem(device.name)
 
     def change_selected_device(self, index):
         if len(self.device_manager.devices) > 0:
