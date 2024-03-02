@@ -49,7 +49,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.updatePhoneInfo()
 
         if self.device_manager.data_singleton.device_available:
-            # TODO: Load LocSim
+            # Load LocSim
+            self.ui.locSimCnt.hide()
+            self.ui.loadLocSimBtn.show()
+            self.ui.loadLocSimBtn.setEnabled(True)
+            self.ui.loadLocSimBtn.setText("Start Location Simulation")
+
             # TODO: Load Pages
             pass
         
