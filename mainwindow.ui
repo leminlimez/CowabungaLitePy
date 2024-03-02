@@ -44,7 +44,7 @@ QWidget:focus {
 
 QWidget [cls=central] {
     background-color: #1e1e1e;
-	border-radius: 14px;
+	border-radius: 0px;
 	border: 1px solid #4B4B4B;
 }
 
@@ -205,7 +205,13 @@ QSlider::tick:horizontal {
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="horizontalWidget" native="true">
+           <widget class="QWidget" name="horizontalWidget_3" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <layout class="QHBoxLayout" name="horizontalLayout_15">
              <property name="spacing">
               <number>0</number>
@@ -318,6 +324,9 @@ QSlider::tick:horizontal {
        </item>
        <item>
         <widget class="QToolButton" name="titleBar">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -326,33 +335,12 @@ QSlider::tick:horizontal {
          </property>
          <property name="styleSheet">
           <string notr="true">QToolButton {
-	border-radius: 0px;
-}
-
-QToolButton:pressed {
-	background-color: #3b3b3b;
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
 }</string>
          </property>
          <property name="text">
           <string>Cowabunga Lite</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QToolButton" name="closeBtn">
-         <property name="styleSheet">
-          <string notr="true">QToolButton {
-	border-top-left-radius: 0px;
-	border-bottom-left-radius: 0px;
-}
-
-QToolButton:pressed {
-	background-color: #ff453a;
-}</string>
-         </property>
-         <property name="icon">
-          <iconset resource="resources.qrc">
-           <normaloff>:/icon/x-lg.svg</normaloff>:/icon/x-lg.svg</iconset>
          </property>
         </widget>
        </item>
@@ -1386,7 +1374,7 @@ QToolButton:pressed {
 }</string>
                       </property>
                       <property name="text">
-                       <string>Backup Generator, App Getter</string>
+                       <string>Old Windows UI, Backup Generator, App Getter</string>
                       </property>
                      </widget>
                     </item>
@@ -1433,7 +1421,7 @@ QToolButton:pressed {
                      </widget>
                     </item>
                     <item>
-                     <widget class="QToolButton" name="sourcelocBtn">
+                     <widget class="QToolButton" name="iTechBtn">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                         <horstretch>0</horstretch>
@@ -1446,32 +1434,6 @@ QToolButton:pressed {
 	border-bottom-right-radius: 0px;
 	background: none;
 	border: 1px solid #3b3b3b;
-}
-
-QToolButton:pressed {
-    background-color: #535353;
-    color: #FFFFFF;
-}</string>
-                      </property>
-                      <property name="text">
-                       <string>sourcelocation</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QToolButton" name="iTechBtn">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QToolButton {
-	border-radius: 0px;
-	background: none;
-	border: 1px solid #3b3b3b;
-	border-left: none;
 }
 
 QToolButton:pressed {
@@ -1546,7 +1508,7 @@ QToolButton:pressed {
               <item>
                <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>Cowabunga Lite Windows - Version 1.0.1</string>
+                 <string>Cowabunga Lite (Python) - Version 1.0.0</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

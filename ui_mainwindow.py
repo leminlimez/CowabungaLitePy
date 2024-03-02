@@ -46,7 +46,7 @@ class Ui_CowabungaLite(object):
 "\n"
 "QWidget [cls=central] {\n"
 "    background-color: #1e1e1e;\n"
-"	border-radius: 14px;\n"
+"	border-radius: 0px;\n"
 "	border: 1px solid #4B4B4B;\n"
 "}\n"
 "\n"
@@ -89,9 +89,9 @@ class Ui_CowabungaLite(object):
 "QRadioButton {\n"
 "	spacing: 8px;\n"
 "	font-size: 14px;\n"
-"}"
+"}\n"
+""
                         "\n"
-"\n"
 "QLineEdit {\n"
 "	border: none;\n"
 "	background-color: transparent;\n"
@@ -145,8 +145,8 @@ class Ui_CowabungaLite(object):
 "    background-color: #3b82f7;\n"
 "}\n"
 "\n"
-""
-                        "QSlider::tick:horizontal {\n"
+"QSl"
+                        "ider::tick:horizontal {\n"
 "    background-color: #535353;\n"
 "    width: 1px;\n"
 "}\n"
@@ -171,13 +171,18 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout_19.setSpacing(1)
         self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
         self.horizontalLayout_19.setContentsMargins(0, 0, 0, 0)
-        self.horizontalWidget = QWidget(self.horizontalWidget_2)
-        self.horizontalWidget.setObjectName(u"horizontalWidget")
-        self.horizontalLayout_15 = QHBoxLayout(self.horizontalWidget)
+        self.horizontalWidget_3 = QWidget(self.horizontalWidget_2)
+        self.horizontalWidget_3.setObjectName(u"horizontalWidget_3")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.horizontalWidget_3.sizePolicy().hasHeightForWidth())
+        self.horizontalWidget_3.setSizePolicy(sizePolicy1)
+        self.horizontalLayout_15 = QHBoxLayout(self.horizontalWidget_3)
         self.horizontalLayout_15.setSpacing(0)
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
         self.horizontalLayout_15.setContentsMargins(0, 0, 0, 0)
-        self.toolButton_6 = QToolButton(self.horizontalWidget)
+        self.toolButton_6 = QToolButton(self.horizontalWidget_3)
         self.toolButton_6.setObjectName(u"toolButton_6")
         self.toolButton_6.setEnabled(False)
         self.toolButton_6.setStyleSheet(u"QToolButton {\n"
@@ -190,7 +195,7 @@ class Ui_CowabungaLite(object):
 
         self.horizontalLayout_15.addWidget(self.toolButton_6)
 
-        self.devicePicker = QComboBox(self.horizontalWidget)
+        self.devicePicker = QComboBox(self.horizontalWidget_3)
         self.devicePicker.setObjectName(u"devicePicker")
         self.devicePicker.setStyleSheet(u"#devicePicker {\n"
 "	background-color: #3b3b3b;\n"
@@ -231,7 +236,7 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout_15.addWidget(self.devicePicker)
 
 
-        self.horizontalLayout_19.addWidget(self.horizontalWidget)
+        self.horizontalLayout_19.addWidget(self.horizontalWidget_3)
 
         self.refreshBtn = QToolButton(self.horizontalWidget_2)
         self.refreshBtn.setObjectName(u"refreshBtn")
@@ -251,36 +256,18 @@ class Ui_CowabungaLite(object):
 
         self.titleBar = QToolButton(self.deviceBar)
         self.titleBar.setObjectName(u"titleBar")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.titleBar.sizePolicy().hasHeightForWidth())
-        self.titleBar.setSizePolicy(sizePolicy1)
+        self.titleBar.setEnabled(False)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.titleBar.sizePolicy().hasHeightForWidth())
+        self.titleBar.setSizePolicy(sizePolicy2)
         self.titleBar.setStyleSheet(u"QToolButton {\n"
-"	border-radius: 0px;\n"
-"}\n"
-"\n"
-"QToolButton:pressed {\n"
-"	background-color: #3b3b3b;\n"
+"	border-top-left-radius: 0px;\n"
+"	border-bottom-left-radius: 0px;\n"
 "}")
 
         self.horizontalLayout_4.addWidget(self.titleBar)
-
-        self.closeBtn = QToolButton(self.deviceBar)
-        self.closeBtn.setObjectName(u"closeBtn")
-        self.closeBtn.setStyleSheet(u"QToolButton {\n"
-"	border-top-left-radius: 0px;\n"
-"	border-bottom-left-radius: 0px;\n"
-"}\n"
-"\n"
-"QToolButton:pressed {\n"
-"	background-color: #ff453a;\n"
-"}")
-        icon2 = QIcon()
-        icon2.addFile(u":/icon/x-lg.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.closeBtn.setIcon(icon2)
-
-        self.horizontalLayout_4.addWidget(self.closeBtn)
 
 
         self.verticalLayout_11.addWidget(self.deviceBar)
@@ -293,11 +280,11 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout_18.setContentsMargins(0, 0, 0, 0)
         self.sidebar = QWidget(self.body)
         self.sidebar.setObjectName(u"sidebar")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.sidebar.sizePolicy().hasHeightForWidth())
-        self.sidebar.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.sidebar.sizePolicy().hasHeightForWidth())
+        self.sidebar.setSizePolicy(sizePolicy3)
         self.sidebar.setMinimumSize(QSize(300, 0))
         self.sidebar.setStyleSheet(u"QFrame {\n"
 "	color: #414141;\n"
@@ -307,11 +294,11 @@ class Ui_CowabungaLite(object):
         self.verticalLayout.setContentsMargins(0, 9, 9, 0)
         self.homePageBtn = QToolButton(self.sidebar)
         self.homePageBtn.setObjectName(u"homePageBtn")
-        sizePolicy1.setHeightForWidth(self.homePageBtn.sizePolicy().hasHeightForWidth())
-        self.homePageBtn.setSizePolicy(sizePolicy1)
-        icon3 = QIcon()
-        icon3.addFile(u":/icon/house.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.homePageBtn.setIcon(icon3)
+        sizePolicy2.setHeightForWidth(self.homePageBtn.sizePolicy().hasHeightForWidth())
+        self.homePageBtn.setSizePolicy(sizePolicy2)
+        icon2 = QIcon()
+        icon2.addFile(u":/icon/house.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.homePageBtn.setIcon(icon2)
         self.homePageBtn.setCheckable(True)
         self.homePageBtn.setChecked(True)
         self.homePageBtn.setAutoExclusive(True)
@@ -321,11 +308,11 @@ class Ui_CowabungaLite(object):
 
         self.explorePageBtn = QToolButton(self.sidebar)
         self.explorePageBtn.setObjectName(u"explorePageBtn")
-        sizePolicy1.setHeightForWidth(self.explorePageBtn.sizePolicy().hasHeightForWidth())
-        self.explorePageBtn.setSizePolicy(sizePolicy1)
-        icon4 = QIcon()
-        icon4.addFile(u":/icon/compass.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.explorePageBtn.setIcon(icon4)
+        sizePolicy2.setHeightForWidth(self.explorePageBtn.sizePolicy().hasHeightForWidth())
+        self.explorePageBtn.setSizePolicy(sizePolicy2)
+        icon3 = QIcon()
+        icon3.addFile(u":/icon/compass.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.explorePageBtn.setIcon(icon3)
         self.explorePageBtn.setCheckable(True)
         self.explorePageBtn.setAutoExclusive(True)
         self.explorePageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -334,11 +321,11 @@ class Ui_CowabungaLite(object):
 
         self.locSimPageBtn = QToolButton(self.sidebar)
         self.locSimPageBtn.setObjectName(u"locSimPageBtn")
-        sizePolicy1.setHeightForWidth(self.locSimPageBtn.sizePolicy().hasHeightForWidth())
-        self.locSimPageBtn.setSizePolicy(sizePolicy1)
-        icon5 = QIcon()
-        icon5.addFile(u":/icon/geo-alt.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.locSimPageBtn.setIcon(icon5)
+        sizePolicy2.setHeightForWidth(self.locSimPageBtn.sizePolicy().hasHeightForWidth())
+        self.locSimPageBtn.setSizePolicy(sizePolicy2)
+        icon4 = QIcon()
+        icon4.addFile(u":/icon/geo-alt.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.locSimPageBtn.setIcon(icon4)
         self.locSimPageBtn.setCheckable(True)
         self.locSimPageBtn.setAutoExclusive(True)
         self.locSimPageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -357,11 +344,11 @@ class Ui_CowabungaLite(object):
 
         self.themesPageBtn = QToolButton(self.sidebar)
         self.themesPageBtn.setObjectName(u"themesPageBtn")
-        sizePolicy1.setHeightForWidth(self.themesPageBtn.sizePolicy().hasHeightForWidth())
-        self.themesPageBtn.setSizePolicy(sizePolicy1)
-        icon6 = QIcon()
-        icon6.addFile(u":/icon/brush.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.themesPageBtn.setIcon(icon6)
+        sizePolicy2.setHeightForWidth(self.themesPageBtn.sizePolicy().hasHeightForWidth())
+        self.themesPageBtn.setSizePolicy(sizePolicy2)
+        icon5 = QIcon()
+        icon5.addFile(u":/icon/brush.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.themesPageBtn.setIcon(icon5)
         self.themesPageBtn.setCheckable(True)
         self.themesPageBtn.setAutoExclusive(True)
         self.themesPageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -370,11 +357,11 @@ class Ui_CowabungaLite(object):
 
         self.statusBarPageBtn = QToolButton(self.sidebar)
         self.statusBarPageBtn.setObjectName(u"statusBarPageBtn")
-        sizePolicy1.setHeightForWidth(self.statusBarPageBtn.sizePolicy().hasHeightForWidth())
-        self.statusBarPageBtn.setSizePolicy(sizePolicy1)
-        icon7 = QIcon()
-        icon7.addFile(u":/icon/wifi.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.statusBarPageBtn.setIcon(icon7)
+        sizePolicy2.setHeightForWidth(self.statusBarPageBtn.sizePolicy().hasHeightForWidth())
+        self.statusBarPageBtn.setSizePolicy(sizePolicy2)
+        icon6 = QIcon()
+        icon6.addFile(u":/icon/wifi.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.statusBarPageBtn.setIcon(icon6)
         self.statusBarPageBtn.setCheckable(True)
         self.statusBarPageBtn.setAutoExclusive(True)
         self.statusBarPageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -383,11 +370,11 @@ class Ui_CowabungaLite(object):
 
         self.controlCenterPageBtn = QToolButton(self.sidebar)
         self.controlCenterPageBtn.setObjectName(u"controlCenterPageBtn")
-        sizePolicy1.setHeightForWidth(self.controlCenterPageBtn.sizePolicy().hasHeightForWidth())
-        self.controlCenterPageBtn.setSizePolicy(sizePolicy1)
-        icon8 = QIcon()
-        icon8.addFile(u":/icon/toggles.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.controlCenterPageBtn.setIcon(icon8)
+        sizePolicy2.setHeightForWidth(self.controlCenterPageBtn.sizePolicy().hasHeightForWidth())
+        self.controlCenterPageBtn.setSizePolicy(sizePolicy2)
+        icon7 = QIcon()
+        icon7.addFile(u":/icon/toggles.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.controlCenterPageBtn.setIcon(icon7)
         self.controlCenterPageBtn.setCheckable(True)
         self.controlCenterPageBtn.setAutoExclusive(True)
         self.controlCenterPageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -396,11 +383,11 @@ class Ui_CowabungaLite(object):
 
         self.springboardOptionsPageBtn = QToolButton(self.sidebar)
         self.springboardOptionsPageBtn.setObjectName(u"springboardOptionsPageBtn")
-        sizePolicy1.setHeightForWidth(self.springboardOptionsPageBtn.sizePolicy().hasHeightForWidth())
-        self.springboardOptionsPageBtn.setSizePolicy(sizePolicy1)
-        icon9 = QIcon()
-        icon9.addFile(u":/icon/app-indicator.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.springboardOptionsPageBtn.setIcon(icon9)
+        sizePolicy2.setHeightForWidth(self.springboardOptionsPageBtn.sizePolicy().hasHeightForWidth())
+        self.springboardOptionsPageBtn.setSizePolicy(sizePolicy2)
+        icon8 = QIcon()
+        icon8.addFile(u":/icon/app-indicator.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.springboardOptionsPageBtn.setIcon(icon8)
         self.springboardOptionsPageBtn.setCheckable(True)
         self.springboardOptionsPageBtn.setAutoExclusive(True)
         self.springboardOptionsPageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -409,11 +396,11 @@ class Ui_CowabungaLite(object):
 
         self.internalOptionsPageBtn = QToolButton(self.sidebar)
         self.internalOptionsPageBtn.setObjectName(u"internalOptionsPageBtn")
-        sizePolicy1.setHeightForWidth(self.internalOptionsPageBtn.sizePolicy().hasHeightForWidth())
-        self.internalOptionsPageBtn.setSizePolicy(sizePolicy1)
-        icon10 = QIcon()
-        icon10.addFile(u":/icon/hdd.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.internalOptionsPageBtn.setIcon(icon10)
+        sizePolicy2.setHeightForWidth(self.internalOptionsPageBtn.sizePolicy().hasHeightForWidth())
+        self.internalOptionsPageBtn.setSizePolicy(sizePolicy2)
+        icon9 = QIcon()
+        icon9.addFile(u":/icon/hdd.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.internalOptionsPageBtn.setIcon(icon9)
         self.internalOptionsPageBtn.setCheckable(True)
         self.internalOptionsPageBtn.setAutoExclusive(True)
         self.internalOptionsPageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -422,11 +409,11 @@ class Ui_CowabungaLite(object):
 
         self.setupOptionsPageBtn = QToolButton(self.sidebar)
         self.setupOptionsPageBtn.setObjectName(u"setupOptionsPageBtn")
-        sizePolicy1.setHeightForWidth(self.setupOptionsPageBtn.sizePolicy().hasHeightForWidth())
-        self.setupOptionsPageBtn.setSizePolicy(sizePolicy1)
-        icon11 = QIcon()
-        icon11.addFile(u":/icon/gear.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.setupOptionsPageBtn.setIcon(icon11)
+        sizePolicy2.setHeightForWidth(self.setupOptionsPageBtn.sizePolicy().hasHeightForWidth())
+        self.setupOptionsPageBtn.setSizePolicy(sizePolicy2)
+        icon10 = QIcon()
+        icon10.addFile(u":/icon/gear.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.setupOptionsPageBtn.setIcon(icon10)
         self.setupOptionsPageBtn.setCheckable(True)
         self.setupOptionsPageBtn.setAutoExclusive(True)
         self.setupOptionsPageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -445,11 +432,11 @@ class Ui_CowabungaLite(object):
 
         self.applyPageBtn = QToolButton(self.sidebar)
         self.applyPageBtn.setObjectName(u"applyPageBtn")
-        sizePolicy1.setHeightForWidth(self.applyPageBtn.sizePolicy().hasHeightForWidth())
-        self.applyPageBtn.setSizePolicy(sizePolicy1)
-        icon12 = QIcon()
-        icon12.addFile(u":/icon/check-circle.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.applyPageBtn.setIcon(icon12)
+        sizePolicy2.setHeightForWidth(self.applyPageBtn.sizePolicy().hasHeightForWidth())
+        self.applyPageBtn.setSizePolicy(sizePolicy2)
+        icon11 = QIcon()
+        icon11.addFile(u":/icon/check-circle.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.applyPageBtn.setIcon(icon11)
         self.applyPageBtn.setCheckable(True)
         self.applyPageBtn.setAutoExclusive(True)
         self.applyPageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -465,11 +452,11 @@ class Ui_CowabungaLite(object):
 
         self.main = QWidget(self.body)
         self.main.setObjectName(u"main")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.main.sizePolicy().hasHeightForWidth())
-        self.main.setSizePolicy(sizePolicy3)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.main.sizePolicy().hasHeightForWidth())
+        self.main.setSizePolicy(sizePolicy4)
         self._3 = QVBoxLayout(self.main)
         self._3.setSpacing(0)
         self._3.setObjectName(u"_3")
@@ -481,13 +468,13 @@ class Ui_CowabungaLite(object):
         self.verticalLayout_2 = QVBoxLayout(self.homePage)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.horizontalWidget1 = QWidget(self.homePage)
-        self.horizontalWidget1.setObjectName(u"horizontalWidget1")
-        self.horizontalLayout = QHBoxLayout(self.horizontalWidget1)
+        self.horizontalWidget = QWidget(self.homePage)
+        self.horizontalWidget.setObjectName(u"horizontalWidget")
+        self.horizontalLayout = QHBoxLayout(self.horizontalWidget)
         self.horizontalLayout.setSpacing(10)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 9, 0, 9)
-        self.toolButton_9 = QToolButton(self.horizontalWidget1)
+        self.toolButton_9 = QToolButton(self.horizontalWidget)
         self.toolButton_9.setObjectName(u"toolButton_9")
         self.toolButton_9.setEnabled(False)
         self.toolButton_9.setStyleSheet(u"QToolButton {\n"
@@ -501,7 +488,7 @@ class Ui_CowabungaLite(object):
 
         self.horizontalLayout.addWidget(self.toolButton_9)
 
-        self.verticalWidget = QWidget(self.horizontalWidget1)
+        self.verticalWidget = QWidget(self.horizontalWidget)
         self.verticalWidget.setObjectName(u"verticalWidget")
         self.verticalLayout_3 = QVBoxLayout(self.verticalWidget)
         self.verticalLayout_3.setSpacing(6)
@@ -531,7 +518,7 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout.addItem(self.horizontalSpacer_3)
 
 
-        self.verticalLayout_2.addWidget(self.horizontalWidget1)
+        self.verticalLayout_2.addWidget(self.horizontalWidget)
 
         self.line_4 = QFrame(self.homePage)
         self.line_4.setObjectName(u"line_4")
@@ -543,9 +530,9 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_2.addWidget(self.line_4)
 
-        self.horizontalWidget2 = QWidget(self.homePage)
-        self.horizontalWidget2.setObjectName(u"horizontalWidget2")
-        self.horizontalLayout_27 = QHBoxLayout(self.horizontalWidget2)
+        self.horizontalWidget1 = QWidget(self.homePage)
+        self.horizontalWidget1.setObjectName(u"horizontalWidget1")
+        self.horizontalLayout_27 = QHBoxLayout(self.horizontalWidget1)
         self.horizontalLayout_27.setSpacing(50)
         self.horizontalLayout_27.setObjectName(u"horizontalLayout_27")
         self.horizontalLayout_27.setContentsMargins(0, 0, 0, 0)
@@ -553,20 +540,20 @@ class Ui_CowabungaLite(object):
 
         self.horizontalLayout_27.addItem(self.horizontalSpacer_2)
 
-        self.bigMilkBtn = QToolButton(self.horizontalWidget2)
+        self.bigMilkBtn = QToolButton(self.horizontalWidget1)
         self.bigMilkBtn.setObjectName(u"bigMilkBtn")
         self.bigMilkBtn.setStyleSheet(u"QToolButton {\n"
 "	background-color: transparent;\n"
 "	padding: 0px;\n"
 "}")
-        icon13 = QIcon()
-        icon13.addFile(u":/cowliteicon.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.bigMilkBtn.setIcon(icon13)
+        icon12 = QIcon()
+        icon12.addFile(u":/cowliteicon.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.bigMilkBtn.setIcon(icon12)
         self.bigMilkBtn.setIconSize(QSize(120, 200))
 
         self.horizontalLayout_27.addWidget(self.bigMilkBtn)
 
-        self.verticalWidget1 = QWidget(self.horizontalWidget2)
+        self.verticalWidget1 = QWidget(self.horizontalWidget1)
         self.verticalWidget1.setObjectName(u"verticalWidget1")
         self.verticalLayout_26 = QVBoxLayout(self.verticalWidget1)
         self.verticalLayout_26.setObjectName(u"verticalLayout_26")
@@ -592,18 +579,18 @@ class Ui_CowabungaLite(object):
 
         self.patreonBtn = QToolButton(self.verticalWidget1)
         self.patreonBtn.setObjectName(u"patreonBtn")
-        icon14 = QIcon()
-        icon14.addFile(u":/icon/star.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.patreonBtn.setIcon(icon14)
+        icon13 = QIcon()
+        icon13.addFile(u":/icon/star.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.patreonBtn.setIcon(icon13)
         self.patreonBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
         self.verticalLayout_26.addWidget(self.patreonBtn)
 
         self.discordBtn = QToolButton(self.verticalWidget1)
         self.discordBtn.setObjectName(u"discordBtn")
-        icon15 = QIcon()
-        icon15.addFile(u":/icon/discord.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.discordBtn.setIcon(icon15)
+        icon14 = QIcon()
+        icon14.addFile(u":/icon/discord.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.discordBtn.setIcon(icon14)
         self.discordBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
         self.verticalLayout_26.addWidget(self.discordBtn)
@@ -620,7 +607,7 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout_27.addItem(self.horizontalSpacer_12)
 
 
-        self.verticalLayout_2.addWidget(self.horizontalWidget2)
+        self.verticalLayout_2.addWidget(self.horizontalWidget1)
 
         self.verticalWidget_2 = QWidget(self.homePage)
         self.verticalWidget_2.setObjectName(u"verticalWidget_2")
@@ -628,6 +615,99 @@ class Ui_CowabungaLite(object):
         self.verticalLayout_25.setSpacing(15)
         self.verticalLayout_25.setObjectName(u"verticalLayout_25")
         self.verticalLayout_25.setContentsMargins(0, 30, 0, 30)
+        self.horizontalWidget2 = QWidget(self.verticalWidget_2)
+        self.horizontalWidget2.setObjectName(u"horizontalWidget2")
+        self.horizontalWidget2.setEnabled(True)
+        self.horizontalLayout_6 = QHBoxLayout(self.horizontalWidget2)
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.leminBtn = QToolButton(self.horizontalWidget2)
+        self.leminBtn.setObjectName(u"leminBtn")
+        self.leminBtn.setEnabled(True)
+        self.leminBtn.setMinimumSize(QSize(150, 35))
+        self.leminBtn.setStyleSheet(u"QToolButton {\n"
+"	background: none;\n"
+"}")
+        icon15 = QIcon()
+        icon15.addFile(u":/credits/LeminLimez.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.leminBtn.setIcon(icon15)
+        self.leminBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+
+        self.horizontalLayout_6.addWidget(self.leminBtn)
+
+        self.leminGitHubBtn = QToolButton(self.horizontalWidget2)
+        self.leminGitHubBtn.setObjectName(u"leminGitHubBtn")
+        self.leminGitHubBtn.setStyleSheet(u"QToolButton {\n"
+"	border-top-right-radius: 0px;\n"
+"	border-bottom-right-radius: 0px;\n"
+"	background: none;\n"
+"	border: 1px solid #3b3b3b;\n"
+"}\n"
+"\n"
+"QToolButton:pressed {\n"
+"    background-color: #535353;\n"
+"    color: #FFFFFF;\n"
+"}")
+        icon16 = QIcon()
+        icon16.addFile(u":/icon/github.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.leminGitHubBtn.setIcon(icon16)
+
+        self.horizontalLayout_6.addWidget(self.leminGitHubBtn)
+
+        self.leminTwitterBtn = QToolButton(self.horizontalWidget2)
+        self.leminTwitterBtn.setObjectName(u"leminTwitterBtn")
+        self.leminTwitterBtn.setStyleSheet(u"QToolButton {\n"
+"	border-radius: 0px;\n"
+"	background: none;\n"
+"	border: 1px solid #3b3b3b;\n"
+"	border-left: none;\n"
+"}\n"
+"\n"
+"QToolButton:pressed {\n"
+"    background-color: #535353;\n"
+"    color: #FFFFFF;\n"
+"}")
+        icon17 = QIcon()
+        icon17.addFile(u":/icon/twitter.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.leminTwitterBtn.setIcon(icon17)
+
+        self.horizontalLayout_6.addWidget(self.leminTwitterBtn)
+
+        self.leminKoFiBtn = QToolButton(self.horizontalWidget2)
+        self.leminKoFiBtn.setObjectName(u"leminKoFiBtn")
+        self.leminKoFiBtn.setStyleSheet(u"QToolButton {\n"
+"	border-top-left-radius: 0px;\n"
+"	border-bottom-left-radius: 0px;\n"
+"	background: none;\n"
+"	border: 1px solid #3b3b3b;\n"
+"	border-left: none;\n"
+"}\n"
+"\n"
+"QToolButton:pressed {\n"
+"    background-color: #535353;\n"
+"    color: #FFFFFF;\n"
+"}")
+        icon18 = QIcon()
+        icon18.addFile(u":/icon/currency-dollar.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.leminKoFiBtn.setIcon(icon18)
+
+        self.horizontalLayout_6.addWidget(self.leminKoFiBtn)
+
+        self.toolButton_14 = QToolButton(self.horizontalWidget2)
+        self.toolButton_14.setObjectName(u"toolButton_14")
+        self.toolButton_14.setEnabled(False)
+        sizePolicy2.setHeightForWidth(self.toolButton_14.sizePolicy().hasHeightForWidth())
+        self.toolButton_14.setSizePolicy(sizePolicy2)
+        self.toolButton_14.setStyleSheet(u"QToolButton {\n"
+"	background: none;\n"
+"}")
+
+        self.horizontalLayout_6.addWidget(self.toolButton_14)
+
+
+        self.verticalLayout_25.addWidget(self.horizontalWidget2)
+
         self.horizontalWidget_21 = QWidget(self.verticalWidget_2)
         self.horizontalWidget_21.setObjectName(u"horizontalWidget_21")
         self.horizontalLayout_2 = QHBoxLayout(self.horizontalWidget_21)
@@ -641,9 +721,9 @@ class Ui_CowabungaLite(object):
         self.avangelistaBtn.setStyleSheet(u"QToolButton {\n"
 "	background: none;\n"
 "}")
-        icon16 = QIcon()
-        icon16.addFile(u":/credits/Avangelista.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.avangelistaBtn.setIcon(icon16)
+        icon19 = QIcon()
+        icon19.addFile(u":/credits/Avangelista.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.avangelistaBtn.setIcon(icon19)
         self.avangelistaBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
         self.horizontalLayout_2.addWidget(self.avangelistaBtn)
@@ -661,9 +741,7 @@ class Ui_CowabungaLite(object):
 "    background-color: #535353;\n"
 "    color: #FFFFFF;\n"
 "}")
-        icon17 = QIcon()
-        icon17.addFile(u":/icon/github.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.avangelistaGitHubBtn.setIcon(icon17)
+        self.avangelistaGitHubBtn.setIcon(icon16)
 
         self.horizontalLayout_2.addWidget(self.avangelistaGitHubBtn)
 
@@ -680,9 +758,7 @@ class Ui_CowabungaLite(object):
 "    background-color: #535353;\n"
 "    color: #FFFFFF;\n"
 "}")
-        icon18 = QIcon()
-        icon18.addFile(u":/icon/twitter.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.avangelistaTwitterBtn.setIcon(icon18)
+        self.avangelistaTwitterBtn.setIcon(icon17)
 
         self.horizontalLayout_2.addWidget(self.avangelistaTwitterBtn)
 
@@ -700,17 +776,15 @@ class Ui_CowabungaLite(object):
 "    background-color: #535353;\n"
 "    color: #FFFFFF;\n"
 "}")
-        icon19 = QIcon()
-        icon19.addFile(u":/icon/currency-dollar.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.avangelistaKoFiBtn.setIcon(icon19)
+        self.avangelistaKoFiBtn.setIcon(icon18)
 
         self.horizontalLayout_2.addWidget(self.avangelistaKoFiBtn)
 
         self.toolButton_5 = QToolButton(self.horizontalWidget_21)
         self.toolButton_5.setObjectName(u"toolButton_5")
         self.toolButton_5.setEnabled(False)
-        sizePolicy1.setHeightForWidth(self.toolButton_5.sizePolicy().hasHeightForWidth())
-        self.toolButton_5.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.toolButton_5.sizePolicy().hasHeightForWidth())
+        self.toolButton_5.setSizePolicy(sizePolicy2)
         self.toolButton_5.setStyleSheet(u"QToolButton {\n"
 "	background: none;\n"
 "}")
@@ -722,97 +796,11 @@ class Ui_CowabungaLite(object):
 
         self.horizontalWidget3 = QWidget(self.verticalWidget_2)
         self.horizontalWidget3.setObjectName(u"horizontalWidget3")
-        self.horizontalLayout_6 = QHBoxLayout(self.horizontalWidget3)
-        self.horizontalLayout_6.setSpacing(0)
-        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.leminBtn = QToolButton(self.horizontalWidget3)
-        self.leminBtn.setObjectName(u"leminBtn")
-        self.leminBtn.setEnabled(True)
-        self.leminBtn.setMinimumSize(QSize(150, 35))
-        self.leminBtn.setStyleSheet(u"QToolButton {\n"
-"	background: none;\n"
-"}")
-        icon20 = QIcon()
-        icon20.addFile(u":/credits/LeminLimez.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.leminBtn.setIcon(icon20)
-        self.leminBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-
-        self.horizontalLayout_6.addWidget(self.leminBtn)
-
-        self.leminGitHubBtn = QToolButton(self.horizontalWidget3)
-        self.leminGitHubBtn.setObjectName(u"leminGitHubBtn")
-        self.leminGitHubBtn.setStyleSheet(u"QToolButton {\n"
-"	border-top-right-radius: 0px;\n"
-"	border-bottom-right-radius: 0px;\n"
-"	background: none;\n"
-"	border: 1px solid #3b3b3b;\n"
-"}\n"
-"\n"
-"QToolButton:pressed {\n"
-"    background-color: #535353;\n"
-"    color: #FFFFFF;\n"
-"}")
-        self.leminGitHubBtn.setIcon(icon17)
-
-        self.horizontalLayout_6.addWidget(self.leminGitHubBtn)
-
-        self.leminTwitterBtn = QToolButton(self.horizontalWidget3)
-        self.leminTwitterBtn.setObjectName(u"leminTwitterBtn")
-        self.leminTwitterBtn.setStyleSheet(u"QToolButton {\n"
-"	border-radius: 0px;\n"
-"	background: none;\n"
-"	border: 1px solid #3b3b3b;\n"
-"	border-left: none;\n"
-"}\n"
-"\n"
-"QToolButton:pressed {\n"
-"    background-color: #535353;\n"
-"    color: #FFFFFF;\n"
-"}")
-        self.leminTwitterBtn.setIcon(icon18)
-
-        self.horizontalLayout_6.addWidget(self.leminTwitterBtn)
-
-        self.leminKoFiBtn = QToolButton(self.horizontalWidget3)
-        self.leminKoFiBtn.setObjectName(u"leminKoFiBtn")
-        self.leminKoFiBtn.setStyleSheet(u"QToolButton {\n"
-"	border-top-left-radius: 0px;\n"
-"	border-bottom-left-radius: 0px;\n"
-"	background: none;\n"
-"	border: 1px solid #3b3b3b;\n"
-"	border-left: none;\n"
-"}\n"
-"\n"
-"QToolButton:pressed {\n"
-"    background-color: #535353;\n"
-"    color: #FFFFFF;\n"
-"}")
-        self.leminKoFiBtn.setIcon(icon19)
-
-        self.horizontalLayout_6.addWidget(self.leminKoFiBtn)
-
-        self.toolButton_14 = QToolButton(self.horizontalWidget3)
-        self.toolButton_14.setObjectName(u"toolButton_14")
-        self.toolButton_14.setEnabled(False)
-        sizePolicy1.setHeightForWidth(self.toolButton_14.sizePolicy().hasHeightForWidth())
-        self.toolButton_14.setSizePolicy(sizePolicy1)
-        self.toolButton_14.setStyleSheet(u"QToolButton {\n"
-"	background: none;\n"
-"}")
-
-        self.horizontalLayout_6.addWidget(self.toolButton_14)
-
-
-        self.verticalLayout_25.addWidget(self.horizontalWidget3)
-
-        self.horizontalWidget4 = QWidget(self.verticalWidget_2)
-        self.horizontalWidget4.setObjectName(u"horizontalWidget4")
-        self.horizontalLayout_24 = QHBoxLayout(self.horizontalWidget4)
+        self.horizontalLayout_24 = QHBoxLayout(self.horizontalWidget3)
         self.horizontalLayout_24.setSpacing(0)
         self.horizontalLayout_24.setObjectName(u"horizontalLayout_24")
         self.horizontalLayout_24.setContentsMargins(0, 0, 0, 0)
-        self.toolButton_15 = QToolButton(self.horizontalWidget4)
+        self.toolButton_15 = QToolButton(self.horizontalWidget3)
         self.toolButton_15.setObjectName(u"toolButton_15")
         self.toolButton_15.setEnabled(False)
         self.toolButton_15.setMinimumSize(QSize(150, 35))
@@ -822,11 +810,11 @@ class Ui_CowabungaLite(object):
 
         self.horizontalLayout_24.addWidget(self.toolButton_15)
 
-        self.sourcelocBtn = QToolButton(self.horizontalWidget4)
-        self.sourcelocBtn.setObjectName(u"sourcelocBtn")
-        sizePolicy1.setHeightForWidth(self.sourcelocBtn.sizePolicy().hasHeightForWidth())
-        self.sourcelocBtn.setSizePolicy(sizePolicy1)
-        self.sourcelocBtn.setStyleSheet(u"QToolButton {\n"
+        self.iTechBtn = QToolButton(self.horizontalWidget3)
+        self.iTechBtn.setObjectName(u"iTechBtn")
+        sizePolicy2.setHeightForWidth(self.iTechBtn.sizePolicy().hasHeightForWidth())
+        self.iTechBtn.setSizePolicy(sizePolicy2)
+        self.iTechBtn.setStyleSheet(u"QToolButton {\n"
 "	border-top-right-radius: 0px;\n"
 "	border-bottom-right-radius: 0px;\n"
 "	background: none;\n"
@@ -838,30 +826,12 @@ class Ui_CowabungaLite(object):
 "    color: #FFFFFF;\n"
 "}")
 
-        self.horizontalLayout_24.addWidget(self.sourcelocBtn)
-
-        self.iTechBtn = QToolButton(self.horizontalWidget4)
-        self.iTechBtn.setObjectName(u"iTechBtn")
-        sizePolicy1.setHeightForWidth(self.iTechBtn.sizePolicy().hasHeightForWidth())
-        self.iTechBtn.setSizePolicy(sizePolicy1)
-        self.iTechBtn.setStyleSheet(u"QToolButton {\n"
-"	border-radius: 0px;\n"
-"	background: none;\n"
-"	border: 1px solid #3b3b3b;\n"
-"	border-left: none;\n"
-"}\n"
-"\n"
-"QToolButton:pressed {\n"
-"    background-color: #535353;\n"
-"    color: #FFFFFF;\n"
-"}")
-
         self.horizontalLayout_24.addWidget(self.iTechBtn)
 
-        self.libiBtn = QToolButton(self.horizontalWidget4)
+        self.libiBtn = QToolButton(self.horizontalWidget3)
         self.libiBtn.setObjectName(u"libiBtn")
-        sizePolicy1.setHeightForWidth(self.libiBtn.sizePolicy().hasHeightForWidth())
-        self.libiBtn.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.libiBtn.sizePolicy().hasHeightForWidth())
+        self.libiBtn.setSizePolicy(sizePolicy2)
         self.libiBtn.setStyleSheet(u"QToolButton {\n"
 "	border-radius: 0px;\n"
 "	background: none;\n"
@@ -876,10 +846,10 @@ class Ui_CowabungaLite(object):
 
         self.horizontalLayout_24.addWidget(self.libiBtn)
 
-        self.qtBtn = QToolButton(self.horizontalWidget4)
+        self.qtBtn = QToolButton(self.horizontalWidget3)
         self.qtBtn.setObjectName(u"qtBtn")
-        sizePolicy1.setHeightForWidth(self.qtBtn.sizePolicy().hasHeightForWidth())
-        self.qtBtn.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.qtBtn.sizePolicy().hasHeightForWidth())
+        self.qtBtn.setSizePolicy(sizePolicy2)
         self.qtBtn.setStyleSheet(u"QToolButton {\n"
 "	border-top-left-radius: 0px;\n"
 "	border-bottom-left-radius: 0px;\n"
@@ -896,7 +866,7 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout_24.addWidget(self.qtBtn)
 
 
-        self.verticalLayout_25.addWidget(self.horizontalWidget4)
+        self.verticalLayout_25.addWidget(self.horizontalWidget3)
 
 
         self.verticalLayout_2.addWidget(self.verticalWidget_2)
@@ -929,7 +899,7 @@ class Ui_CowabungaLite(object):
 "	padding-right: 5px;\n"
 "	border-radius: 0px;\n"
 "}")
-        self.toolButton_16.setIcon(icon4)
+        self.toolButton_16.setIcon(icon3)
 
         self.horizontalLayout_31.addWidget(self.toolButton_16)
 
@@ -972,11 +942,11 @@ class Ui_CowabungaLite(object):
 
         self.exploreThemesCnt = QWidget(self.explorePage)
         self.exploreThemesCnt.setObjectName(u"exploreThemesCnt")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.exploreThemesCnt.sizePolicy().hasHeightForWidth())
-        self.exploreThemesCnt.setSizePolicy(sizePolicy4)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.exploreThemesCnt.sizePolicy().hasHeightForWidth())
+        self.exploreThemesCnt.setSizePolicy(sizePolicy5)
 
         self.verticalLayout_31.addWidget(self.exploreThemesCnt)
 
@@ -1002,7 +972,7 @@ class Ui_CowabungaLite(object):
 "	padding-right: 5px;\n"
 "	border-radius: 0px;\n"
 "}")
-        self.toolButton_13.setIcon(icon5)
+        self.toolButton_13.setIcon(icon4)
 
         self.horizontalLayout_28.addWidget(self.toolButton_13)
 
@@ -1086,18 +1056,18 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_29.addWidget(self.longitudeTxt)
 
-        self.horizontalWidget5 = QWidget(self.verticalWidget2)
-        self.horizontalWidget5.setObjectName(u"horizontalWidget5")
-        self.horizontalLayout_3 = QHBoxLayout(self.horizontalWidget5)
+        self.horizontalWidget4 = QWidget(self.verticalWidget2)
+        self.horizontalWidget4.setObjectName(u"horizontalWidget4")
+        self.horizontalLayout_3 = QHBoxLayout(self.horizontalWidget4)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.setLocationBtn = QToolButton(self.horizontalWidget5)
+        self.setLocationBtn = QToolButton(self.horizontalWidget4)
         self.setLocationBtn.setObjectName(u"setLocationBtn")
 
         self.horizontalLayout_3.addWidget(self.setLocationBtn)
 
 
-        self.verticalLayout_29.addWidget(self.horizontalWidget5)
+        self.verticalLayout_29.addWidget(self.horizontalWidget4)
 
         self.horizontalWidget_22 = QWidget(self.verticalWidget2)
         self.horizontalWidget_22.setObjectName(u"horizontalWidget_22")
@@ -1144,7 +1114,7 @@ class Ui_CowabungaLite(object):
 "	padding-right: 5px;\n"
 "	border-radius: 0px;\n"
 "}")
-        self.themesBtn.setIcon(icon6)
+        self.themesBtn.setIcon(icon5)
 
         self.horizontalLayout_23.addWidget(self.themesBtn)
 
@@ -1172,12 +1142,12 @@ class Ui_CowabungaLite(object):
 
         self.horizontalLayout_23.addItem(self.horizontalSpacer_10)
 
-        self.horizontalWidget6 = QWidget(self.horizontalWidget_8)
-        self.horizontalWidget6.setObjectName(u"horizontalWidget6")
-        self.horizontalLayout_26 = QHBoxLayout(self.horizontalWidget6)
+        self.horizontalWidget5 = QWidget(self.horizontalWidget_8)
+        self.horizontalWidget5.setObjectName(u"horizontalWidget5")
+        self.horizontalLayout_26 = QHBoxLayout(self.horizontalWidget5)
         self.horizontalLayout_26.setObjectName(u"horizontalLayout_26")
         self.horizontalLayout_26.setContentsMargins(0, 0, 0, 0)
-        self.importThemeBtn = QToolButton(self.horizontalWidget6)
+        self.importThemeBtn = QToolButton(self.horizontalWidget5)
         self.importThemeBtn.setObjectName(u"importThemeBtn")
         self.importThemeBtn.setEnabled(False)
         self.importThemeBtn.setStyleSheet(u"QToolButton {\n"
@@ -1186,24 +1156,24 @@ class Ui_CowabungaLite(object):
 
         self.horizontalLayout_26.addWidget(self.importThemeBtn)
 
-        self.importThemeFolderBtn = QToolButton(self.horizontalWidget6)
+        self.importThemeFolderBtn = QToolButton(self.horizontalWidget5)
         self.importThemeFolderBtn.setObjectName(u"importThemeFolderBtn")
-        icon21 = QIcon()
-        icon21.addFile(u":/icon/folder.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.importThemeFolderBtn.setIcon(icon21)
+        icon20 = QIcon()
+        icon20.addFile(u":/icon/folder.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.importThemeFolderBtn.setIcon(icon20)
 
         self.horizontalLayout_26.addWidget(self.importThemeFolderBtn)
 
-        self.importThemeZipBtn = QToolButton(self.horizontalWidget6)
+        self.importThemeZipBtn = QToolButton(self.horizontalWidget5)
         self.importThemeZipBtn.setObjectName(u"importThemeZipBtn")
-        icon22 = QIcon()
-        icon22.addFile(u":/icon/file-earmark-zip.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.importThemeZipBtn.setIcon(icon22)
+        icon21 = QIcon()
+        icon21.addFile(u":/icon/file-earmark-zip.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.importThemeZipBtn.setIcon(icon21)
 
         self.horizontalLayout_26.addWidget(self.importThemeZipBtn)
 
 
-        self.horizontalLayout_23.addWidget(self.horizontalWidget6)
+        self.horizontalLayout_23.addWidget(self.horizontalWidget5)
 
 
         self.verticalLayout_23.addWidget(self.horizontalWidget_8)
@@ -1253,34 +1223,34 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_22.addItem(self.verticalSpacer_9)
 
-        self.horizontalWidget7 = QWidget(self.themesPageContent)
-        self.horizontalWidget7.setObjectName(u"horizontalWidget7")
-        self.horizontalLayout_16 = QHBoxLayout(self.horizontalWidget7)
+        self.horizontalWidget6 = QWidget(self.themesPageContent)
+        self.horizontalWidget6.setObjectName(u"horizontalWidget6")
+        self.horizontalLayout_16 = QHBoxLayout(self.horizontalWidget6)
         self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
         self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
-        self.hideNamesBtn = QToolButton(self.horizontalWidget7)
+        self.hideNamesBtn = QToolButton(self.horizontalWidget6)
         self.hideNamesBtn.setObjectName(u"hideNamesBtn")
-        sizePolicy1.setHeightForWidth(self.hideNamesBtn.sizePolicy().hasHeightForWidth())
-        self.hideNamesBtn.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.hideNamesBtn.sizePolicy().hasHeightForWidth())
+        self.hideNamesBtn.setSizePolicy(sizePolicy2)
 
         self.horizontalLayout_16.addWidget(self.hideNamesBtn)
 
-        self.borderAllBtn = QToolButton(self.horizontalWidget7)
+        self.borderAllBtn = QToolButton(self.horizontalWidget6)
         self.borderAllBtn.setObjectName(u"borderAllBtn")
-        sizePolicy1.setHeightForWidth(self.borderAllBtn.sizePolicy().hasHeightForWidth())
-        self.borderAllBtn.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.borderAllBtn.sizePolicy().hasHeightForWidth())
+        self.borderAllBtn.setSizePolicy(sizePolicy2)
 
         self.horizontalLayout_16.addWidget(self.borderAllBtn)
 
-        self.addAllBtn = QToolButton(self.horizontalWidget7)
+        self.addAllBtn = QToolButton(self.horizontalWidget6)
         self.addAllBtn.setObjectName(u"addAllBtn")
-        sizePolicy1.setHeightForWidth(self.addAllBtn.sizePolicy().hasHeightForWidth())
-        self.addAllBtn.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.addAllBtn.sizePolicy().hasHeightForWidth())
+        self.addAllBtn.setSizePolicy(sizePolicy2)
 
         self.horizontalLayout_16.addWidget(self.addAllBtn)
 
 
-        self.verticalLayout_22.addWidget(self.horizontalWidget7)
+        self.verticalLayout_22.addWidget(self.horizontalWidget6)
 
 
         self.verticalLayout_23.addWidget(self.themesPageContent)
@@ -1307,7 +1277,7 @@ class Ui_CowabungaLite(object):
 "	padding-right: 5px;\n"
 "	border-radius: 0px;\n"
 "}")
-        self.toolButton_8.setIcon(icon7)
+        self.toolButton_8.setIcon(icon6)
 
         self.horizontalLayout_5.addWidget(self.toolButton_8)
 
@@ -1373,26 +1343,26 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_8.addWidget(self.label_9)
 
-        self.horizontalWidget8 = QWidget(self.statusBarPageContent)
-        self.horizontalWidget8.setObjectName(u"horizontalWidget8")
-        sizePolicy3.setHeightForWidth(self.horizontalWidget8.sizePolicy().hasHeightForWidth())
-        self.horizontalWidget8.setSizePolicy(sizePolicy3)
-        self.horizontalLayout_7 = QHBoxLayout(self.horizontalWidget8)
+        self.horizontalWidget7 = QWidget(self.statusBarPageContent)
+        self.horizontalWidget7.setObjectName(u"horizontalWidget7")
+        sizePolicy4.setHeightForWidth(self.horizontalWidget7.sizePolicy().hasHeightForWidth())
+        self.horizontalWidget7.setSizePolicy(sizePolicy4)
+        self.horizontalLayout_7 = QHBoxLayout(self.horizontalWidget7)
         self.horizontalLayout_7.setSpacing(20)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.pDefaultRdo = QRadioButton(self.horizontalWidget8)
+        self.pDefaultRdo = QRadioButton(self.horizontalWidget7)
         self.pDefaultRdo.setObjectName(u"pDefaultRdo")
         self.pDefaultRdo.setChecked(True)
 
         self.horizontalLayout_7.addWidget(self.pDefaultRdo)
 
-        self.pShowRdo = QRadioButton(self.horizontalWidget8)
+        self.pShowRdo = QRadioButton(self.horizontalWidget7)
         self.pShowRdo.setObjectName(u"pShowRdo")
 
         self.horizontalLayout_7.addWidget(self.pShowRdo)
 
-        self.pHideRdo = QRadioButton(self.horizontalWidget8)
+        self.pHideRdo = QRadioButton(self.horizontalWidget7)
         self.pHideRdo.setObjectName(u"pHideRdo")
 
         self.horizontalLayout_7.addWidget(self.pHideRdo)
@@ -1402,7 +1372,7 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout_7.addItem(self.horizontalSpacer)
 
 
-        self.verticalLayout_8.addWidget(self.horizontalWidget8)
+        self.verticalLayout_8.addWidget(self.horizontalWidget7)
 
         self.pCarrierChk = QCheckBox(self.statusBarPageContent)
         self.pCarrierChk.setObjectName(u"pCarrierChk")
@@ -1489,19 +1459,19 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_8.addWidget(self.pStrengthChk)
 
-        self.horizontalWidget9 = QWidget(self.statusBarPageContent)
-        self.horizontalWidget9.setObjectName(u"horizontalWidget9")
-        self.horizontalLayout_9 = QHBoxLayout(self.horizontalWidget9)
+        self.horizontalWidget8 = QWidget(self.statusBarPageContent)
+        self.horizontalWidget8.setObjectName(u"horizontalWidget8")
+        self.horizontalLayout_9 = QHBoxLayout(self.horizontalWidget8)
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
         self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
-        self.pStrengthLbl = QLabel(self.horizontalWidget9)
+        self.pStrengthLbl = QLabel(self.horizontalWidget8)
         self.pStrengthLbl.setObjectName(u"pStrengthLbl")
         self.pStrengthLbl.setMinimumSize(QSize(50, 0))
         self.pStrengthLbl.setMaximumSize(QSize(50, 16777215))
 
         self.horizontalLayout_9.addWidget(self.pStrengthLbl)
 
-        self.pStrengthSld = QSlider(self.horizontalWidget9)
+        self.pStrengthSld = QSlider(self.horizontalWidget8)
         self.pStrengthSld.setObjectName(u"pStrengthSld")
         self.pStrengthSld.setMaximum(4)
         self.pStrengthSld.setSingleStep(0)
@@ -1511,7 +1481,7 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout_9.addWidget(self.pStrengthSld)
 
 
-        self.verticalLayout_8.addWidget(self.horizontalWidget9)
+        self.verticalLayout_8.addWidget(self.horizontalWidget8)
 
         self.line_9 = QFrame(self.statusBarPageContent)
         self.line_9.setObjectName(u"line_9")
@@ -1528,24 +1498,24 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_8.addWidget(self.label_10)
 
-        self.horizontalWidget10 = QWidget(self.statusBarPageContent)
-        self.horizontalWidget10.setObjectName(u"horizontalWidget10")
-        self.horizontalLayout_8 = QHBoxLayout(self.horizontalWidget10)
+        self.horizontalWidget9 = QWidget(self.statusBarPageContent)
+        self.horizontalWidget9.setObjectName(u"horizontalWidget9")
+        self.horizontalLayout_8 = QHBoxLayout(self.horizontalWidget9)
         self.horizontalLayout_8.setSpacing(20)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
-        self.sDefaultRdo = QRadioButton(self.horizontalWidget10)
+        self.sDefaultRdo = QRadioButton(self.horizontalWidget9)
         self.sDefaultRdo.setObjectName(u"sDefaultRdo")
         self.sDefaultRdo.setChecked(True)
 
         self.horizontalLayout_8.addWidget(self.sDefaultRdo)
 
-        self.sShowRdo = QRadioButton(self.horizontalWidget10)
+        self.sShowRdo = QRadioButton(self.horizontalWidget9)
         self.sShowRdo.setObjectName(u"sShowRdo")
 
         self.horizontalLayout_8.addWidget(self.sShowRdo)
 
-        self.sHideRdo = QRadioButton(self.horizontalWidget10)
+        self.sHideRdo = QRadioButton(self.horizontalWidget9)
         self.sHideRdo.setObjectName(u"sHideRdo")
 
         self.horizontalLayout_8.addWidget(self.sHideRdo)
@@ -1555,7 +1525,7 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout_8.addItem(self.horizontalSpacer_5)
 
 
-        self.verticalLayout_8.addWidget(self.horizontalWidget10)
+        self.verticalLayout_8.addWidget(self.horizontalWidget9)
 
         self.sCarrierChk = QCheckBox(self.statusBarPageContent)
         self.sCarrierChk.setObjectName(u"sCarrierChk")
@@ -1642,18 +1612,18 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_8.addWidget(self.sStrengthChk)
 
-        self.horizontalWidget11 = QWidget(self.statusBarPageContent)
-        self.horizontalWidget11.setObjectName(u"horizontalWidget11")
-        self.horizontalLayout_10 = QHBoxLayout(self.horizontalWidget11)
+        self.horizontalWidget10 = QWidget(self.statusBarPageContent)
+        self.horizontalWidget10.setObjectName(u"horizontalWidget10")
+        self.horizontalLayout_10 = QHBoxLayout(self.horizontalWidget10)
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
         self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
-        self.sStrengthLbl = QLabel(self.horizontalWidget11)
+        self.sStrengthLbl = QLabel(self.horizontalWidget10)
         self.sStrengthLbl.setObjectName(u"sStrengthLbl")
         self.sStrengthLbl.setMinimumSize(QSize(50, 0))
 
         self.horizontalLayout_10.addWidget(self.sStrengthLbl)
 
-        self.sStrengthSld = QSlider(self.horizontalWidget11)
+        self.sStrengthSld = QSlider(self.horizontalWidget10)
         self.sStrengthSld.setObjectName(u"sStrengthSld")
         self.sStrengthSld.setMaximum(4)
         self.sStrengthSld.setSingleStep(0)
@@ -1663,7 +1633,7 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout_10.addWidget(self.sStrengthSld)
 
 
-        self.verticalLayout_8.addWidget(self.horizontalWidget11)
+        self.verticalLayout_8.addWidget(self.horizontalWidget10)
 
         self.line_7 = QFrame(self.statusBarPageContent)
         self.line_7.setObjectName(u"line_7")
@@ -1710,18 +1680,18 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_8.addWidget(self.batteryCapacityChk)
 
-        self.horizontalWidget12 = QWidget(self.statusBarPageContent)
-        self.horizontalWidget12.setObjectName(u"horizontalWidget12")
-        self.horizontalLayout_11 = QHBoxLayout(self.horizontalWidget12)
+        self.horizontalWidget11 = QWidget(self.statusBarPageContent)
+        self.horizontalWidget11.setObjectName(u"horizontalWidget11")
+        self.horizontalLayout_11 = QHBoxLayout(self.horizontalWidget11)
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
         self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
-        self.batteryCapacityLbl = QLabel(self.horizontalWidget12)
+        self.batteryCapacityLbl = QLabel(self.horizontalWidget11)
         self.batteryCapacityLbl.setObjectName(u"batteryCapacityLbl")
         self.batteryCapacityLbl.setMinimumSize(QSize(50, 0))
 
         self.horizontalLayout_11.addWidget(self.batteryCapacityLbl)
 
-        self.batteryCapacitySld = QSlider(self.horizontalWidget12)
+        self.batteryCapacitySld = QSlider(self.horizontalWidget11)
         self.batteryCapacitySld.setObjectName(u"batteryCapacitySld")
         self.batteryCapacitySld.setMaximum(100)
         self.batteryCapacitySld.setSingleStep(0)
@@ -1735,25 +1705,25 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout_11.addWidget(self.batteryCapacitySld)
 
 
-        self.verticalLayout_8.addWidget(self.horizontalWidget12)
+        self.verticalLayout_8.addWidget(self.horizontalWidget11)
 
         self.wifiStrengthChk = QCheckBox(self.statusBarPageContent)
         self.wifiStrengthChk.setObjectName(u"wifiStrengthChk")
 
         self.verticalLayout_8.addWidget(self.wifiStrengthChk)
 
-        self.horizontalWidget13 = QWidget(self.statusBarPageContent)
-        self.horizontalWidget13.setObjectName(u"horizontalWidget13")
-        self.horizontalLayout_12 = QHBoxLayout(self.horizontalWidget13)
+        self.horizontalWidget12 = QWidget(self.statusBarPageContent)
+        self.horizontalWidget12.setObjectName(u"horizontalWidget12")
+        self.horizontalLayout_12 = QHBoxLayout(self.horizontalWidget12)
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
         self.horizontalLayout_12.setContentsMargins(0, 0, 0, 0)
-        self.wifiStrengthLbl = QLabel(self.horizontalWidget13)
+        self.wifiStrengthLbl = QLabel(self.horizontalWidget12)
         self.wifiStrengthLbl.setObjectName(u"wifiStrengthLbl")
         self.wifiStrengthLbl.setMinimumSize(QSize(50, 0))
 
         self.horizontalLayout_12.addWidget(self.wifiStrengthLbl)
 
-        self.wifiStrengthSld = QSlider(self.horizontalWidget13)
+        self.wifiStrengthSld = QSlider(self.horizontalWidget12)
         self.wifiStrengthSld.setObjectName(u"wifiStrengthSld")
         self.wifiStrengthSld.setMaximum(3)
         self.wifiStrengthSld.setSingleStep(0)
@@ -1763,7 +1733,7 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout_12.addWidget(self.wifiStrengthSld)
 
 
-        self.verticalLayout_8.addWidget(self.horizontalWidget13)
+        self.verticalLayout_8.addWidget(self.horizontalWidget12)
 
         self.numericWifiChk = QCheckBox(self.statusBarPageContent)
         self.numericWifiChk.setObjectName(u"numericWifiChk")
@@ -1883,7 +1853,7 @@ class Ui_CowabungaLite(object):
 "	padding-right: 5px;\n"
 "	border-radius: 0px;\n"
 "}")
-        self.toolButton_12.setIcon(icon8)
+        self.toolButton_12.setIcon(icon7)
 
         self.horizontalLayout_22.addWidget(self.toolButton_12)
 
@@ -1964,7 +1934,7 @@ class Ui_CowabungaLite(object):
 "	padding-right: 5px;\n"
 "	border-radius: 0px;\n"
 "}")
-        self.toolButton_7.setIcon(icon9)
+        self.toolButton_7.setIcon(icon8)
 
         self.horizontalLayout_13.addWidget(self.toolButton_7)
 
@@ -2017,19 +1987,19 @@ class Ui_CowabungaLite(object):
 
         self._2.addWidget(self.label_8)
 
-        self.horizontalWidget14 = QWidget(self.springboardOptionsPageContent)
-        self.horizontalWidget14.setObjectName(u"horizontalWidget14")
-        self.horizontalLayout_14 = QHBoxLayout(self.horizontalWidget14)
+        self.horizontalWidget13 = QWidget(self.springboardOptionsPageContent)
+        self.horizontalWidget13.setObjectName(u"horizontalWidget13")
+        self.horizontalLayout_14 = QHBoxLayout(self.horizontalWidget13)
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
         self.horizontalLayout_14.setContentsMargins(0, 0, 0, 0)
-        self.UIAnimSpeedLbl = QLabel(self.horizontalWidget14)
+        self.UIAnimSpeedLbl = QLabel(self.horizontalWidget13)
         self.UIAnimSpeedLbl.setObjectName(u"UIAnimSpeedLbl")
         self.UIAnimSpeedLbl.setMinimumSize(QSize(75, 0))
         self.UIAnimSpeedLbl.setMaximumSize(QSize(75, 16777215))
 
         self.horizontalLayout_14.addWidget(self.UIAnimSpeedLbl)
 
-        self.UIAnimSpeedSld = QSlider(self.horizontalWidget14)
+        self.UIAnimSpeedSld = QSlider(self.horizontalWidget13)
         self.UIAnimSpeedSld.setObjectName(u"UIAnimSpeedSld")
         self.UIAnimSpeedSld.setMinimum(1)
         self.UIAnimSpeedSld.setMaximum(200)
@@ -2042,7 +2012,7 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout_14.addWidget(self.UIAnimSpeedSld)
 
 
-        self._2.addWidget(self.horizontalWidget14)
+        self._2.addWidget(self.horizontalWidget13)
 
         self.label_13 = QLabel(self.springboardOptionsPageContent)
         self.label_13.setObjectName(u"label_13")
@@ -2113,7 +2083,7 @@ class Ui_CowabungaLite(object):
 "	padding-right: 5px;\n"
 "	border-radius: 0px;\n"
 "}")
-        self.toolButton_10.setIcon(icon10)
+        self.toolButton_10.setIcon(icon9)
 
         self.horizontalLayout_20.addWidget(self.toolButton_10)
 
@@ -2259,7 +2229,7 @@ class Ui_CowabungaLite(object):
 "	padding-right: 5px;\n"
 "	border-radius: 0px;\n"
 "}")
-        self.toolButton_11.setIcon(icon11)
+        self.toolButton_11.setIcon(icon10)
 
         self.horizontalLayout_21.addWidget(self.toolButton_11)
 
@@ -2360,7 +2330,7 @@ class Ui_CowabungaLite(object):
 "	padding-right: 5px;\n"
 "	border-radius: 0px;\n"
 "}")
-        self.toolButton_18.setIcon(icon12)
+        self.toolButton_18.setIcon(icon11)
 
         self.horizontalLayout_33.addWidget(self.toolButton_18)
 
@@ -2417,20 +2387,20 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_24.addWidget(self.enabledTweaksLbl)
 
-        self.horizontalWidget15 = QWidget(self.verticalWidget3)
-        self.horizontalWidget15.setObjectName(u"horizontalWidget15")
-        self.horizontalLayout_17 = QHBoxLayout(self.horizontalWidget15)
+        self.horizontalWidget14 = QWidget(self.verticalWidget3)
+        self.horizontalWidget14.setObjectName(u"horizontalWidget14")
+        self.horizontalLayout_17 = QHBoxLayout(self.horizontalWidget14)
         self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
         self.horizontalLayout_17.setContentsMargins(0, 20, 0, 0)
-        self.applyTweaksBtn = QToolButton(self.horizontalWidget15)
+        self.applyTweaksBtn = QToolButton(self.horizontalWidget14)
         self.applyTweaksBtn.setObjectName(u"applyTweaksBtn")
-        self.applyTweaksBtn.setIcon(icon12)
+        self.applyTweaksBtn.setIcon(icon11)
         self.applyTweaksBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
         self.horizontalLayout_17.addWidget(self.applyTweaksBtn)
 
 
-        self.verticalLayout_24.addWidget(self.horizontalWidget15)
+        self.verticalLayout_24.addWidget(self.horizontalWidget14)
 
         self.statusLbl = QLabel(self.verticalWidget3)
         self.statusLbl.setObjectName(u"statusLbl")
@@ -2442,21 +2412,21 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_24.addItem(self.verticalSpacer_2)
 
-        self.horizontalWidget16 = QWidget(self.verticalWidget3)
-        self.horizontalWidget16.setObjectName(u"horizontalWidget16")
-        self.horizontalLayout_25 = QHBoxLayout(self.horizontalWidget16)
+        self.horizontalWidget15 = QWidget(self.verticalWidget3)
+        self.horizontalWidget15.setObjectName(u"horizontalWidget15")
+        self.horizontalLayout_25 = QHBoxLayout(self.horizontalWidget15)
         self.horizontalLayout_25.setObjectName(u"horizontalLayout_25")
         self.horizontalLayout_25.setContentsMargins(0, 0, 0, 0)
         self.horizontalSpacer_14 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_25.addItem(self.horizontalSpacer_14)
 
-        self.removeTweaksBtn = QToolButton(self.horizontalWidget16)
+        self.removeTweaksBtn = QToolButton(self.horizontalWidget15)
         self.removeTweaksBtn.setObjectName(u"removeTweaksBtn")
 
         self.horizontalLayout_25.addWidget(self.removeTweaksBtn)
 
-        self.deepCleanBtn = QToolButton(self.horizontalWidget16)
+        self.deepCleanBtn = QToolButton(self.horizontalWidget15)
         self.deepCleanBtn.setObjectName(u"deepCleanBtn")
 
         self.horizontalLayout_25.addWidget(self.deepCleanBtn)
@@ -2466,7 +2436,7 @@ class Ui_CowabungaLite(object):
         self.horizontalLayout_25.addItem(self.horizontalSpacer_16)
 
 
-        self.verticalLayout_24.addWidget(self.horizontalWidget16)
+        self.verticalLayout_24.addWidget(self.horizontalWidget15)
 
 
         self.verticalLayout_6.addWidget(self.verticalWidget3)
@@ -2485,7 +2455,8 @@ class Ui_CowabungaLite(object):
 
         self.retranslateUi(CowabungaLite)
 
-        self.pages.setCurrentIndex(4)
+        self.devicePicker.setCurrentIndex(-1)
+        self.pages.setCurrentIndex(0)
         self.pTypeDrp.setCurrentIndex(0)
 
 
@@ -2524,22 +2495,21 @@ class Ui_CowabungaLite(object):
         self.label_2.setText(QCoreApplication.translate("CowabungaLite", u"Cowabunga Lite", None))
         self.patreonBtn.setText(QCoreApplication.translate("CowabungaLite", u"  Star the Project on GitHub", None))
         self.discordBtn.setText(QCoreApplication.translate("CowabungaLite", u"  Join the Discord", None))
-        self.avangelistaBtn.setText(QCoreApplication.translate("CowabungaLite", u"  Avangelista", None))
-        self.avangelistaGitHubBtn.setText(QCoreApplication.translate("CowabungaLite", u"...", None))
-        self.avangelistaTwitterBtn.setText(QCoreApplication.translate("CowabungaLite", u"...", None))
-        self.avangelistaKoFiBtn.setText(QCoreApplication.translate("CowabungaLite", u"...", None))
-        self.toolButton_5.setText(QCoreApplication.translate("CowabungaLite", u"Main Windows Developer, Backup Generator, App Getter", None))
         self.leminBtn.setText(QCoreApplication.translate("CowabungaLite", u"  LeminLimez", None))
         self.leminGitHubBtn.setText(QCoreApplication.translate("CowabungaLite", u"...", None))
         self.leminTwitterBtn.setText(QCoreApplication.translate("CowabungaLite", u"...", None))
         self.leminKoFiBtn.setText(QCoreApplication.translate("CowabungaLite", u"...", None))
-        self.toolButton_14.setText(QCoreApplication.translate("CowabungaLite", u"Main Mac Developer, Cowabunga MDC Developer", None))
+        self.toolButton_14.setText(QCoreApplication.translate("CowabungaLite", u"Main Developer, Cowabunga MDC Developer", None))
+        self.avangelistaBtn.setText(QCoreApplication.translate("CowabungaLite", u"  Avangelista", None))
+        self.avangelistaGitHubBtn.setText(QCoreApplication.translate("CowabungaLite", u"...", None))
+        self.avangelistaTwitterBtn.setText(QCoreApplication.translate("CowabungaLite", u"...", None))
+        self.avangelistaKoFiBtn.setText(QCoreApplication.translate("CowabungaLite", u"...", None))
+        self.toolButton_5.setText(QCoreApplication.translate("CowabungaLite", u"Old Windows UI, Backup Generator, App Getter", None))
         self.toolButton_15.setText(QCoreApplication.translate("CowabungaLite", u"Additional Thanks", None))
-        self.sourcelocBtn.setText(QCoreApplication.translate("CowabungaLite", u"sourcelocation", None))
         self.iTechBtn.setText(QCoreApplication.translate("CowabungaLite", u"iTechExpert", None))
-        self.libiBtn.setText(QCoreApplication.translate("CowabungaLite", u"libimobiledevice", None))
+        self.libiBtn.setText(QCoreApplication.translate("CowabungaLite", u"pymobiledevice3", None))
         self.qtBtn.setText(QCoreApplication.translate("CowabungaLite", u"Qt Creator", None))
-        self.label.setText(QCoreApplication.translate("CowabungaLite", u"Cowabunga Lite Windows - Version 1.0.1", None))
+        self.label.setText(QCoreApplication.translate("CowabungaLite", u"Cowabunga Lite (Python) - Version 1.0.0", None))
         self.exploreLbl.setText(QCoreApplication.translate("CowabungaLite", u"Explore", None))
         self.exploreSubLbl.setText("")
         self.statusBarLbl_2.setText(QCoreApplication.translate("CowabungaLite", u"Location Simulation", None))
