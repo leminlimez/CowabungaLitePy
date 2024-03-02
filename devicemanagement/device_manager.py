@@ -68,6 +68,12 @@ class DeviceManager:
             return ""
         else:
             return self.data_singleton.current_device.version
+    
+    def get_current_device_uuid(self) -> str:
+        if self.data_singleton.current_device == None:
+            return ""
+        else:
+            return self.data_singleton.current_device.uuid
 
     def setup_workspace(self, uuid: str):
         # create the workspace for the uuid

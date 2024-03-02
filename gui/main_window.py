@@ -24,6 +24,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.device_manager = device_manager
         self.ui = Ui_CowabungaLite()
         self.ui.setupUi(self)
+        self.show_uuid = False
 
         ## DEVICE BAR
         self.refresh_devices()
@@ -42,6 +43,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.internalOptionsPageBtn.clicked.connect(self.on_internalOptionsPageBtn_clicked)
         self.ui.setupOptionsPageBtn.clicked.connect(self.on_setupOptionsPageBtn_clicked)
         self.ui.applyPageBtn.clicked.connect(self.on_applyPageBtn_clicked)
+
+        ## HOME PAGE ACTIONS
+        self.ui.phoneVersionLbl.linkActivated.connect(self.toggle_version_label)
 
     ## GENERAL INTERFACE FUNCTIONS
     def updateInterfaceForNewDevice(self):
@@ -154,13 +158,29 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.phoneNameLbl.setText(self.device_manager.get_current_device_name())
         # version label
         ver = self.device_manager.get_current_device_version()
+        self.show_uuid = False
         if ver != "":
-            parsed_ver: Version = Version(ver)
-            support_str: str = "<span style=\"color: #32d74b;\">Supported!</span></a>"
-            if parsed_ver > DeviceManager.last_tested_version:
-                support_str = "<span style=\"color: #ffff00;\">Supported, YMMV.</span></a>"
-            elif parsed_ver < DeviceManager.min_version:
-                support_str = "<span style=\"color: #ff0000;\">Not Supported.</span></a>"
-            self.ui.phoneVersionLbl.setText(f"<a style=\"text-decoration:none; color: white;\" href=\"#\">iOS {ver} {support_str}")
+            self.show_version_text(version=ver)
         else:
             self.ui.phoneVersionLbl.setText("Please connect a device.")
+
+    def toggle_version_label(self):
+        if self.show_uuid:
+            self.show_uuid = False
+            ver = self.device_manager.get_current_device_version()
+            if ver != "":
+                self.show_version_text(version=ver)
+        else:
+            self.show_uuid = True
+            uuid = self.device_manager.get_current_device_uuid()
+            if uuid != "":
+                self.ui.phoneVersionLbl.setText(f"<a style=\"text-decoration:none; color: white\" href=\"#\">{uuid}</a>")
+
+    def show_version_text(self, version: str):
+        parsed_ver: Version = Version(version)
+        support_str: str = "<span style=\"color: #32d74b;\">Supported!</span></a>"
+        if parsed_ver > DeviceManager.last_tested_version:
+            support_str = "<span style=\"color: #ffff00;\">Supported, YMMV.</span></a>"
+        elif parsed_ver < DeviceManager.min_version:
+            support_str = "<span style=\"color: #ff0000;\">Not Supported.</span></a>"
+        self.ui.phoneVersionLbl.setText(f"<a style=\"text-decoration:none; color: white;\" href=\"#\">iOS {version} {support_str}")
