@@ -3,6 +3,7 @@ from enum import Enum
 
 from ui_mainwindow import Ui_CowabungaLite
 
+from devicemanagement.constants import Version
 from devicemanagement.device_manager import DeviceManager
 
 class Page(Enum):
@@ -42,16 +43,65 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setupOptionsPageBtn.clicked.connect(self.on_setupOptionsPageBtn_clicked)
         self.ui.applyPageBtn.clicked.connect(self.on_applyPageBtn_clicked)
 
+    ## GENERAL INTERFACE FUNCTIONS
+    def updateInterfaceForNewDevice(self):
+        # update the home page
+        self.updatePhoneInfo()
+
+        if self.device_manager.data_singleton.device_available:
+            # TODO: Load LocSim
+            # TODO: Load Pages
+            pass
+        
+        # TODO: update enabled tweaks
+
     ## DEVICE BAR FUNCTIONS
     @QtCore.Slot()
     def refresh_devices(self):
+        # get the devices
         self.device_manager.get_devices()
+        # clear the picker
         self.ui.devicePicker.clear()
         if len(self.device_manager.devices) == 0:
+            self.ui.devicePicker.setEnabled(False)
             self.ui.devicePicker.addItem('None')
+            self.ui.pages.setCurrentIndex(Page.Home.value)
+            self.ui.homePageBtn.setChecked(True)
+
+            # hide all pages
+            self.ui.locSimPageBtn.hide()
+            self.ui.sidebarDiv1.hide()
+            self.ui.themesPageBtn.hide()
+            self.ui.statusBarPageBtn.hide()
+            self.ui.controlCenterPageBtn.hide()
+            self.ui.springboardOptionsPageBtn.hide()
+            self.ui.internalOptionsPageBtn.hide()
+            self.ui.setupOptionsPageBtn.hide()
+            self.ui.sidebarDiv2.hide()
+            self.ui.applyPageBtn.hide()
         else:
+            self.ui.devicePicker.setEnabled(True)
+            # populate the ComboBox with device names
             for device in self.device_manager.devices:
                 self.ui.devicePicker.addItem(device.name)
+            
+            # show all pages
+            self.ui.locSimPageBtn.show()
+            self.ui.sidebarDiv1.show()
+            self.ui.themesPageBtn.show()
+            self.ui.statusBarPageBtn.show()
+            self.ui.controlCenterPageBtn.show()
+            self.ui.springboardOptionsPageBtn.show()
+            self.ui.internalOptionsPageBtn.show()
+            self.ui.setupOptionsPageBtn.show()
+            self.ui.sidebarDiv2.show()
+            self.ui.applyPageBtn.show()
+        
+        # update the selected device
+        self.ui.devicePicker.setCurrentIndex(self.device_manager.current_device_index)
+
+        # update the interface
+        self.updateInterfaceForNewDevice()
 
     def change_selected_device(self, index):
         if len(self.device_manager.devices) > 0:
@@ -91,3 +141,21 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def on_applyPageBtn_clicked(self):
         self.ui.pages.setCurrentIndex(Page.Apply.value)
+    
+
+    ## HOME PAGE
+    def updatePhoneInfo(self):
+        # name label
+        self.ui.phoneNameLbl.setText(self.device_manager.get_current_device_name())
+        # version label
+        ver = self.device_manager.get_current_device_version()
+        if ver != "":
+            parsed_ver: Version = Version(ver)
+            support_str: str = "<span style=\"color: #32d74b;\">Supported!</span></a>"
+            if parsed_ver > DeviceManager.last_tested_version:
+                support_str = "<span style=\"color: #ffff00;\">Supported, YMMV.</span></a>"
+            elif parsed_ver < DeviceManager.min_version:
+                support_str = "<span style=\"color: #ff0000;\">Not Supported.</span></a>"
+            self.ui.phoneVersionLbl.setText(f"<a style=\"text-decoration:none; color: white;\" href=\"#\">iOS {ver} {support_str}")
+        else:
+            self.ui.phoneVersionLbl.setText("Please connect a device.")

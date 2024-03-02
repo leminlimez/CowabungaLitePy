@@ -6,14 +6,18 @@ from pymobiledevice3 import usbmux
 from pymobiledevice3.lockdown import create_using_usbmux
 import pymobiledevice3.services.diagnostics as diagnostics
 
-from devicemanagement.constants import Device
+from devicemanagement.constants import Device, Version
 from devicemanagement.data_singleton import DataSingleton
 
 class DeviceManager:
+    last_tested_version: Version = Version("17.4")
+    min_version: Version = Version("15")
+
     ## Class Functions
     def __init__(self):
         self.devices: list[Device] = []
         self.data_singleton = DataSingleton()
+        self.current_device_index = 0
     
     def get_devices(self, network: bool = False):
         if (network):
@@ -37,13 +41,33 @@ class DeviceManager:
         else:
             self.set_current_device(index=None)
 
+    ## CURRENT DEVICE
     def set_current_device(self, index: int = None):
         if index == None:
             self.data_singleton.current_device = None
             self.data_singleton.current_workspace = None
+            self.data_singleton.device_available = False
+            self.current_device_index = 0
         else:
             self.data_singleton.current_device = self.devices[index]
-            self.setup_workspace(uuid=self.devices[index].uuid)
+            if Version(self.devices[index].version) < DeviceManager.min_version:
+                self.data_singleton.device_available = False
+            else:
+                self.data_singleton.device_available = True
+                self.setup_workspace(uuid=self.devices[index].uuid)
+            self.current_device_index = index
+        
+    def get_current_device_name(self) -> str:
+        if self.data_singleton.current_device == None:
+            return "No Device"
+        else:
+            return self.data_singleton.current_device.name
+        
+    def get_current_device_version(self) -> str:
+        if self.data_singleton.current_device == None:
+            return ""
+        else:
+            return self.data_singleton.current_device.version
 
     def setup_workspace(self, uuid: str):
         # create the workspace for the uuid
