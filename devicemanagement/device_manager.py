@@ -71,7 +71,7 @@ class DeviceManager:
 
     def setup_workspace(self, uuid: str):
         # create the workspace for the uuid
-        path: Path = Path(os.getcwd()).joinpath("CowabungaLiteData").joinpath("Workspace").joinpath(uuid)
+        path: Path = Path(os.path.expanduser("~/Documents")).joinpath("CowabungaLiteData").joinpath("Workspace").joinpath(uuid)
         path.mkdir(parents=True, exist_ok=True)
         # TODO: Copy subfolders of files into path if not there
         #files_path: Path = Path(os.getcwd()).joinpath("file_folders").joinpath("files")
