@@ -11,18 +11,20 @@ from pymobiledevice3.services.dvt.instruments.location_simulation import Locatio
 
 from devicemanagement.constants import Device
 
-def mount_dev_disk(device: Device, ld: LockdownServiceProvider):
+def mount_dev_disk(device: Device, ld: LockdownServiceProvider) -> str:
     # create the dev disk folder
     path: Path = Path(os.path.expanduser("~/Documents")).joinpath("CowabungaLiteData").joinpath("DevDisks")
     path.mkdir(parents=True, exist_ok=True)
     try:
         auto_mount(ld, xcode=path.absolute, version=device.version)
+        return 'Success'
     except DeveloperDiskImageNotFoundError:
-        print('Unable to find the correct DeveloperDiskImage')
+        return 'Unable to find the correct DeveloperDiskImage'
     except AlreadyMountedError:
-        print('DeveloperDiskImage already mounted')
+        return 'DeveloperDiskImage already mounted'
     except PermissionError as e:
-        print(
+        return (
             f'DeveloperDiskImage could not be saved to Xcode default path ({e.filename}). '
             f'Please make sure your user has the necessary permissions')
+    return "???"
 

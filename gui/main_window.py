@@ -29,6 +29,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui = Ui_CowabungaLite()
         self.ui.setupUi(self)
         self.show_uuid = False
+        self.location_loading = False
 
         ## DEVICE BAR
         self.refresh_devices()
@@ -197,12 +198,16 @@ class MainWindow(QtWidgets.QMainWindow):
     
     ## LOC SIM PAGE
     def on_loadLocSimBtn_clicked(self):
-        if self.device_manager.data_singleton.current_device != None:
+        if self.device_manager.data_singleton.current_device != None and self.location_loading != True:
+            self.location_loading = True
             self.ui.loadLocSimBtn.setText("Loading...")
+            # mount the disk
             device = self.device_manager.data_singleton.current_device
             ld = create_using_usbmux(serial=device.uuid)
-
-            # TODO: Add error handling
-            mount_dev_disk(device=device, ld=ld)
-            self.ui.loadLocSimBtn.hide()
-            self.ui.locSimCnt.show()
+            result: str = mount_dev_disk(device=device, ld=ld)
+            if result == "Success" or result == "DeveloperDiskImage already mounted":
+                self.ui.loadLocSimBtn.hide()
+                self.ui.locSimCnt.show()
+            else:
+                self.ui.loadLocSimBtn.setText(result)
+            self.location_loading = False
