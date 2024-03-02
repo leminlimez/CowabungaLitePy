@@ -1,10 +1,14 @@
 from PySide6 import QtCore, QtWidgets
 from enum import Enum
 
+from pymobiledevice3.lockdown import create_using_usbmux
+
 from ui_mainwindow import Ui_CowabungaLite
 
 from devicemanagement.constants import Version
 from devicemanagement.device_manager import DeviceManager
+
+from tools.locsim import mount_dev_disk
 
 class Page(Enum):
     Home = 0
@@ -47,6 +51,10 @@ class MainWindow(QtWidgets.QMainWindow):
         ## HOME PAGE ACTIONS
         self.ui.phoneVersionLbl.linkActivated.connect(self.toggle_version_label)
 
+        ## LOC SIM PAGE ACTIONS
+        self.ui.loadLocSimBtn.clicked.connect(self.on_loadLocSimBtn_clicked)
+
+
     ## GENERAL INTERFACE FUNCTIONS
     def updateInterfaceForNewDevice(self):
         # update the home page
@@ -63,6 +71,7 @@ class MainWindow(QtWidgets.QMainWindow):
             pass
         
         # TODO: update enabled tweaks
+
 
     ## DEVICE BAR FUNCTIONS
     @QtCore.Slot()
@@ -184,3 +193,16 @@ class MainWindow(QtWidgets.QMainWindow):
         elif parsed_ver < DeviceManager.min_version:
             support_str = "<span style=\"color: #ff0000;\">Not Supported.</span></a>"
         self.ui.phoneVersionLbl.setText(f"<a style=\"text-decoration:none; color: white;\" href=\"#\">iOS {version} {support_str}")
+
+    
+    ## LOC SIM PAGE
+    def on_loadLocSimBtn_clicked(self):
+        if self.device_manager.data_singleton.current_device != None:
+            self.ui.loadLocSimBtn.setText("Loading...")
+            device = self.device_manager.data_singleton.current_device
+            ld = create_using_usbmux(serial=device.uuid)
+
+            # TODO: Add error handling
+            mount_dev_disk(device=device, ld=ld)
+            self.ui.loadLocSimBtn.hide()
+            self.ui.locSimCnt.show()
