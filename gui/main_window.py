@@ -8,7 +8,7 @@ from ui_mainwindow import Ui_CowabungaLite
 from devicemanagement.constants import Version
 from devicemanagement.device_manager import DeviceManager
 
-from tools.locsim import mount_dev_disk
+from tools.locsim import mount_dev_disk, LocSimManager
 
 class Page(Enum):
     Home = 0
@@ -30,6 +30,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.show_uuid = False
         self.location_loading = False
+        self.locsim_manager: LocSimManager = None
 
         ## DEVICE BAR
         self.refresh_devices()
@@ -54,6 +55,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         ## LOC SIM PAGE ACTIONS
         self.ui.loadLocSimBtn.clicked.connect(self.on_loadLocSimBtn_clicked)
+        self.ui.setLocationBtn.clicked.connect(self.on_setLocationBtn_clicked)
+        self.ui.resetLocationBtn.clicked.connect(self.on_resetLocationBtn_clicked)
 
 
     ## GENERAL INTERFACE FUNCTIONS
@@ -67,6 +70,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.loadLocSimBtn.show()
             self.ui.loadLocSimBtn.setEnabled(True)
             self.ui.loadLocSimBtn.setText("Start Location Simulation")
+            self.location_loading = False
 
             # TODO: Load Pages
             pass
@@ -207,7 +211,16 @@ class MainWindow(QtWidgets.QMainWindow):
             result: str = mount_dev_disk(device=device, ld=ld)
             if result == "Success" or result == "DeveloperDiskImage already mounted":
                 self.ui.loadLocSimBtn.hide()
+                self.locsim_manager = LocSimManager(lockdown=ld)
                 self.ui.locSimCnt.show()
             else:
                 self.ui.loadLocSimBtn.setText(result)
             self.location_loading = False
+    
+    def on_setLocationBtn_clicked(self):
+        if self.locsim_manager != None:
+            self.locsim_manager.set(lat=int(self.ui.latitudeTxt.text()), long=int(self.ui.longitudeTxt.text()))
+
+    def on_resetLocationBtn_clicked(self):
+        if self.locsim_manager != None:
+            self.locsim_manager.reset()

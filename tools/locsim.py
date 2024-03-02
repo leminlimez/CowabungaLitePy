@@ -7,7 +7,7 @@ from pymobiledevice3.exceptions import AlreadyMountedError, DeveloperDiskImageNo
     UnsupportedCommandError
 from pymobiledevice3.lockdown import LockdownClient
 from pymobiledevice3.lockdown_service_provider import LockdownServiceProvider
-from pymobiledevice3.services.dvt.instruments.location_simulation import LocationSimulation
+from pymobiledevice3.services.simulate_location import DtSimulateLocation
 
 from devicemanagement.constants import Device
 
@@ -28,3 +28,12 @@ def mount_dev_disk(device: Device, ld: LockdownServiceProvider) -> str:
             f'Please make sure your user has the necessary permissions')
     return "???"
 
+class LocSimManager:
+    def __init__(self, lockdown: LockdownClient):
+        self.dt_locsim = DtSimulateLocation(lockdown)
+
+    def set(self, lat: float, long: float):
+        self.dt_locsim.set(lat, long)
+    
+    def reset(self):
+        self.dt_locsim.clear()
