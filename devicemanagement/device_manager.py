@@ -32,6 +32,7 @@ class DeviceManager:
                 vals = ld.all_values
                 is_ipad: bool = 'iPhone' not in vals['DeviceClass']
                 dev = Device(uuid=device.serial, name=vals['DeviceName'], version=vals['ProductVersion'], ipad=is_ipad)
+                ## TODO: ADD CHECKS TO MAKE SURE THE DEVICE IS ACTUALLY CONNECTED
                 self.devices.append(dev)
             except:
                 print(f"ERROR with lockdown device with UUID {device.serial}")
