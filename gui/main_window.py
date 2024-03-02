@@ -98,7 +98,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.applyPageBtn.show()
         
         # update the selected device
-        self.ui.devicePicker.setCurrentIndex(self.device_manager.current_device_index)
+        self.ui.devicePicker.setCurrentIndex(0)
 
         # update the interface
         self.updateInterfaceForNewDevice()
