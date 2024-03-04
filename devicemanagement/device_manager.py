@@ -78,6 +78,7 @@ class DeviceManager:
 
     def setup_workspace(self, uuid: str):
         # create the workspace for the uuid
+        # TODO: maybe try get_home_folder() from pymobiledevice3.common?
         path: Path = Path(os.path.expanduser("~/Documents")).joinpath("CowabungaLiteData").joinpath("Workspace").joinpath(uuid)
         path.mkdir(parents=True, exist_ok=True)
         # TODO: Copy subfolders of files into path if not there
