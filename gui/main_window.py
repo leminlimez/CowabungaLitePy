@@ -1,5 +1,6 @@
 from PySide6 import QtCore, QtWidgets
 from enum import Enum
+import webbrowser
 
 from pymobiledevice3.lockdown import create_using_usbmux
 
@@ -52,6 +53,22 @@ class MainWindow(QtWidgets.QMainWindow):
 
         ## HOME PAGE ACTIONS
         self.ui.phoneVersionLbl.linkActivated.connect(self.toggle_version_label)
+
+        ## HOME PAGE LINKS
+        self.ui.bigMilkBtn.clicked.connect(self.on_bigMilkBtn_clicked)
+
+        self.ui.leminGitHubBtn.clicked.connect(self.on_leminGitHubBtn_clicked)
+        self.ui.leminTwitterBtn.clicked.connect(self.on_leminTwitterBtn_clicked)
+        self.ui.leminKoFiBtn.clicked.connect(self.on_leminKoFiBtn_clicked)
+
+        self.ui.avangelistaGitHubBtn.clicked.connect(self.on_avangelistaGitHubBtn_clicked)
+        self.ui.avangelistaTwitterBtn.clicked.connect(self.on_avangelistaTwitterBtn_clicked)
+        self.ui.avangelistaKoFiBtn.clicked.connect(self.on_avangelistaKoFiBtn_clicked)
+        
+        self.ui.iTechBtn.clicked.connect(self.on_iTechBtn_clicked)
+        self.ui.libiBtn.clicked.connect(self.on_libiBtn_clicked)
+        self.ui.qtBtn.clicked.connect(self.on_qtBtn_clicked)
+        self.ui.discordBtn.clicked.connect(self.on_discordBtn_clicked)
 
         ## LOC SIM PAGE ACTIONS
         self.ui.loadLocSimBtn.clicked.connect(self.on_loadLocSimBtn_clicked)
@@ -199,7 +216,34 @@ class MainWindow(QtWidgets.QMainWindow):
             support_str = "<span style=\"color: #ff0000;\">Not Supported.</span></a>"
         self.ui.phoneVersionLbl.setText(f"<a style=\"text-decoration:none; color: white;\" href=\"#\">iOS {version} {support_str}")
 
-    
+    ## HOME PAGE LINKS
+    def on_bigMilkBtn_clicked(self):
+        webbrowser.open_new_tab("https://cowabun.ga")
+
+    def on_leminGitHubBtn_clicked(self):
+        webbrowser.open_new_tab("https://github.com/leminlimez")
+    def on_leminTwitterBtn_clicked(self):
+        webbrowser.open_new_tab("https://twitter.com/LeminLimez")
+    def on_leminKoFiBtn_clicked(self):
+        webbrowser.open_new_tab("https://ko-fi.com/leminlimez")
+
+    def on_avangelistaGitHubBtn_clicked(self):
+        webbrowser.open_new_tab("https://github.com/Avangelista")
+    def on_avangelistaTwitterBtn_clicked(self):
+        webbrowser.open_new_tab("https://twitter.com/AvangelistaDev")
+    def on_avangelistaKoFiBtn_clicked(self):
+        webbrowser.open_new_tab("https://ko-fi.com/avangelista")
+
+    def on_iTechBtn_clicked(self):
+        webbrowser.open_new_tab("https://twitter.com/iTechExpert21")
+    def on_libiBtn_clicked(self):
+        webbrowser.open_new_tab("https://github.com/doronz88/pymobiledevice3")
+    def on_qtBtn_clicked(self):
+        webbrowser.open_new_tab("https://www.qt.io/product/development-tools")
+
+    def on_discordBtn_clicked(self):
+        webbrowser.open_new_tab("https://discord.gg/MN8JgqSAqT")
+
     ## LOC SIM PAGE
     def on_loadLocSimBtn_clicked(self):
         if self.device_manager.data_singleton.current_device != None and self.location_loading != True:
