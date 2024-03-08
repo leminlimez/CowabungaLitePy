@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 from shutil import copytree
 
+from PySide6.QtCore import QStandardPaths, QCoreApplication
+
 from pymobiledevice3 import usbmux
 from pymobiledevice3.lockdown import create_using_usbmux
 import pymobiledevice3.services.diagnostics as diagnostics
@@ -78,10 +80,16 @@ class DeviceManager:
 
     def setup_workspace(self, uuid: str):
         # create the workspace for the uuid
-        # TODO: maybe try get_home_folder() from pymobiledevice3.common?
-        path: Path = Path(os.path.expanduser("~/Documents")).joinpath("CowabungaLiteData").joinpath("Workspace").joinpath(uuid)
+        app_data_dir = QStandardPaths.writableLocation(QStandardPaths.AppDataLocation)
+        path: Path = Path(app_data_dir).joinpath("CowabungaLiteData").joinpath("Workspace").joinpath(uuid)
+        print(f"path here: {path}")
         path.mkdir(parents=True, exist_ok=True)
-        # TODO: Copy subfolders of files into path if not there
-        #files_path: Path = Path(os.getcwd()).joinpath("file_folders").joinpath("files")
-        #copytree(src=files_path, dst=path)
+        # Copy subfolders of files into path if not there
+        # TODO: Only copy if it was updated
+        source_dir: Path
+        if QCoreApplication.applicationName() == "Python":
+            source_dir = Path(os.getcwd()).joinpath("file_folders").joinpath("files")
+        else:
+            source_dir = Path(QCoreApplication.applicationDirPath()).joinpath("file_folders").joinpath("files")
+        copytree(src=source_dir, dst=path, dirs_exist_ok=True)
         self.data_singleton.current_workspace = path
