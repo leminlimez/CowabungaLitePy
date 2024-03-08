@@ -114,7 +114,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     label_txt += ", "
                 else:
                     first_tweak = False
-                label_txt += tweak.name
+                label_txt += tweak.value
             
         self.ui.enabledTweaksLbl.setText(label_txt)
 
