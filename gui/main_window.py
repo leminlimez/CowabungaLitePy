@@ -1,15 +1,18 @@
 from PySide6 import QtCore, QtWidgets
 from enum import Enum
+from pathlib import Path
 import webbrowser
 
 from pymobiledevice3.lockdown import create_using_usbmux
 
 from ui_mainwindow import Ui_CowabungaLite
 
-from devicemanagement.constants import Version
+from devicemanagement.constants import Version, Tweak
 from devicemanagement.device_manager import DeviceManager
 
 from tools.locsim import mount_dev_disk, LocSimManager
+
+from utils.plist_manager import get_plist_value, set_plist_value, delete_plist_key
 
 class Page(Enum):
     Home = 0
@@ -75,6 +78,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setLocationBtn.clicked.connect(self.on_setLocationBtn_clicked)
         self.ui.resetLocationBtn.clicked.connect(self.on_resetLocationBtn_clicked)
 
+        ## SPRINGBOARD OPTIONS PAGE ACTIONS
+        self.ui.springboardOptionsEnabledChk.toggled.connect(self.on_springboardOptionsEnabledChk_toggled)
+        self.ui.UIAnimSpeedSld.sliderMoved.connect(self.on_UIAnimSpeedSld_sliderMoved)
+
 
     ## GENERAL INTERFACE FUNCTIONS
     def updateInterfaceForNewDevice(self):
@@ -90,9 +97,32 @@ class MainWindow(QtWidgets.QMainWindow):
             self.location_loading = False
 
             # TODO: Load Pages
-            pass
+            self.load_springboard_options()
         
         # TODO: update enabled tweaks
+        self.update_enabled_tweaks()
+
+    def update_enabled_tweaks(self):
+        tweaks = self.device_manager.data_singleton.enabled_tweaks
+        label_txt = ""
+        if len(tweaks) == 0:
+            label_txt = "None"
+        else:
+            first_tweak: bool = True
+            for tweak in tweaks:
+                if not first_tweak:
+                    label_txt += ", "
+                else:
+                    first_tweak = False
+                label_txt += tweak.name
+            
+        self.ui.enabledTweaksLbl.setText(label_txt)
+
+        #self.ui.themesEnabledChk.setChecked()
+        #self.ui.statusBarEnabledChk.setChecked()
+        self.ui.springboardOptionsEnabledChk.setChecked(Tweak.springboard_options in tweaks)
+        #self.ui.internalOptionsEnabledChk.setChecked()
+        #self.ui.setupOptionsEnabledChk.setChecked()
 
 
     ## DEVICE BAR FUNCTIONS
@@ -268,3 +298,39 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_resetLocationBtn_clicked(self):
         if self.locsim_manager != None:
             self.locsim_manager.reset()
+        
+    
+    ## SPRINGBOARD OPTIONS PAGE
+    def on_springboardOptionsEnabledChk_toggled(self, checked: bool):
+        self.ui.springboardOptionsPageContent.setDisabled(not checked)
+        self.device_manager.data_singleton.set_tweak_enabled(tweak=Tweak.springboard_options, enabled=checked)
+        self.update_enabled_tweaks()
+
+    def on_UIAnimSpeedSld_sliderMoved(self, pos: int):
+        speed = pos / 100.0
+        speed_txt = "Default" if speed == 1 else "Slow" if speed > 1 else "Fast"
+        self.ui.UIAnimSpeedLbl.setText(f"{speed} ({speed_txt})")
+        # if the workspace exists, update the file
+        ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            return
+        ws = Path(ws)
+        location = ws.joinpath("SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.UIKit.plist")
+        if speed != 1:
+            set_plist_value(location, "UIAnimationDragCoefficient", speed)
+        else:
+            delete_plist_key(location, "UIAnimationDragCoefficient")
+
+    ## LOADING SPRINGBOARD OPTIONS
+    def load_springboard_options(self):
+        ws = Path(self.device_manager.data_singleton.current_workspace)
+        # load all the files
+        location = ws.joinpath("SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.UIKit.plist")
+        value = get_plist_value(location, "UIAnimationDragCoefficient")
+        if value != None:
+            speed_txt = "Default" if value == 1 else "Slow" if value > 1 else "Fast"
+            self.ui.UIAnimSpeedLbl.setText(f"{value} ({speed_txt})")
+            self.ui.UIAnimSpeedSld.setValue(value * 100)
+        else:
+            self.ui.UIAnimSpeedLbl.setText("1 (Default)")
+            self.ui.UIAnimSpeedSld.setValue(100)
