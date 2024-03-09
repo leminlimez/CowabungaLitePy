@@ -8,21 +8,21 @@ from pathlib import Path
 from shutil import copyfile, rmtree
 
 def remove_domain(domain: str, input_str: str):
-    if domain in input_str:
-        i = input_str.split(domain)[1]
-        if len(i) > 0 and (i[0] == '\\' or i[0] == '/'):
-            return i[1:]
-        return i
-    return input_str
-    """
     pos = input_str.find(domain)
     if pos != -1:
-        pos += len(domain) - 1
-        if (input_str[pos] == '\\' or input_str[pos] == '/'):
+        pos += len(domain)
+        if pos < len(input_str) and (input_str[pos] == '\\' or input_str[pos] == '/'):
             pos += 1
         return input_str[pos:]
     return input_str
-    """
+
+def write_str_with_len(out_file, to_write: str):
+    byte_array = to_write.encode('utf-8')
+    length = len(byte_array)
+    big_endian_length = length.to_bytes(2, byteorder='big')
+
+    out_file.write(big_endian_length)
+    out_file.write(byte_array)
 
 def write_hash(out_file, file):
     try:
@@ -37,7 +37,7 @@ def write_hash(out_file, file):
 def generate_random_hex(out_file):
     random.seed(datetime.datetime.now().timestamp())
 
-    buffer_data = bytes(random.randint(0, 255) for _ in range(12))
+    buffer_data = bytes([random.randint(0, 255) for _ in range(12)])
     out_file.write(buffer_data)
 
 def calculate_sha1(data):
@@ -53,13 +53,12 @@ def process_files(path: str, domain_str: str, output_dir: Path):
             domain_name = domain_str
             if domain_str == 'ConfigProfileDomain':
                 domain_name = "SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles"
-            out_file.write(len(domain_name).to_bytes(2, byteorder='big'))
-            out_file.write(domain_name.encode()) # to utf-8
+            write_str_with_len(out_file, domain_name)
 
             # Write the path string
-            out_file.write(len(file_str).to_bytes(2, byteorder='big'))
-            out_file.write(file_str.encode())
+            write_str_with_len(out_file, file_str)
             if os.path.isfile(path):
+                # Path is a file
                 out_file.write(b'\xFF\xFF\x00\x14')
 
                 # Write file hash to Manifest.mbdb
@@ -74,6 +73,7 @@ def process_files(path: str, domain_str: str, output_dir: Path):
                 path_hash = calculate_sha1(f"{domain_name}-{file_str}")
                 copyfile(path, output_dir.joinpath(path_hash))
             elif os.path.isdir(path):
+                # Path is a directory
                 out_file.write(b'\xFF\xFF\xFF\xFF\xFF\xFF\x41\xFF\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xF5\x00\x00\x01\xF5')
                 generate_random_hex(out_file)
                 out_file.write(b'\x00\x00\x00\x00\x00\x00\x00\x00\x04\x00')
@@ -81,7 +81,7 @@ def process_files(path: str, domain_str: str, output_dir: Path):
                 # Recursively add the files from inside the directory
                 for entry in os.listdir(path):
                     file_path = os.path.join(path, entry)
-                    if os.path.isdir(file_path) or os.path.isfile(file_path):
+                    if not file_path.startswith('.'):
                         process_files(file_path, domain_str, output_dir)
     except IOError:
         print("Failed to create output file") # TODO: Add QDebug equivalent
@@ -104,9 +104,7 @@ def create_backup(src: Path, dst: Path) -> bool:
         
     # Iterate over all domains
     for domain in os.listdir(src):
-        if domain == 'SystemPreferencesDomain':
-            continue
-        domain_path = src.joinpath(domain)
+        domain_path = os.path.join(str(src), domain)
         if os.path.isdir(domain_path) and not domain.startswith('.'):
             domain_str = os.path.basename(domain_path)
             process_files(domain_path, domain_str, dst)
