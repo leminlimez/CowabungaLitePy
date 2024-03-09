@@ -82,6 +82,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.springboardOptionsEnabledChk.toggled.connect(self.on_springboardOptionsEnabledChk_toggled)
         self.ui.UIAnimSpeedSld.sliderMoved.connect(self.on_UIAnimSpeedSld_sliderMoved)
 
+        ## APPLY PAGE ACTIONS
+        self.ui.applyTweaksBtn.clicked.connect(self.on_applyPageBtn_clicked)
+
 
     ## GENERAL INTERFACE FUNCTIONS
     def updateInterfaceForNewDevice(self):
@@ -107,6 +110,7 @@ class MainWindow(QtWidgets.QMainWindow):
         label_txt = ""
         if len(tweaks) == 0:
             label_txt = "None"
+            self.ui.applyPage.setDisabled(True)
         else:
             first_tweak: bool = True
             for tweak in tweaks:
@@ -115,12 +119,13 @@ class MainWindow(QtWidgets.QMainWindow):
                 else:
                     first_tweak = False
                 label_txt += tweak.value
+            self.ui.applyPage.setDisabled(False)
             
         self.ui.enabledTweaksLbl.setText(label_txt)
 
         #self.ui.themesEnabledChk.setChecked()
         #self.ui.statusBarEnabledChk.setChecked()
-        self.ui.springboardOptionsEnabledChk.setChecked(Tweak.springboard_options in tweaks)
+        self.ui.springboardOptionsEnabledChk.setChecked(Tweak.SpringboardOptions in tweaks)
         #self.ui.internalOptionsEnabledChk.setChecked()
         #self.ui.setupOptionsEnabledChk.setChecked()
 
@@ -132,6 +137,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.device_manager.get_devices()
         # clear the picker
         self.ui.devicePicker.clear()
+        self.ui.restoreProgressBar.hide()
         if len(self.device_manager.devices) == 0:
             self.ui.devicePicker.setEnabled(False)
             self.ui.devicePicker.addItem('None')
@@ -303,7 +309,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## SPRINGBOARD OPTIONS PAGE
     def on_springboardOptionsEnabledChk_toggled(self, checked: bool):
         self.ui.springboardOptionsPageContent.setDisabled(not checked)
-        self.device_manager.data_singleton.set_tweak_enabled(tweak=Tweak.springboard_options, enabled=checked)
+        self.device_manager.data_singleton.set_tweak_enabled(tweak=Tweak.SpringboardOptions, enabled=checked)
         self.update_enabled_tweaks()
 
     def on_UIAnimSpeedSld_sliderMoved(self, pos: int):
@@ -334,3 +340,17 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.ui.UIAnimSpeedLbl.setText("1 (Default)")
             self.ui.UIAnimSpeedSld.setValue(100)
+    
+    
+    ## APPLY PAGE
+    @QtCore.Slot()
+    def on_applyTweaksBtn_clicked(self):
+        # TODO: Add safety here
+        def update_label(txt: str):
+            self.ui.statusLbl.setText(txt)
+            if "Restoring" in txt:
+                self.ui.restoreProgressBar.setValue(0)
+                self.ui.restoreProgressBar.show()
+        def update_bar(percent):
+            self.ui.restoreProgressBar.setValue(int(percent))
+        self.device_manager.apply_tweaks(update_label=update_label, update_bar=update_bar)
