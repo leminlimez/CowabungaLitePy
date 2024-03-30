@@ -334,6 +334,16 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             delete_plist_key(location, "UIAnimationDragCoefficient")
 
+    def on_footnoteTxt_textEdited(self, text: str):
+        ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            return
+        location = os.path.join(ws, "/SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist")
+        if text != "":
+            set_plist_value(location, "LockScreenFootnote", text)
+        else:
+            delete_plist_key(location, "LockScreenFootnote")
+
     ## LOADING SPRINGBOARD OPTIONS
     def load_springboard_options(self):
         ws = self.device_manager.data_singleton.current_workspace
@@ -347,6 +357,9 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.ui.UIAnimSpeedLbl.setText("1 (Default)")
             self.ui.UIAnimSpeedSld.setValue(100)
+        location = os.path.join(ws, "/SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist")
+        value = get_plist_value(location, "LockScreenFootnote")
+        self.ui.footnoteTxt.setText("" if value == None else str(value))
 
 
     ## SETUP OPTIONS PAGE
