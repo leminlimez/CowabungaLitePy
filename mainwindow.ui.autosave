@@ -766,7 +766,7 @@ QSlider::tick:horizontal {
           <item>
            <widget class="QStackedWidget" name="pages">
             <property name="currentIndex">
-             <number>0</number>
+             <number>9</number>
             </property>
             <widget class="QWidget" name="homePage">
              <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -4416,6 +4416,12 @@ QComboBox QAbstractItemView::item:hover {
                       <property name="icon">
                        <iconset resource="resources.qrc">
                         <normaloff>:/icon/check-circle.svg</normaloff>:/icon/check-circle.svg</iconset>
+                      </property>
+                      <property name="checkable">
+                       <bool>false</bool>
+                      </property>
+                      <property name="checked">
+                       <bool>false</bool>
                       </property>
                       <property name="toolButtonStyle">
                        <enum>Qt::ToolButtonTextBesideIcon</enum>

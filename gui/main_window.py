@@ -2,6 +2,7 @@ from PySide6 import QtCore, QtWidgets
 from enum import Enum
 from pathlib import Path
 import webbrowser
+import os
 
 from pymobiledevice3.lockdown import create_using_usbmux
 
@@ -82,6 +83,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.springboardOptionsEnabledChk.toggled.connect(self.on_springboardOptionsEnabledChk_toggled)
         self.ui.UIAnimSpeedSld.sliderMoved.connect(self.on_UIAnimSpeedSld_sliderMoved)
 
+        ## SETUP OPTIONS PAGE
+        self.ui.setupOptionsEnabledChk.toggled.connect(self.on_setupOptionsEnabledChk_toggled)
+        self.ui.skipSetupChk.toggled.connect(self.on_skipSetupChk_clicked)
+        self.ui.enableSupervisionChk.toggled.connect(self.on_enableSupervisionChk_clicked)
+        self.ui.organizationNameTxt.textEdited.connect(self.on_organizationNameTxt_textEdited)
+
+        ## APPLY PAGE ACTIONS
+        self.ui.applyTweaksBtn.clicked.connect(self.on_applyPageBtn_clicked)
+
 
     ## GENERAL INTERFACE FUNCTIONS
     def updateInterfaceForNewDevice(self):
@@ -98,6 +108,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
             # TODO: Load Pages
             self.load_springboard_options()
+            self.load_setup_options()
         
         # TODO: update enabled tweaks
         self.update_enabled_tweaks()
@@ -107,6 +118,7 @@ class MainWindow(QtWidgets.QMainWindow):
         label_txt = ""
         if len(tweaks) == 0:
             label_txt = "None"
+            self.ui.applyPage.setDisabled(True)
         else:
             first_tweak: bool = True
             for tweak in tweaks:
@@ -115,14 +127,15 @@ class MainWindow(QtWidgets.QMainWindow):
                 else:
                     first_tweak = False
                 label_txt += tweak.value
+            self.ui.applyPage.setDisabled(False)
             
         self.ui.enabledTweaksLbl.setText(label_txt)
 
         #self.ui.themesEnabledChk.setChecked()
         #self.ui.statusBarEnabledChk.setChecked()
-        self.ui.springboardOptionsEnabledChk.setChecked(Tweak.springboard_options in tweaks)
+        self.ui.springboardOptionsEnabledChk.setChecked(Tweak.SpringboardOptions in tweaks)
         #self.ui.internalOptionsEnabledChk.setChecked()
-        #self.ui.setupOptionsEnabledChk.setChecked()
+        self.ui.setupOptionsEnabledChk.setChecked(Tweak.SkipSetup in tweaks)
 
 
     ## DEVICE BAR FUNCTIONS
@@ -132,6 +145,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.device_manager.get_devices()
         # clear the picker
         self.ui.devicePicker.clear()
+        self.ui.restoreProgressBar.hide()
         if len(self.device_manager.devices) == 0:
             self.ui.devicePicker.setEnabled(False)
             self.ui.devicePicker.addItem('None')
@@ -303,7 +317,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ## SPRINGBOARD OPTIONS PAGE
     def on_springboardOptionsEnabledChk_toggled(self, checked: bool):
         self.ui.springboardOptionsPageContent.setDisabled(not checked)
-        self.device_manager.data_singleton.set_tweak_enabled(tweak=Tweak.springboard_options, enabled=checked)
+        self.device_manager.data_singleton.set_tweak_enabled(tweak=Tweak.SpringboardOptions, enabled=checked)
         self.update_enabled_tweaks()
 
     def on_UIAnimSpeedSld_sliderMoved(self, pos: int):
@@ -314,18 +328,27 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        ws = Path(ws)
-        location = ws.joinpath("SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.UIKit.plist")
+        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.UIKit.plist")
         if speed != 1:
             set_plist_value(location, "UIAnimationDragCoefficient", speed)
         else:
             delete_plist_key(location, "UIAnimationDragCoefficient")
 
+    def on_footnoteTxt_textEdited(self, text: str):
+        ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            return
+        location = os.path.join(ws, "/SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist")
+        if text != "":
+            set_plist_value(location, "LockScreenFootnote", text)
+        else:
+            delete_plist_key(location, "LockScreenFootnote")
+
     ## LOADING SPRINGBOARD OPTIONS
     def load_springboard_options(self):
-        ws = Path(self.device_manager.data_singleton.current_workspace)
+        ws = self.device_manager.data_singleton.current_workspace
         # load all the files
-        location = ws.joinpath("SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.UIKit.plist")
+        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.UIKit.plist")
         value = get_plist_value(location, "UIAnimationDragCoefficient")
         if value != None:
             speed_txt = "Default" if value == 1 else "Slow" if value > 1 else "Fast"
@@ -334,3 +357,115 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.ui.UIAnimSpeedLbl.setText("1 (Default)")
             self.ui.UIAnimSpeedSld.setValue(100)
+        location = os.path.join(ws, "/SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist")
+        value = get_plist_value(location, "LockScreenFootnote")
+        self.ui.footnoteTxt.setText("" if value == None else str(value))
+
+
+    ## SETUP OPTIONS PAGE
+    def on_setupOptionsEnabledChk_toggled(self, checked: bool):
+        self.ui.setupOptionsPageContent.setDisabled(not checked)
+        self.device_manager.data_singleton.set_tweak_enabled(tweak=Tweak.SkipSetup, enabled=checked)
+        self.update_enabled_tweaks()
+
+    def on_skipSetupChk_clicked(self, checked: bool):
+        ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            return
+        location = os.path.join(ws, "SkipSetup/ConfigProfileDomain/Library/ConfigurationProfiles/CloudConfigurationDetails.plist")
+        if checked:
+            set_plist_value(location, "CloudConfigurationUIComplete", True)
+            to_skip = [
+                "Location",
+                "Restore",
+                "SIMSetup",
+                "Android",
+                "AppleID",
+                "IntendedUser",
+                "TOS",
+                "Siri",
+                "ScreenTime",
+                "Diagnostics",
+                "SoftwareUpdate",
+                "Passcode",
+                "Biometric",
+                "Payment",
+                "Zoom",
+                "DisplayTone",
+                "MessagingActivationUsingPhoneNumber",
+                "HomeButtonSensitivity",
+                "CloudStorage",
+                "ScreenSaver",
+                "TapToSetup",
+                "Keyboard",
+                "PreferredLanguage",
+                "SpokenLanguage",
+                "WatchMigration",
+                "OnBoarding",
+                "TVProviderSignIn",
+                "TVHomeScreenSync",
+                "Privacy",
+                "TVRoom",
+                "iMessageAndFaceTime",
+                "AppStore",
+                "Safety",
+                "Multitasking",
+                "ActionButton",
+                "TermsOfAddress",
+                "AccessibilityAppearance",
+                "Welcome",
+                "Appearance",
+                "RestoreCompleted",
+                "UpdateCompleted"
+            ]
+            set_plist_value(location, "SkipSetup", to_skip)
+        else:
+            delete_plist_key(location, "SkipSetup")
+        
+    def on_enableSupervisionChk_clicked(self, checked: bool):
+        ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            return
+        location = os.path.join(ws, "SkipSetup/ConfigProfileDomain/Library/ConfigurationProfiles/CloudConfigurationDetails.plist")
+        if checked:
+            set_plist_value(location, "IsSupervised", True)
+        else:
+            delete_plist_key(location, "IsSupervised")
+
+    def on_organizationNameTxt_textEdited(self, text: str):
+        ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            return
+        location = os.path.join(ws, "SkipSetup/ConfigProfileDomain/Library/ConfigurationProfiles/CloudConfigurationDetails.plist")
+        if text != "":
+            set_plist_value(location, "OrganizationName", text)
+        else:
+            delete_plist_key(location, "OrganizationName")
+
+
+    ## LOADING SETUP OPTIONS
+    def load_setup_options(self):
+        ws = self.device_manager.data_singleton.current_workspace
+        # load all the files
+        location = os.path.join(ws, "SkipSetup/ConfigProfileDomain/Library/ConfigurationProfiles/CloudConfigurationDetails.plist")
+        skip_setup = get_plist_value(location, "SkipSetup")
+        is_supervised = get_plist_value(location, "IsSupervised")
+        org_name = get_plist_value(location, "OrganizationName")
+        self.ui.skipSetupChk.setDisabled(skip_setup == None)
+        self.ui.enableSupervisionChk.setDisabled(True if is_supervised == None else False)
+        self.ui.organizationNameTxt.setText("" if org_name == None else str(org_name))
+
+    
+    
+    ## APPLY PAGE
+    @QtCore.Slot()
+    def on_applyTweaksBtn_clicked(self):
+        # TODO: Add safety here
+        def update_label(txt: str):
+            self.ui.statusLbl.setText(txt)
+            if "Restoring" in txt:
+                self.ui.restoreProgressBar.setValue(0)
+                self.ui.restoreProgressBar.show()
+        def update_bar(percent):
+            self.ui.restoreProgressBar.setValue(int(percent))
+        self.device_manager.apply_tweaks(update_label=update_label, update_bar=update_bar)

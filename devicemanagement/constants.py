@@ -51,4 +51,5 @@ class Version:
         return self.compare_to(other) == 0
     
 class Tweak(Enum):
-    springboard_options = 'Springboard Options'
+    SpringboardOptions = 'Springboard Options'
+    SkipSetup = 'Setup Options'

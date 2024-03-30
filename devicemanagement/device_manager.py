@@ -1,15 +1,19 @@
 import os
+import sys
+import traceback
 from pathlib import Path
-from shutil import copytree
+from shutil import copytree, rmtree
 
 from PySide6.QtCore import QStandardPaths, QCoreApplication
+from PySide6.QtWidgets import QMessageBox
 
 from pymobiledevice3 import usbmux
 from pymobiledevice3.lockdown import create_using_usbmux
-import pymobiledevice3.services.diagnostics as diagnostics
+from pymobiledevice3.services.mobilebackup2 import Mobilebackup2Service
 
 from devicemanagement.constants import Device, Version
 from devicemanagement.data_singleton import DataSingleton
+from devicemanagement.create_backup import create_backup
 
 class DeviceManager:
     last_tested_version: Version = Version("17.4")
@@ -93,3 +97,57 @@ class DeviceManager:
             source_dir = Path(QCoreApplication.applicationDirPath()).joinpath("file_folders").joinpath("files")
         copytree(src=source_dir, dst=path, dirs_exist_ok=True)
         self.data_singleton.current_workspace = path
+
+    
+    ## APPLYING TWEAKS AND RESTORING
+    def apply_tweaks(self, update_label=lambda x: None, update_bar=lambda y: None):
+        ws = self.data_singleton.current_workspace
+
+        # TODO: Apply Theming
+
+        # Copy enabled tweaks
+        update_label("Copying enabled tweaks...")
+
+        # Erase backup folder
+        enabled_tweaks_dir = Path(QStandardPaths.writableLocation(QStandardPaths.AppDataLocation)).joinpath("CowabungaLiteData").joinpath("EnabledTweaks")
+        rmtree(enabled_tweaks_dir, ignore_errors=True)
+
+        # Copy enabled tweak files
+        for tweak in self.data_singleton.enabled_tweaks:
+            folder_path = Path(ws).joinpath(tweak.name)
+            copytree(src=folder_path, dst=enabled_tweaks_dir)
+
+        # Generate backup
+        update_label("Generating backup...")
+        backup_dir = Path(QStandardPaths.writableLocation(QStandardPaths.AppDataLocation)).joinpath("CowabungaLiteData").joinpath("Backup")
+        rmtree(path=backup_dir, ignore_errors=True)
+        backup_created = create_backup(src=enabled_tweaks_dir, dst=backup_dir.joinpath(self.get_current_device_uuid()))
+        if not backup_created:
+            update_label("Failed to generate backup...")
+        
+        # Restore backup
+        update_label("Restoring backup to device...")
+        if self.restore_backup_to_device(backup_dir=backup_dir, update_bar=update_bar):
+            update_label("Done!")
+        else:
+            update_label("Failed.")
+
+    def restore_backup_to_device(self, backup_dir: str, update_bar=lambda x: None) -> bool:
+        # restore args: -u [udid] -s Backup restore --system --skip-apps [backup directory]
+        ld = create_using_usbmux(serial=self.get_current_device_uuid())
+        backup_client = Mobilebackup2Service(lockdown=ld)
+        try:
+            backup_client.restore(
+                backup_directory=backup_dir, progress_callback=update_bar,
+                system=True, reboot=True, copy=False, settings=False, remove=False)
+        except Exception as e:
+            print(traceback.format_exc())
+            detailsBox = QMessageBox()
+            detailsBox.setIcon(QMessageBox.Critical)
+            detailsBox.setWindowTitle("Error!")
+            detailsBox.setText(type(e).__name__)
+            detailsBox.setDetailedText(str(traceback.format_exc()))
+            detailsBox.exec()
+            return False
+        QMessageBox.information(None, "Success!", "All done! Your device will now restart.\n\nYou should see a black loading screen after entering your passcode - it will disappear after a few seconds.\n\nImportant: If you are presented with a setup, select \"Customize\" > \"Don't transfer apps and data\" and your phone should return to the homescreen as normal.")
+        return True
