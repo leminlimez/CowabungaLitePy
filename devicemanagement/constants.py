@@ -52,3 +52,4 @@ class Version:
     
 class Tweak(Enum):
     SpringboardOptions = 'Springboard Options'
+    SkipSetup = 'Setup Options'
