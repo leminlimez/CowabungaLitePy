@@ -43,49 +43,45 @@ def generate_random_hex(out_file):
 def calculate_sha1(data):
     return hashlib.sha1(data.encode()).hexdigest()
 
-def process_files(path: str, domain_str: str, output_dir: Path):
+def process_files(out_file, path: str, domain_str: str, output_dir: Path):
     if '.DS_Store' in str(path):
         return
     file_str = remove_domain(str(domain_str), str(path)).replace('hiddendot', '.').replace('\\', '/')
-    try:
-        with open(output_dir.joinpath("Manifest.mbdb"), 'ab') as out_file:
-            # Write the domain name string to Manifest.mbdb
-            domain_name = domain_str
-            if domain_str == 'ConfigProfileDomain':
-                domain_name = "SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles"
-            write_str_with_len(out_file, domain_name)
+    # Write the domain name string to Manifest.mbdb
+    domain_name = domain_str
+    if domain_str == 'ConfigProfileDomain':
+        domain_name = "SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles"
+    write_str_with_len(out_file, domain_name)
 
-            # Write the path string
-            write_str_with_len(out_file, file_str)
-            if os.path.isfile(path):
-                # Path is a file
-                out_file.write(b'\xFF\xFF\x00\x14')
+    # Write the path string
+    write_str_with_len(out_file, file_str)
+    if os.path.isfile(path):
+        # Path is a file
+        out_file.write(b'\xFF\xFF\x00\x14')
 
-                # Write file hash to Manifest.mbdb
-                write_hash(out_file, path)
-                out_file.write(b'\xFF\xFF\x81\xFF\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xF5\x00\x00\x01\xF5')
-                generate_random_hex(out_file)
-                # Write file size (as big endian)
-                out_file.write(os.path.getsize(path).to_bytes(8, byteorder='big'))
-                out_file.write(b'\x04\x00')
+        # Write file hash to Manifest.mbdb
+        write_hash(out_file, path)
+        out_file.write(b'\xFF\xFF\x81\xFF\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xF5\x00\x00\x01\xF5')
+        generate_random_hex(out_file)
+        # Write file size (as big endian)
+        out_file.write(os.path.getsize(path).to_bytes(8, byteorder='big'))
+        out_file.write(b'\x04\x00')
 
-                # Write domain-path hash
-                path_hash = calculate_sha1(f"{domain_name}-{file_str}")
-                copyfile(path, output_dir.joinpath(path_hash))
-            elif os.path.isdir(path):
-                # Path is a directory
-                out_file.write(b'\xFF\xFF\xFF\xFF\xFF\xFF\x41\xFF\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xF5\x00\x00\x01\xF5')
-                generate_random_hex(out_file)
-                out_file.write(b'\x00\x00\x00\x00\x00\x00\x00\x00\x04\x00')
+        # Write domain-path hash
+        path_hash = calculate_sha1(f"{domain_name}-{file_str}")
+        copyfile(path, output_dir.joinpath(path_hash))
+    elif os.path.isdir(path):
+        # Path is a directory
+        out_file.write(b'\xFF\xFF\xFF\xFF\xFF\xFF\x41\xFF\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xF5\x00\x00\x01\xF5')
+        generate_random_hex(out_file)
+        out_file.write(b'\x00\x00\x00\x00\x00\x00\x00\x00\x04\x00')
 
-                # Recursively add the files from inside the directory
-                for entry in os.listdir(path):
-                    file_path = os.path.join(path, entry)
-                    if not file_path.startswith('.'):
-                        process_files(file_path, domain_str, output_dir)
-    except IOError:
-        print("Failed to create output file") # TODO: Add QDebug equivalent
-        return
+        # Recursively add the files from inside the directory
+        for entry in sorted(os.listdir(path)):
+            file_path = os.path.join(path, entry)
+            if not file_path.startswith('.'):
+                process_files(out_file, file_path, domain_str, output_dir)
+    
 
 def create_backup(src: Path, dst: Path) -> bool:
     # Prepare
@@ -103,11 +99,16 @@ def create_backup(src: Path, dst: Path) -> bool:
         return False
         
     # Iterate over all domains
-    for domain in os.listdir(src):
+    for domain in sorted(os.listdir(src)):
         domain_path = os.path.join(str(src), domain)
         if os.path.isdir(domain_path) and not domain.startswith('.'):
-            domain_str = os.path.basename(domain_path)
-            process_files(domain_path, domain_str, dst)
+            try:
+                with open(dst.joinpath("Manifest.mbdb"), 'ab') as out_file:
+                    domain_str = os.path.basename(domain_path)
+                    process_files(out_file, domain_path, domain_str, dst)
+            except IOError:
+                print("Failed to create output file") # TODO: Add QDebug equivalent
+                return
 
     # Generate Info.plist
     info_plist_content = b"""<?xml version="1.0" encoding="UTF-8"?>
