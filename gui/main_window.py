@@ -82,6 +82,13 @@ class MainWindow(QtWidgets.QMainWindow):
         ## SPRINGBOARD OPTIONS PAGE ACTIONS
         self.ui.springboardOptionsEnabledChk.toggled.connect(self.on_springboardOptionsEnabledChk_toggled)
         self.ui.UIAnimSpeedSld.sliderMoved.connect(self.on_UIAnimSpeedSld_sliderMoved)
+        self.ui.footnoteTxt.textEdited.connect(self.on_footnoteTxt_textEdited)
+        self.ui.disableLockRespringChk.toggled.connect(self.on_disableLockRespringChk_clicked)
+        self.ui.disableDimmingChk.toggled.connect(self.on_disableDimmingChk_clicked)
+        self.ui.disableBatteryAlertsChk.toggled.connect(self.on_disableBatteryAlertsChk_clicked)
+        self.ui.disableCrumbChk.toggled.connect(self.on_disableCrumbChk_clicked)
+        self.ui.enableShutdownSoundChk.toggled.connect(self.on_enableShutdownSoundChk_clicked)
+        self.ui.allowAirDropEveryoneChk.toggled.connect(self.on_allowAirDropEveryoneChk_clicked)
 
         ## SETUP OPTIONS PAGE
         self.ui.setupOptionsEnabledChk.toggled.connect(self.on_setupOptionsEnabledChk_toggled)
@@ -338,15 +345,57 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, "/SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist")
+        location = os.path.join(ws, "SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist")
         if text != "":
             set_plist_value(location, "LockScreenFootnote", text)
         else:
             delete_plist_key(location, "LockScreenFootnote")
 
+    def set_sb_key(self, key: str, checked: bool):
+        ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            return
+        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist")
+        if checked:
+            set_plist_value(location, key, checked)
+        else:
+            delete_plist_key(location, key)
+
+    def on_disableLockRespringChk_clicked(self, checked: bool):
+        self.set_sb_key("SBDontLockAfterCrash", checked)
+    def on_disableBatteryAlertsChk_clicked(self, checked: bool):
+        self.set_sb_key("SBHideLowPowerAlerts", checked)
+    def on_disableDimmingChk_clicked(self, checked: bool):
+        self.set_sb_key("SBDontDimOrLockOnAC", checked)
+    def on_disableCrumbChk_clicked(self, checked: bool):
+        self.set_sb_key("SBNeverBreadcrumb", checked)
+
+    def on_enableShutdownSoundChk_clicked(self, checked: bool):
+        ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            return
+        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.Accessibility.plist")
+        if checked:
+            set_plist_value(location, "StartupSoundEnabled", checked)
+        else:
+            delete_plist_key(location, "StartupSoundEnabled")
+
+    def on_allowAirDropEveryoneChk_clicked(self, checked: bool):
+        ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            return
+        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist")
+        if checked:
+            set_plist_value(location, "DiscoverableMode", "Everyone")
+        else:
+            delete_plist_key(location, "DiscoverableMode")
+
+
     ## LOADING SPRINGBOARD OPTIONS
     def load_springboard_options(self):
         ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            return
         # load all the files
         location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.UIKit.plist")
         value = get_plist_value(location, "UIAnimationDragCoefficient")
@@ -357,9 +406,27 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.ui.UIAnimSpeedLbl.setText("1 (Default)")
             self.ui.UIAnimSpeedSld.setValue(100)
-        location = os.path.join(ws, "/SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist")
+        location = os.path.join(ws, "SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist")
         value = get_plist_value(location, "LockScreenFootnote")
         self.ui.footnoteTxt.setText("" if value == None else str(value))
+
+        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist")
+        value = get_plist_value(location, "SBDontLockAfterCrash")
+        self.ui.disableLockRespringChk.setChecked(value if value else False)
+        value = get_plist_value(location, "SBDontDimOrLockOnAC")
+        self.ui.disableDimmingChk.setChecked(value if value else False)
+        value = get_plist_value(location, "SBHideLowPowerAlerts")
+        self.ui.disableBatteryAlertsChk.setChecked(value if value else False)
+        value = get_plist_value(location, "SBNeverBreadcrumb")
+        self.ui.disableCrumbChk.setChecked(value if value else False)
+
+        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.Accessibility.plist")
+        value = get_plist_value(location, "StartupSoundEnabled")
+        self.ui.enableShutdownSoundChk.setChecked(value if value else False)
+
+        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist")
+        value = get_plist_value(location, "DiscoverableMode")
+        self.ui.allowAirDropEveryoneChk.setChecked(value if value == "Everyone" else False)
 
 
     ## SETUP OPTIONS PAGE
