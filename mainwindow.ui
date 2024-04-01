@@ -529,6 +529,9 @@ QSlider::tick:horizontal {
             <property name="toolButtonStyle">
              <enum>Qt::ToolButtonTextBesideIcon</enum>
             </property>
+            <property name="arrowType">
+             <enum>Qt::NoArrow</enum>
+            </property>
             <property name="cls" stdset="0">
              <string>sidebarBtn</string>
             </property>
@@ -3750,6 +3753,20 @@ QComboBox QAbstractItemView::item:hover {
                   </widget>
                  </item>
                  <item>
+                  <widget class="QCheckBox" name="enableSupervisionTextChk">
+                   <property name="text">
+                    <string>Show Supervision Text on Lock Screen</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="enableWiFiDebuggerChk">
+                   <property name="text">
+                    <string>Show WiFi Debugger</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="QCheckBox" name="enableShutdownSoundChk">
                    <property name="text">
                     <string>Play Sound on Shutdown</string>
@@ -4185,13 +4202,6 @@ QComboBox QAbstractItemView::item:hover {
                   <widget class="QCheckBox" name="skipSetupChk">
                    <property name="text">
                     <string>Skip Setup (Recommended)</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QCheckBox" name="disableUpdatesChk">
-                   <property name="text">
-                    <string>Disable OTA Updates</string>
                    </property>
                   </widget>
                  </item>
