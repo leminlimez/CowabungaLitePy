@@ -53,3 +53,35 @@ class Version:
 class Tweak(Enum):
     SpringboardOptions = 'Springboard Options'
     SkipSetup = 'Setup Options'
+    InternalOptions = 'Internal Options'
+
+class FileLocation(Enum):
+    # Control Center
+    mute = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.control-center.MuteModule.plist"
+    focus = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.FocusUIModule.plist"
+    spoken = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.siri.SpokenNotificationsModule.plist"
+    module_config = "ControlCenter/HomeDomain/Library/ControlCenter/ModuleConfiguration.plist"
+    replay_kit_audio = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.replaykit.AudioConferenceControlCenterModule.plist"
+    replay_kit_video = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.replaykit.VideoConferenceControlCenterModule.plist"
+    
+    # Springboard Options
+    springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
+    footnote = "SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
+    wifi = "SpringboardOptions/SystemPreferencesDomain/SystemConfiguration/com.apple.wifi.plist"
+    uikit = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.UIKit.plist"
+    accessibility = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.Accessibility.plist"
+    wifi_debug = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileWiFi.debug.plist"
+    airdrop = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist"
+    
+    # Internal Options
+    global_prefs = "InternalOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
+    app_store = "InternalOptions/ManagedPreferencesDomain/mobile/com.apple.AppStore.plist"
+    backboardd = "InternalOptions/ManagedPreferencesDomain/mobile/com.apple.backboardd.plist"
+    core_motion = "InternalOptions/ManagedPreferencesDomain/mobile/com.apple.CoreMotion.plist"
+    pasteboard = "InternalOptions/HomeDomain/Library/Preferences/com.apple.Pasteboard.plist"
+    notes = "InternalOptions/ManagedPreferencesDomain/mobile/com.apple.mobilenotes.plist"
+    maps = "InternalOptions/AppDomain-com.apple.Maps/Library/Preferences/com.apple.Maps.plist"
+    weather = "InternalOptions/AppDomain-com.apple.weather/Library/Preferences/com.apple.weather.plist"
+    
+    # Setup Options
+    cloud_config = "SkipSetup/ConfigProfileDomain/Library/ConfigurationProfiles/CloudConfigurationDetails.plist"

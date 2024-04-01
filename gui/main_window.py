@@ -8,7 +8,7 @@ from pymobiledevice3.lockdown import create_using_usbmux
 
 from ui_mainwindow import Ui_CowabungaLite
 
-from devicemanagement.constants import Version, Tweak
+from devicemanagement.constants import Version, Tweak, FileLocation
 from devicemanagement.device_manager import DeviceManager
 
 from tools.locsim import mount_dev_disk, LocSimManager
@@ -92,6 +92,23 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.enableShutdownSoundChk.toggled.connect(self.on_enableShutdownSoundChk_clicked)
         self.ui.allowAirDropEveryoneChk.toggled.connect(self.on_allowAirDropEveryoneChk_clicked)
 
+        ## INTERNAL OPTIONS PAGE ACTIONS
+        self.ui.internalOptionsEnabledChk.toggled.connect(self.on_internalOptionsEnabledChk_toggled)
+        self.ui.buildVersionChk.toggled.connect(self.on_buildVersionChk_clicked)
+        self.ui.RTLChk.toggled.connect(self.on_RTLChk_clicked)
+        self.ui.metalHUDChk.toggled.connect(self.on_metalHUDChk_clicked)
+        self.ui.accessoryChk.toggled.connect(self.on_accessoryChk_clicked)
+        self.ui.iMessageChk.toggled.connect(self.on_iMessageChk_clicked)
+        self.ui.IDSChk.toggled.connect(self.on_IDSChk_clicked)
+        self.ui.VCChk.toggled.connect(self.on_VCChk_clicked)
+        self.ui.appStoreChk.toggled.connect(self.on_appStoreChk_clicked)
+        self.ui.notesChk.toggled.connect(self.on_notesChk_clicked)
+        self.ui.showTouchesChk.toggled.connect(self.on_showTouchesChk_clicked)
+        self.ui.hideRespringChk.toggled.connect(self.on_hideRespringChk_clicked)
+        self.ui.enableWakeVibrateChk.toggled.connect(self.on_enableWakeVibrateChk_clicked)
+        self.ui.pasteSoundChk.toggled.connect(self.on_pasteSoundChk_clicked)
+        self.ui.notifyPastesChk.toggled.connect(self.on_notifyPastesChk_clicked)
+
         ## SETUP OPTIONS PAGE
         self.ui.setupOptionsEnabledChk.toggled.connect(self.on_setupOptionsEnabledChk_toggled)
         self.ui.skipSetupChk.toggled.connect(self.on_skipSetupChk_clicked)
@@ -117,6 +134,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
             # TODO: Load Pages
             self.load_springboard_options()
+            self.load_internal_options()
             self.load_setup_options()
         
         # TODO: update enabled tweaks
@@ -143,8 +161,18 @@ class MainWindow(QtWidgets.QMainWindow):
         #self.ui.themesEnabledChk.setChecked()
         #self.ui.statusBarEnabledChk.setChecked()
         self.ui.springboardOptionsEnabledChk.setChecked(Tweak.SpringboardOptions in tweaks)
-        #self.ui.internalOptionsEnabledChk.setChecked()
+        self.ui.internalOptionsEnabledChk.setChecked(Tweak.InternalOptions in tweaks)
         self.ui.setupOptionsEnabledChk.setChecked(Tweak.SkipSetup in tweaks)
+
+    def set_key(self, key: str, checked: bool, loc: str):
+        ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            return
+        location = os.path.join(ws, loc)
+        if checked:
+            set_plist_value(location, key, checked)
+        else:
+            delete_plist_key(location, key)
 
 
     ## DEVICE BAR FUNCTIONS
@@ -337,7 +365,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.UIKit.plist")
+        location = os.path.join(ws, FileLocation.uikit)
         if speed != 1:
             set_plist_value(location, "UIAnimationDragCoefficient", speed)
         else:
@@ -347,42 +375,32 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, "SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist")
+        location = os.path.join(ws, FileLocation.footnote)
         if text != "":
             set_plist_value(location, "LockScreenFootnote", text)
         else:
             delete_plist_key(location, "LockScreenFootnote")
 
-    def set_sb_key(self, key: str, checked: bool, plist_loc: str = "springboard"):
-        ws = self.device_manager.data_singleton.current_workspace
-        if ws == None:
-            return
-        location = os.path.join(ws, f"SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.{plist_loc}.plist")
-        if checked:
-            set_plist_value(location, key, checked)
-        else:
-            delete_plist_key(location, key)
-
     def on_disableLockRespringChk_clicked(self, checked: bool):
-        self.set_sb_key("SBDontLockAfterCrash", checked)
+        self.set_key("SBDontLockAfterCrash", checked, FileLocation.springboard)
     def on_disableBatteryAlertsChk_clicked(self, checked: bool):
-        self.set_sb_key("SBHideLowPowerAlerts", checked)
+        self.set_key("SBHideLowPowerAlerts", checked, FileLocation.springboard)
     def on_disableDimmingChk_clicked(self, checked: bool):
-        self.set_sb_key("SBDontDimOrLockOnAC", checked)
+        self.set_key("SBDontDimOrLockOnAC", checked, FileLocation.springboard)
     def on_disableCrumbChk_clicked(self, checked: bool):
-        self.set_sb_key("SBNeverBreadcrumb", checked)
+        self.set_key("SBNeverBreadcrumb", checked, FileLocation.springboard)
     def on_enableSupervisionTextChk_clicked(self, checked: bool):
-        self.set_sb_key("SBShowSupervisionTextOnLockScreen", checked)
+        self.set_key("SBShowSupervisionTextOnLockScreen", checked, FileLocation.springboard)
     def on_enableWiFiDebuggerChk_clicked(self, checked: bool):
-        self.set_sb_key("WiFiManagerLoggingEnabled", checked, "MobileWiFi.debug")
+        self.set_key("WiFiManagerLoggingEnabled", checked, FileLocation.wifi_debug)
     def on_enableShutdownSoundChk_clicked(self, checked: bool):
-        self.set_sb_key("Accessibility", checked, "Accessibility")
+        self.set_sb_key("Accessibility", checked, FileLocation.accessibility)
 
     def on_allowAirDropEveryoneChk_clicked(self, checked: bool):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist")
+        location = os.path.join(ws, FileLocation.airdrop)
         if checked:
             set_plist_value(location, "DiscoverableMode", "Everyone")
         else:
@@ -395,7 +413,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if ws == None:
             return
         # load all the files
-        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.UIKit.plist")
+        location = os.path.join(ws, FileLocation.uikit)
         value = get_plist_value(location, "UIAnimationDragCoefficient")
         if value != None:
             speed_txt = "Default" if value == 1 else "Slow" if value > 1 else "Fast"
@@ -404,11 +422,11 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.ui.UIAnimSpeedLbl.setText("1 (Default)")
             self.ui.UIAnimSpeedSld.setValue(100)
-        location = os.path.join(ws, "SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist")
+        location = os.path.join(ws, FileLocation.footnote)
         value = get_plist_value(location, "LockScreenFootnote")
         self.ui.footnoteTxt.setText("" if value == None else str(value))
 
-        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist")
+        location = os.path.join(ws, FileLocation.springboard)
         value = get_plist_value(location, "SBDontLockAfterCrash")
         self.ui.disableLockRespringChk.setChecked(value if value else False)
         value = get_plist_value(location, "SBDontDimOrLockOnAC")
@@ -420,17 +438,102 @@ class MainWindow(QtWidgets.QMainWindow):
         value = get_plist_value(location, "SBShowSupervisionTextOnLockScreen")
         self.ui.enableSupervisionTextChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileWiFi.debug.plist")
+        location = os.path.join(ws, FileLocation.wifi_debug)
         value = get_plist_value(location, "WiFiManagerLoggingEnabled")
         self.ui.enableWiFiDebuggerChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.Accessibility.plist")
+        location = os.path.join(ws, FileLocation.accessibility)
         value = get_plist_value(location, "StartupSoundEnabled")
         self.ui.enableShutdownSoundChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist")
+        location = os.path.join(ws, FileLocation.airdrop)
         value = get_plist_value(location, "DiscoverableMode")
         self.ui.allowAirDropEveryoneChk.setChecked(value if value == "Everyone" else False)
+
+
+    ## INTERNAL OPTIONS PAGE
+    def on_internalOptionsEnabledChk_toggled(self, checked: bool):
+        self.ui.internalOptionsPageContent.setDisabled(not checked)
+        self.device_manager.data_singleton.set_tweak_enabled(tweak=Tweak.InternalOptions, enabled=checked)
+        self.update_enabled_tweaks()
+
+    def on_buildVersionChk_clicked(self, checked: bool):
+        self.set_key("UIStatusBarShowBuildVersion", checked, FileLocation.global_prefs)
+    def on_RTLChk_clicked(self, checked: bool):
+        self.set_key("NSForceRightToLeftWritingDirection", checked, FileLocation.global_prefs)
+    def on_metalHUDChk_clicked(self, checked: bool):
+        self.set_key("MetalForceHudEnabled", checked, FileLocation.global_prefs)
+    def on_accessoryChk_clicked(self, checked: bool):
+        self.set_key("AccessoryDeveloperEnabled", checked, FileLocation.global_prefs)
+    def on_iMessageChk_clicked(self, checked: bool):
+        self.set_key("iMessageDiagnosticsEnabled", checked, FileLocation.global_prefs)
+    def on_IDSChk_clicked(self, checked: bool):
+        self.set_key("IDSDiagnosticsEnabled", checked, FileLocation.global_prefs)
+    def on_VCChk_clicked(self, checked: bool):
+        self.set_key("VCDiagnosticsEnabled", checked, FileLocation.global_prefs)
+
+    def on_appStoreChk_clicked(self, checked: bool):
+        self.set_key("debugGestureEnabled", checked, FileLocation.app_store)
+    def on_notesChk_clicked(self, checked: bool):
+        self.set_key("DebugModeEnabled", checked, FileLocation.notes)
+
+    def on_showTouchesChk_clicked(self, checked: bool):
+        self.set_key("BKDigitizerVisualizeTouches", checked, FileLocation.backboardd)
+    def on_hideRespringChk_clicked(self, checked: bool):
+        self.set_key("BKHideAppleLogoOnLaunch", checked, FileLocation.backboardd)
+    def on_enableWakeVibrateChk_clicked(self, checked: bool):
+        self.set_key("EnableWakeGestureHaptic", checked, FileLocation.core_motion)
+    def on_pasteSoundChk_clicked(self, checked: bool):
+        self.set_key("PlaySoundOnPaste", checked, FileLocation.pasteboard)
+    def on_notifyPastesChk_clicked(self, checked: bool):
+        self.set_key("AnnounceAllPastes", checked, FileLocation.pasteboard)
+
+
+    ## LOADING INTERNAL OPTIONS
+    def load_internal_options(self):
+        ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            return
+        # load all the files
+        location = os.path.join(ws, FileLocation.global_prefs)
+        value = get_plist_value(location, "UIStatusBarShowBuildVersion")
+        self.ui.buildVersionChk.setChecked(value if value else False)
+        value = get_plist_value(location, "NSForceRightToLeftWritingDirection")
+        self.ui.RTLChk.setChecked(value if value else False)
+        value = get_plist_value(location, "MetalForceHudEnabled")
+        self.ui.metalHUDChk.setChecked(value if value else False)
+        value = get_plist_value(location, "AccessoryDeveloperEnabled")
+        self.ui.accessoryChk.setChecked(value if value else False)
+        value = get_plist_value(location, "iMessageDiagnosticsEnabled")
+        self.ui.iMessageChk.setChecked(value if value else False)
+        value = get_plist_value(location, "IDSDiagnosticsEnabled")
+        self.ui.IDSChk.setChecked(value if value else False)
+        value = get_plist_value(location, "VCDiagnosticsEnabled")
+        self.ui.VCChk.setChecked(value if value else False)
+
+        location = os.path.join(ws, FileLocation.app_store)
+        value = get_plist_value(location, "debugGestureEnabled")
+        self.ui.appStoreChk.setChecked(value if value else False)
+
+        location = os.path.join(ws, FileLocation.notes)
+        value = get_plist_value(location, "DebugModeEnabled")
+        self.ui.notesChk.setChecked(value if value else False)
+
+        location = os.path.join(ws, FileLocation.backboardd)
+        value = get_plist_value(location, "BKDigitizerVisualizeTouches")
+        self.ui.showTouchesChk.setChecked(value if value else False)
+        value = get_plist_value(location, "BKHideAppleLogoOnLaunch")
+        self.ui.hideRespringChk.setChecked(value if value else False)
+
+        location = os.path.join(ws, FileLocation.core_motion)
+        value = get_plist_value(location, "EnableWakeGestureHaptic")
+        self.ui.enableWakeVibrateChk.setChecked(value if value else False)
+
+        location = os.path.join(ws, FileLocation.pasteboard)
+        value = get_plist_value(location, "PlaySoundOnPaste")
+        self.ui.pasteSoundChk.setChecked(value if value else False)
+        value = get_plist_value(location, "AnnounceAllPastes")
+        self.ui.notifyPastesChk.setChecked(value if value else False)
 
 
     ## SETUP OPTIONS PAGE
@@ -443,7 +546,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, "SkipSetup/ConfigProfileDomain/Library/ConfigurationProfiles/CloudConfigurationDetails.plist")
+        location = os.path.join(ws, FileLocation.cloud_config)
         if checked:
             set_plist_value(location, "CloudConfigurationUIComplete", True)
             to_skip = [
@@ -494,20 +597,13 @@ class MainWindow(QtWidgets.QMainWindow):
             delete_plist_key(location, "SkipSetup")
         
     def on_enableSupervisionChk_clicked(self, checked: bool):
-        ws = self.device_manager.data_singleton.current_workspace
-        if ws == None:
-            return
-        location = os.path.join(ws, "SkipSetup/ConfigProfileDomain/Library/ConfigurationProfiles/CloudConfigurationDetails.plist")
-        if checked:
-            set_plist_value(location, "IsSupervised", True)
-        else:
-            delete_plist_key(location, "IsSupervised")
+        self.set_key("IsSupervised", checked, FileLocation.cloud_config)
 
     def on_organizationNameTxt_textEdited(self, text: str):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, "SkipSetup/ConfigProfileDomain/Library/ConfigurationProfiles/CloudConfigurationDetails.plist")
+        location = os.path.join(ws, FileLocation.cloud_config)
         if text != "":
             set_plist_value(location, "OrganizationName", text)
         else:
@@ -518,7 +614,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def load_setup_options(self):
         ws = self.device_manager.data_singleton.current_workspace
         # load all the files
-        location = os.path.join(ws, "SkipSetup/ConfigProfileDomain/Library/ConfigurationProfiles/CloudConfigurationDetails.plist")
+        location = os.path.join(ws, FileLocation.cloud_config)
         skip_setup = get_plist_value(location, "SkipSetup")
         is_supervised = get_plist_value(location, "IsSupervised")
         org_name = get_plist_value(location, "OrganizationName")
