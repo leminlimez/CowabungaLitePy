@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'mainwindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.2
+## Created by: Qt User Interface Compiler version 6.6.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -352,6 +352,7 @@ class Ui_CowabungaLite(object):
         self.themesPageBtn.setCheckable(True)
         self.themesPageBtn.setAutoExclusive(True)
         self.themesPageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.themesPageBtn.setArrowType(Qt.NoArrow)
 
         self.verticalLayout.addWidget(self.themesPageBtn)
 
@@ -2044,6 +2045,16 @@ class Ui_CowabungaLite(object):
 
         self._2.addWidget(self.disableCrumbChk)
 
+        self.enableSupervisionTextChk = QCheckBox(self.springboardOptionsPageContent)
+        self.enableSupervisionTextChk.setObjectName(u"enableSupervisionTextChk")
+
+        self._2.addWidget(self.enableSupervisionTextChk)
+
+        self.enableWiFiDebuggerChk = QCheckBox(self.springboardOptionsPageContent)
+        self.enableWiFiDebuggerChk.setObjectName(u"enableWiFiDebuggerChk")
+
+        self._2.addWidget(self.enableWiFiDebuggerChk)
+
         self.enableShutdownSoundChk = QCheckBox(self.springboardOptionsPageContent)
         self.enableShutdownSoundChk.setObjectName(u"enableShutdownSoundChk")
 
@@ -2280,11 +2291,6 @@ class Ui_CowabungaLite(object):
         self.skipSetupChk.setObjectName(u"skipSetupChk")
 
         self.verticalLayout_16.addWidget(self.skipSetupChk)
-
-        self.disableUpdatesChk = QCheckBox(self.setupOptionsPageContent)
-        self.disableUpdatesChk.setObjectName(u"disableUpdatesChk")
-
-        self.verticalLayout_16.addWidget(self.disableUpdatesChk)
 
         self.enableSupervisionChk = QCheckBox(self.setupOptionsPageContent)
         self.enableSupervisionChk.setObjectName(u"enableSupervisionChk")
@@ -2634,6 +2640,8 @@ class Ui_CowabungaLite(object):
         self.disableDimmingChk.setText(QCoreApplication.translate("CowabungaLite", u"Disable Screen Dimming While Charging", None))
         self.disableBatteryAlertsChk.setText(QCoreApplication.translate("CowabungaLite", u"Disable Low Battery Alerts", None))
         self.disableCrumbChk.setText(QCoreApplication.translate("CowabungaLite", u"Disable Breadcrumbs", None))
+        self.enableSupervisionTextChk.setText(QCoreApplication.translate("CowabungaLite", u"Show Supervision Text on Lock Screen", None))
+        self.enableWiFiDebuggerChk.setText(QCoreApplication.translate("CowabungaLite", u"Show WiFi Debugger", None))
         self.enableShutdownSoundChk.setText(QCoreApplication.translate("CowabungaLite", u"Play Sound on Shutdown", None))
         self.allowAirDropEveryoneChk.setText(QCoreApplication.translate("CowabungaLite", u"Permanently Allow Receiving AirDrop from Everyone", None))
         self.internalOptionsLbl.setText(QCoreApplication.translate("CowabungaLite", u"Internal Options", None))
@@ -2655,7 +2663,6 @@ class Ui_CowabungaLite(object):
         self.setupOptionsLbl.setText(QCoreApplication.translate("CowabungaLite", u"Setup Options", None))
         self.setupOptionsEnabledChk.setText(QCoreApplication.translate("CowabungaLite", u"Modify", None))
         self.skipSetupChk.setText(QCoreApplication.translate("CowabungaLite", u"Skip Setup (Recommended)", None))
-        self.disableUpdatesChk.setText(QCoreApplication.translate("CowabungaLite", u"Disable OTA Updates", None))
         self.enableSupervisionChk.setText(QCoreApplication.translate("CowabungaLite", u"Enable Supervision", None))
         self.organizationNameTxt.setPlaceholderText(QCoreApplication.translate("CowabungaLite", u"Organization Name", None))
         self.statusBarLbl_5.setText(QCoreApplication.translate("CowabungaLite", u"Apply", None))

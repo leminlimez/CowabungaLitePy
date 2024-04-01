@@ -87,6 +87,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.disableDimmingChk.toggled.connect(self.on_disableDimmingChk_clicked)
         self.ui.disableBatteryAlertsChk.toggled.connect(self.on_disableBatteryAlertsChk_clicked)
         self.ui.disableCrumbChk.toggled.connect(self.on_disableCrumbChk_clicked)
+        self.ui.enableSupervisionTextChk.toggled.connect(self.on_enableSupervisionTextChk_clicked)
+        self.ui.enableWiFiDebuggerChk.toggled.connect(self.on_enableWiFiDebuggerChk_clicked)
         self.ui.enableShutdownSoundChk.toggled.connect(self.on_enableShutdownSoundChk_clicked)
         self.ui.allowAirDropEveryoneChk.toggled.connect(self.on_allowAirDropEveryoneChk_clicked)
 
@@ -351,11 +353,11 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             delete_plist_key(location, "LockScreenFootnote")
 
-    def set_sb_key(self, key: str, checked: bool):
+    def set_sb_key(self, key: str, checked: bool, plist_loc: str = "springboard"):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist")
+        location = os.path.join(ws, f"SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.{plist_loc}.plist")
         if checked:
             set_plist_value(location, key, checked)
         else:
@@ -369,16 +371,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.set_sb_key("SBDontDimOrLockOnAC", checked)
     def on_disableCrumbChk_clicked(self, checked: bool):
         self.set_sb_key("SBNeverBreadcrumb", checked)
-
+    def on_enableSupervisionTextChk_clicked(self, checked: bool):
+        self.set_sb_key("SBShowSupervisionTextOnLockScreen", checked)
+    def on_enableWiFiDebuggerChk_clicked(self, checked: bool):
+        self.set_sb_key("WiFiManagerLoggingEnabled", checked, "MobileWiFi.debug")
     def on_enableShutdownSoundChk_clicked(self, checked: bool):
-        ws = self.device_manager.data_singleton.current_workspace
-        if ws == None:
-            return
-        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.Accessibility.plist")
-        if checked:
-            set_plist_value(location, "StartupSoundEnabled", checked)
-        else:
-            delete_plist_key(location, "StartupSoundEnabled")
+        self.set_sb_key("Accessibility", checked, "Accessibility")
 
     def on_allowAirDropEveryoneChk_clicked(self, checked: bool):
         ws = self.device_manager.data_singleton.current_workspace
@@ -419,6 +417,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.disableBatteryAlertsChk.setChecked(value if value else False)
         value = get_plist_value(location, "SBNeverBreadcrumb")
         self.ui.disableCrumbChk.setChecked(value if value else False)
+        value = get_plist_value(location, "SBShowSupervisionTextOnLockScreen")
+        self.ui.enableSupervisionTextChk.setChecked(value if value else False)
+
+        location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileWiFi.debug.plist")
+        value = get_plist_value(location, "WiFiManagerLoggingEnabled")
+        self.ui.enableWiFiDebuggerChk.setChecked(value if value else False)
 
         location = os.path.join(ws, "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.Accessibility.plist")
         value = get_plist_value(location, "StartupSoundEnabled")
