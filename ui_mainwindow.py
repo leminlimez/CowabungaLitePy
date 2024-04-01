@@ -2025,6 +2025,16 @@ class Ui_CowabungaLite(object):
 
         self._2.addWidget(self.footnoteTxt)
 
+        self.line_6 = QFrame(self.springboardOptionsPageContent)
+        self.line_6.setObjectName(u"line_6")
+        self.line_6.setStyleSheet(u"QFrame {\n"
+"	color: #414141;\n"
+"}")
+        self.line_6.setFrameShadow(QFrame.Plain)
+        self.line_6.setFrameShape(QFrame.HLine)
+
+        self._2.addWidget(self.line_6)
+
         self.disableLockRespringChk = QCheckBox(self.springboardOptionsPageContent)
         self.disableLockRespringChk.setObjectName(u"disableLockRespringChk")
 
@@ -2049,6 +2059,16 @@ class Ui_CowabungaLite(object):
         self.enableSupervisionTextChk.setObjectName(u"enableSupervisionTextChk")
 
         self._2.addWidget(self.enableSupervisionTextChk)
+
+        self.line_16 = QFrame(self.springboardOptionsPageContent)
+        self.line_16.setObjectName(u"line_16")
+        self.line_16.setStyleSheet(u"QFrame {\n"
+"	color: #414141;\n"
+"}")
+        self.line_16.setFrameShadow(QFrame.Plain)
+        self.line_16.setFrameShape(QFrame.HLine)
+
+        self._2.addWidget(self.line_16)
 
         self.enableWiFiDebuggerChk = QCheckBox(self.springboardOptionsPageContent)
         self.enableWiFiDebuggerChk.setObjectName(u"enableWiFiDebuggerChk")
@@ -2151,6 +2171,17 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_13.addWidget(self.RTLChk)
 
+        self.div = QFrame(self.internalOptionsPageContent)
+        self.div.setObjectName(u"div")
+        self.div.setEnabled(False)
+        self.div.setStyleSheet(u"QFrame {\n"
+"	color: #414141;\n"
+"}")
+        self.div.setFrameShadow(QFrame.Plain)
+        self.div.setFrameShape(QFrame.HLine)
+
+        self.verticalLayout_13.addWidget(self.div)
+
         self.metalHUDChk = QCheckBox(self.internalOptionsPageContent)
         self.metalHUDChk.setObjectName(u"metalHUDChk")
 
@@ -2176,6 +2207,16 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_13.addWidget(self.VCChk)
 
+        self.line_17 = QFrame(self.internalOptionsPageContent)
+        self.line_17.setObjectName(u"line_17")
+        self.line_17.setStyleSheet(u"QFrame {\n"
+"	color: #414141;\n"
+"}")
+        self.line_17.setFrameShadow(QFrame.Plain)
+        self.line_17.setFrameShape(QFrame.HLine)
+
+        self.verticalLayout_13.addWidget(self.line_17)
+
         self.appStoreChk = QCheckBox(self.internalOptionsPageContent)
         self.appStoreChk.setObjectName(u"appStoreChk")
 
@@ -2185,6 +2226,16 @@ class Ui_CowabungaLite(object):
         self.notesChk.setObjectName(u"notesChk")
 
         self.verticalLayout_13.addWidget(self.notesChk)
+
+        self.line_18 = QFrame(self.internalOptionsPageContent)
+        self.line_18.setObjectName(u"line_18")
+        self.line_18.setStyleSheet(u"QFrame {\n"
+"	color: #414141;\n"
+"}")
+        self.line_18.setFrameShadow(QFrame.Plain)
+        self.line_18.setFrameShape(QFrame.HLine)
+
+        self.verticalLayout_13.addWidget(self.line_18)
 
         self.showTouchesChk = QCheckBox(self.internalOptionsPageContent)
         self.showTouchesChk.setObjectName(u"showTouchesChk")
@@ -2200,6 +2251,16 @@ class Ui_CowabungaLite(object):
         self.enableWakeVibrateChk.setObjectName(u"enableWakeVibrateChk")
 
         self.verticalLayout_13.addWidget(self.enableWakeVibrateChk)
+
+        self.line_19 = QFrame(self.internalOptionsPageContent)
+        self.line_19.setObjectName(u"line_19")
+        self.line_19.setStyleSheet(u"QFrame {\n"
+"	color: #414141;\n"
+"}")
+        self.line_19.setFrameShadow(QFrame.Plain)
+        self.line_19.setFrameShape(QFrame.HLine)
+
+        self.verticalLayout_13.addWidget(self.line_19)
 
         self.pasteSoundChk = QCheckBox(self.internalOptionsPageContent)
         self.pasteSoundChk.setObjectName(u"pasteSoundChk")

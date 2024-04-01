@@ -3725,6 +3725,21 @@ QComboBox QAbstractItemView::item:hover {
                   </widget>
                  </item>
                  <item>
+                  <widget class="Line" name="line_6">
+                   <property name="styleSheet">
+                    <string notr="true">QFrame {
+	color: #414141;
+}</string>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Plain</enum>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="QCheckBox" name="disableLockRespringChk">
                    <property name="text">
                     <string>Disable Lock After Respring</string>
@@ -3756,6 +3771,21 @@ QComboBox QAbstractItemView::item:hover {
                   <widget class="QCheckBox" name="enableSupervisionTextChk">
                    <property name="text">
                     <string>Show Supervision Text on Lock Screen</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="Line" name="line_16">
+                   <property name="styleSheet">
+                    <string notr="true">QFrame {
+	color: #414141;
+}</string>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Plain</enum>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
                    </property>
                   </widget>
                  </item>
@@ -3955,6 +3985,24 @@ QComboBox QAbstractItemView::item:hover {
                   </widget>
                  </item>
                  <item>
+                  <widget class="Line" name="div">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame {
+	color: #414141;
+}</string>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Plain</enum>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="QCheckBox" name="metalHUDChk">
                    <property name="text">
                     <string>Enable Metal HUD Debug</string>
@@ -3990,6 +4038,21 @@ QComboBox QAbstractItemView::item:hover {
                   </widget>
                  </item>
                  <item>
+                  <widget class="Line" name="line_17">
+                   <property name="styleSheet">
+                    <string notr="true">QFrame {
+	color: #414141;
+}</string>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Plain</enum>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="QCheckBox" name="appStoreChk">
                    <property name="text">
                     <string>Enable App Store Debug Gesture</string>
@@ -4000,6 +4063,21 @@ QComboBox QAbstractItemView::item:hover {
                   <widget class="QCheckBox" name="notesChk">
                    <property name="text">
                     <string>Enable Notes Debug Mode</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="Line" name="line_18">
+                   <property name="styleSheet">
+                    <string notr="true">QFrame {
+	color: #414141;
+}</string>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Plain</enum>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
                    </property>
                   </widget>
                  </item>
@@ -4021,6 +4099,21 @@ QComboBox QAbstractItemView::item:hover {
                   <widget class="QCheckBox" name="enableWakeVibrateChk">
                    <property name="text">
                     <string>Vibrate on Raise-to-Wake</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="Line" name="line_19">
+                   <property name="styleSheet">
+                    <string notr="true">QFrame {
+	color: #414141;
+}</string>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Plain</enum>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
                    </property>
                   </widget>
                  </item>
