@@ -3,7 +3,7 @@ import plistlib
 def get_plist_value(file: str, key: str):
     with open(file, 'rb') as in_fp:
         plist = plistlib.load(in_fp)
-    return plist[key]
+    return plist[key] if key in plist else None
 
 def set_plist_value(file: str, key: str, value):
     with open(file, 'rb') as in_fp:

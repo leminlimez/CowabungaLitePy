@@ -115,7 +115,7 @@ class DeviceManager:
         # Copy enabled tweak files
         for tweak in self.data_singleton.enabled_tweaks:
             folder_path = Path(ws).joinpath(tweak.name)
-            copytree(src=folder_path, dst=enabled_tweaks_dir)
+            copytree(src=folder_path, dst=enabled_tweaks_dir, dirs_exist_ok=True)
 
         # Generate backup
         update_label("Generating backup...")
