@@ -12,6 +12,7 @@ from devicemanagement.constants import Version, Tweak, FileLocation
 from devicemanagement.device_manager import DeviceManager
 
 from tools.locsim import mount_dev_disk, LocSimManager
+from tools.status_bar.status_manager import StatusSetter
 
 from utils.plist_manager import get_plist_value, set_plist_value, delete_plist_key
 
@@ -79,6 +80,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setLocationBtn.clicked.connect(self.on_setLocationBtn_clicked)
         self.ui.resetLocationBtn.clicked.connect(self.on_resetLocationBtn_clicked)
 
+        ## STATUS BAR PAGE ACTIONS
+        self.ui.statusBarEnabledChk.toggled.connect(self.on_statusBarEnabledChk_toggled)
+        self.ui.pCarrierChk.toggled.connect(self.on_pCarrierChk_clicked)
+        self.ui.pCarrierTxt.textEdited.connect(self.on_pCarrierTxt_textEdited)
+
         ## SPRINGBOARD OPTIONS PAGE ACTIONS
         self.ui.springboardOptionsEnabledChk.toggled.connect(self.on_springboardOptionsEnabledChk_toggled)
         self.ui.UIAnimSpeedSld.sliderMoved.connect(self.on_UIAnimSpeedSld_sliderMoved)
@@ -133,6 +139,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.location_loading = False
 
             # TODO: Load Pages
+            self.load_status_bar()
             self.load_springboard_options()
             self.load_internal_options()
             self.load_setup_options()
@@ -159,7 +166,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.enabledTweaksLbl.setText(label_txt)
 
         #self.ui.themesEnabledChk.setChecked()
-        #self.ui.statusBarEnabledChk.setChecked()
+        self.ui.statusBarEnabledChk.setChecked(Tweak.StatusBar in tweaks)
         self.ui.springboardOptionsEnabledChk.setChecked(Tweak.SpringboardOptions in tweaks)
         self.ui.internalOptionsEnabledChk.setChecked(Tweak.InternalOptions in tweaks)
         self.ui.setupOptionsEnabledChk.setChecked(Tweak.SkipSetup in tweaks)
@@ -349,6 +356,36 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_resetLocationBtn_clicked(self):
         if self.locsim_manager != None:
             self.locsim_manager.reset()
+
+
+    ## STATUS BAR PAGE
+    def on_statusBarEnabledChk_toggled(self, checked: bool):
+        self.ui.statusBarPageContent.setDisabled(not checked)
+        self.device_manager.data_singleton.set_tweak_enabled(tweak=Tweak.StatusBar, enabled=checked)
+        self.update_enabled_tweaks()
+
+    def on_pCarrierChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_carrier_override(str(self.ui.pCarrierTxt.text()))
+            else:
+                self.status_manager.unset_carrier_override()
+        
+    def on_pCarrierTxt_textEdited(self, text: str):
+        if self.status_manager != None:
+            if self.ui.pCarrierChk.checkState():
+                self.status_manager.set_carrier_override(text)
+
+        
+    ## LOADING STATUS BAR
+    def load_status_bar(self):
+        ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            return
+        self.status_manager = StatusSetter(self.device_manager.get_current_device_version(), ws)
+        # Load carrier settings
+        self.ui.pCarrierChk.setEnabled(self.status_manager.is_carrier_overridden())
+        self.ui.pCarrierTxt.setText(self.status_manager.get_carrier_override())
         
     
     ## SPRINGBOARD OPTIONS PAGE

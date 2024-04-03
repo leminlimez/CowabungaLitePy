@@ -51,9 +51,10 @@ class Version:
         return self.compare_to(other) == 0
     
 class Tweak(Enum):
+    StatusBar = 'Status Bar'
     SpringboardOptions = 'Springboard Options'
-    SkipSetup = 'Setup Options'
     InternalOptions = 'Internal Options'
+    SkipSetup = 'Setup Options'
 
 class FileLocation(Enum):
     # Control Center
@@ -63,6 +64,9 @@ class FileLocation(Enum):
     module_config = "ControlCenter/HomeDomain/Library/ControlCenter/ModuleConfiguration.plist"
     replay_kit_audio = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.replaykit.AudioConferenceControlCenterModule.plist"
     replay_kit_video = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.replaykit.VideoConferenceControlCenterModule.plist"
+
+    # Status Bar
+    status_bar = "StatusBar/HomeDomain/Library/SpringBoard/statusBarOverrides"
     
     # Springboard Options
     springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
