@@ -171,11 +171,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.internalOptionsEnabledChk.setChecked(Tweak.InternalOptions in tweaks)
         self.ui.setupOptionsEnabledChk.setChecked(Tweak.SkipSetup in tweaks)
 
-    def set_key(self, key: str, checked: bool, loc: str):
+    def set_key(self, key: str, checked: bool, loc: FileLocation):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, loc)
+        location = os.path.join(ws, loc.value)
         if checked:
             set_plist_value(location, key, checked)
         else:
@@ -384,7 +384,7 @@ class MainWindow(QtWidgets.QMainWindow):
             return
         self.status_manager = StatusSetter(self.device_manager.get_current_device_version(), ws)
         # Load carrier settings
-        self.ui.pCarrierChk.setEnabled(self.status_manager.is_carrier_overridden())
+        self.ui.pCarrierChk.setChecked(self.status_manager.is_carrier_overridden())
         self.ui.pCarrierTxt.setText(self.status_manager.get_carrier_override())
         
     
@@ -402,7 +402,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, FileLocation.uikit)
+        location = os.path.join(ws, FileLocation.uikit.value)
         if speed != 1:
             set_plist_value(location, "UIAnimationDragCoefficient", speed)
         else:
@@ -412,7 +412,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, FileLocation.footnote)
+        location = os.path.join(ws, FileLocation.footnote.value)
         if text != "":
             set_plist_value(location, "LockScreenFootnote", text)
         else:
@@ -437,7 +437,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, FileLocation.airdrop)
+        location = os.path.join(ws, FileLocation.airdrop.value)
         if checked:
             set_plist_value(location, "DiscoverableMode", "Everyone")
         else:
@@ -450,7 +450,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if ws == None:
             return
         # load all the files
-        location = os.path.join(ws, FileLocation.uikit)
+        location = os.path.join(ws, FileLocation.uikit.value)
         value = get_plist_value(location, "UIAnimationDragCoefficient")
         if value != None:
             speed_txt = "Default" if value == 1 else "Slow" if value > 1 else "Fast"
@@ -459,11 +459,11 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.ui.UIAnimSpeedLbl.setText("1 (Default)")
             self.ui.UIAnimSpeedSld.setValue(100)
-        location = os.path.join(ws, FileLocation.footnote)
+        location = os.path.join(ws, FileLocation.footnote.value)
         value = get_plist_value(location, "LockScreenFootnote")
         self.ui.footnoteTxt.setText("" if value == None else str(value))
 
-        location = os.path.join(ws, FileLocation.springboard)
+        location = os.path.join(ws, FileLocation.springboard.value)
         value = get_plist_value(location, "SBDontLockAfterCrash")
         self.ui.disableLockRespringChk.setChecked(value if value else False)
         value = get_plist_value(location, "SBDontDimOrLockOnAC")
@@ -475,15 +475,15 @@ class MainWindow(QtWidgets.QMainWindow):
         value = get_plist_value(location, "SBShowSupervisionTextOnLockScreen")
         self.ui.enableSupervisionTextChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.wifi_debug)
+        location = os.path.join(ws, FileLocation.wifi_debug.value)
         value = get_plist_value(location, "WiFiManagerLoggingEnabled")
         self.ui.enableWiFiDebuggerChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.accessibility)
+        location = os.path.join(ws, FileLocation.accessibility.value)
         value = get_plist_value(location, "StartupSoundEnabled")
         self.ui.enableShutdownSoundChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.airdrop)
+        location = os.path.join(ws, FileLocation.airdrop.value)
         value = get_plist_value(location, "DiscoverableMode")
         self.ui.allowAirDropEveryoneChk.setChecked(value if value == "Everyone" else False)
 
@@ -532,7 +532,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if ws == None:
             return
         # load all the files
-        location = os.path.join(ws, FileLocation.global_prefs)
+        location = os.path.join(ws, FileLocation.global_prefs.value)
         value = get_plist_value(location, "UIStatusBarShowBuildVersion")
         self.ui.buildVersionChk.setChecked(value if value else False)
         value = get_plist_value(location, "NSForceRightToLeftWritingDirection")
@@ -548,25 +548,25 @@ class MainWindow(QtWidgets.QMainWindow):
         value = get_plist_value(location, "VCDiagnosticsEnabled")
         self.ui.VCChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.app_store)
+        location = os.path.join(ws, FileLocation.app_store.value)
         value = get_plist_value(location, "debugGestureEnabled")
         self.ui.appStoreChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.notes)
+        location = os.path.join(ws, FileLocation.notes.value)
         value = get_plist_value(location, "DebugModeEnabled")
         self.ui.notesChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.backboardd)
+        location = os.path.join(ws, FileLocation.backboardd.value)
         value = get_plist_value(location, "BKDigitizerVisualizeTouches")
         self.ui.showTouchesChk.setChecked(value if value else False)
         value = get_plist_value(location, "BKHideAppleLogoOnLaunch")
         self.ui.hideRespringChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.core_motion)
+        location = os.path.join(ws, FileLocation.core_motion.value)
         value = get_plist_value(location, "EnableWakeGestureHaptic")
         self.ui.enableWakeVibrateChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.pasteboard)
+        location = os.path.join(ws, FileLocation.pasteboard.value)
         value = get_plist_value(location, "PlaySoundOnPaste")
         self.ui.pasteSoundChk.setChecked(value if value else False)
         value = get_plist_value(location, "AnnounceAllPastes")
@@ -583,7 +583,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, FileLocation.cloud_config)
+        location = os.path.join(ws, FileLocation.cloud_config.value)
         if checked:
             set_plist_value(location, "CloudConfigurationUIComplete", True)
             to_skip = [
@@ -640,7 +640,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, FileLocation.cloud_config)
+        location = os.path.join(ws, FileLocation.cloud_config.value)
         if text != "":
             set_plist_value(location, "OrganizationName", text)
         else:
@@ -651,7 +651,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def load_setup_options(self):
         ws = self.device_manager.data_singleton.current_workspace
         # load all the files
-        location = os.path.join(ws, FileLocation.cloud_config)
+        location = os.path.join(ws, FileLocation.cloud_config.value)
         skip_setup = get_plist_value(location, "SkipSetup")
         is_supervised = get_plist_value(location, "IsSupervised")
         org_name = get_plist_value(location, "OrganizationName")

@@ -6,7 +6,6 @@ The Python rewrite of Cowabunga Lite.
 Requirements:
 - PySide6
 - pymobiledevice3
-- cstruct
 
 To compile `mainwindow.ui` for Python, run the following command:
 `pyside6-uic mainwindow.ui -o ui_mainwindow.py`
