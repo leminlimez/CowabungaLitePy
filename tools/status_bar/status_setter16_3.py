@@ -115,7 +115,7 @@ class Setter:
         self.ws = workspace
 
     def apply_changes(self, overrides: StatusBarOverrideData):
-        path = os.join(self.ws, FileLocation.status_bar.value)
+        path = os.path.join(self.ws, FileLocation.status_bar.value)
         try:
             with open(path, "wb") as out_file:
                 out_file.write(overrides)

@@ -1,3 +1,5 @@
+from ctypes import sizeof, c_char
+
 import tools.status_bar.status_setter16_3 as status_setter16_3
 from devicemanagement.constants import Version
 
@@ -13,13 +15,13 @@ class StatusSetter:
     
     def get_carrier_override(self) -> str:
         overrides = self.setter.get_overrides()
-        return str(overrides.values.serviceString)
+        return overrides.values.serviceString.decode()
     
     def set_carrier_override(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideServiceString = 1
-        overrides.values.serviceString = text
-        overrides.values.serviceCrossfadeString = text
+        overrides.values.serviceString = text.encode()
+        overrides.values.serviceCrossfadeString = text.encode()
         self.setter.apply_changes(overrides)
 
     def unset_carrier(self) -> None:
