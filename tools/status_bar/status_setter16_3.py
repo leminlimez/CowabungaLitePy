@@ -162,6 +162,7 @@ class Setter:
     
     def __init__(self, workspace: str):
         self.ws = workspace
+        self.current_overrides = None
 
     def apply_changes(self, overrides: StatusBarOverrideData):
         path = os.path.join(self.ws, FileLocation.status_bar.value)
@@ -172,10 +173,13 @@ class Setter:
                 padding = create_string_buffer(padding_size)
                 padding.raw = b'\0' * padding_size
                 out_file.write(padding)
+            self.current_overrides = None
         except IOError:
             print(f"Failed to open file: {path}")
 
     def get_overrides(self) -> StatusBarOverrideData:
+        if self.current_overrides != None:
+            return self.current_overrides
         path = os.path.join(self.ws, FileLocation.status_bar.value)
         overrides = StatusBarOverrideData()
         if os.path.exists(path):
