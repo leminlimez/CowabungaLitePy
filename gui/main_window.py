@@ -129,6 +129,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.pCarrierTxt.textEdited.connect(self.on_pCarrierTxt_textEdited)
         self.ui.pBadgeChk.toggled.connect(self.on_pBadgeChk_clicked)
         self.ui.pBadgeTxt.textEdited.connect(self.on_pBadgeTxt_textEdited)
+        self.ui.pTypeChk.toggled.connect(self.on_pTypeChk_clicked)
+        self.ui.pTypeDrp.activated.connect(self.on_pTypeDrp_activated)
 
 
     ## GENERAL INTERFACE FUNCTIONS
@@ -400,6 +402,16 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.status_manager != None:
             if self.ui.pBadgeChk.isChecked():
                 self.status_manager.set_primary_service_badge(text)
+    def on_pTypeChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_data_network_type(self.ui.pTypeDrp.currentIndex())
+            else:
+                self.status_manager.unset_data_network_type()
+    def on_pTypeDrp_activated(self, index: int):
+        if self.status_manager != None:
+            if self.ui.pTypeChk.isChecked():
+                self.status_manager.set_data_network_type(self.ui.pTypeDrp.currentIndex())
 
         
     ## LOADING STATUS BAR
@@ -420,6 +432,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.pCarrierTxt.setText(self.status_manager.get_carrier_override())
         self.ui.pBadgeChk.setChecked(self.status_manager.is_primary_service_badge_overridden())
         self.ui.pBadgeTxt.setText(self.status_manager.get_primary_service_badge_override())
+        self.ui.pTypeChk.setChecked(self.status_manager.is_data_network_type_overridden())
+        self.ui.pTypeDrp.setCurrentIndex(self.status_manager.get_data_network_type_override())
         
     
     ## SPRINGBOARD OPTIONS PAGE

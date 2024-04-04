@@ -60,3 +60,20 @@ class StatusSetter:
         overrides = self.setter.get_overrides()
         overrides.overridePrimaryServiceBadgeString = 0
         self.setter.apply_changes(overrides)
+
+    # DATA NETWORK TYPE
+    def is_data_network_type_overridden(self) -> bool:
+        overrides = self.setter.get_overrides()
+        return overrides.overrideDataNetworkType == 1
+    def get_data_network_type_override(self) -> int:
+        overrides = self.setter.get_overrides()
+        return overrides.values.dataNetworkType
+    def set_data_network_type(self, id: int) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideDataNetworkType = 1
+        overrides.values.dataNetworkType = id
+        self.setter.apply_changes(overrides)
+    def unset_data_network_type(self) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideDataNetworkType = 0
+        self.setter.apply_changes(overrides)
