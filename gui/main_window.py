@@ -131,6 +131,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.pBadgeTxt.textEdited.connect(self.on_pBadgeTxt_textEdited)
         self.ui.pTypeChk.toggled.connect(self.on_pTypeChk_clicked)
         self.ui.pTypeDrp.activated.connect(self.on_pTypeDrp_activated)
+        self.ui.pStrengthChk.toggled.connect(self.on_pStrengthChk_clicked)
+        self.ui.pStrengthSld.sliderMoved.connect(self.on_pStrengthSld_sliderMoved)
 
 
     ## GENERAL INTERFACE FUNCTIONS
@@ -412,6 +414,17 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.status_manager != None:
             if self.ui.pTypeChk.isChecked():
                 self.status_manager.set_data_network_type(self.ui.pTypeDrp.currentIndex())
+    def on_pStrengthChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_gsm_signal_strength_bars(self.ui.pStrengthSld.value())
+            else:
+                self.status_manager.unset_gsm_signal_strength_bars()
+    def on_pStrengthSld_sliderMoved(self, pos: int):
+        self.ui.pStrengthLbl.setText(str(pos) + " Bar" if pos == 1 else " Bars")
+        if self.status_manager != None:
+            if self.ui.pStrengthChk.isChecked():
+                self.status_manager.set_gsm_signal_strength_bars(pos)
 
         
     ## LOADING STATUS BAR
@@ -420,6 +433,8 @@ class MainWindow(QtWidgets.QMainWindow):
         if ws == None:
             return
         self.status_manager = StatusSetter(self.device_manager.get_current_device_version(), ws)
+        if self.status_manager == None:
+            return
         # Load primary carrier settings
         if self.status_manager.is_cellular_service_overridden():
             if self.status_manager.get_cellular_service_override():
@@ -434,6 +449,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.pBadgeTxt.setText(self.status_manager.get_primary_service_badge_override())
         self.ui.pTypeChk.setChecked(self.status_manager.is_data_network_type_overridden())
         self.ui.pTypeDrp.setCurrentIndex(self.status_manager.get_data_network_type_override())
+        self.ui.pStrengthChk.setChecked(self.status_manager.is_gsm_signal_strength_bars_overridden())
+        pos: int = self.status_manager.get_gsm_signal_strength_bars_override()
+        self.ui.pStrengthSld.setValue(pos)
+        self.ui.pStrengthLbl.setText(str(pos) + " Bar" if pos == 1 else " Bars")
         
     
     ## SPRINGBOARD OPTIONS PAGE

@@ -77,3 +77,23 @@ class StatusSetter:
         overrides = self.setter.get_overrides()
         overrides.overrideDataNetworkType = 0
         self.setter.apply_changes(overrides)
+
+    # GSM SIGNAL BARS
+    def is_gsm_signal_strength_bars_overridden(self) -> bool:
+        overrides = self.setter.get_overrides()
+        return overrides.overrideGSMSignalStrengthBars == 1
+    def get_gsm_signal_strength_bars_override(self) -> int:
+        overrides = self.setter.get_overrides()
+        return overrides.values.GSMSignalStrengthBars
+    def set_gsm_signal_strength_bars(self, id: int) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideItemIsEnabled[self.setter.StatusBarItem.CellularSignalStrengthStatusBarItem.value] = 1
+        overrides.values.itemIsEnabled[self.setter.StatusBarItem.CellularSignalStrengthStatusBarItem.value] = 1
+        overrides.overrideGSMSignalStrengthBars = 1
+        overrides.values.GSMSignalStrengthBars = id
+        self.setter.apply_changes(overrides)
+    def unset_gsm_signal_strength_bars(self) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideItemIsEnabled[self.setter.StatusBarItem.CellularSignalStrengthStatusBarItem.value] = 0
+        overrides.overrideGSMSignalStrengthBars = 0
+        self.setter.apply_changes(overrides)
