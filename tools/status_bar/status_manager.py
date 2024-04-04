@@ -43,3 +43,20 @@ class StatusSetter:
         overrides = self.setter.get_overrides()
         overrides.overrideServiceString = 0
         self.setter.apply_changes(overrides)
+
+    # SERVICE BADGE
+    def is_primary_service_badge_overridden(self) -> bool:
+        overrides = self.setter.get_overrides()
+        return overrides.overridePrimaryServiceBadgeString == 1
+    def get_primary_service_badge_override(self) -> str:
+        overrides = self.setter.get_overrides()
+        return overrides.values.primaryServiceBadgeString.decode()
+    def set_primary_service_badge(self, text: str) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overridePrimaryServiceBadgeString = 1
+        overrides.values.primaryServiceBadgeString = text.encode()
+        self.setter.apply_changes(overrides)
+    def unset_primary_service_badge(self) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overridePrimaryServiceBadgeString = 0
+        self.setter.apply_changes(overrides)
