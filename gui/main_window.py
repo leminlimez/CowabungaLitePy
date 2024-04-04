@@ -80,11 +80,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setLocationBtn.clicked.connect(self.on_setLocationBtn_clicked)
         self.ui.resetLocationBtn.clicked.connect(self.on_resetLocationBtn_clicked)
 
-        ## STATUS BAR PAGE ACTIONS
-        self.ui.statusBarEnabledChk.toggled.connect(self.on_statusBarEnabledChk_toggled)
-        self.ui.pCarrierChk.toggled.connect(self.on_pCarrierChk_clicked)
-        self.ui.pCarrierTxt.textEdited.connect(self.on_pCarrierTxt_textEdited)
-
         ## SPRINGBOARD OPTIONS PAGE ACTIONS
         self.ui.springboardOptionsEnabledChk.toggled.connect(self.on_springboardOptionsEnabledChk_toggled)
         self.ui.UIAnimSpeedSld.sliderMoved.connect(self.on_UIAnimSpeedSld_sliderMoved)
@@ -123,6 +118,15 @@ class MainWindow(QtWidgets.QMainWindow):
 
         ## APPLY PAGE ACTIONS
         self.ui.applyTweaksBtn.clicked.connect(self.on_applyPageBtn_clicked)
+
+        ## STATUS BAR PAGE ACTIONS
+        self.ui.statusBarEnabledChk.toggled.connect(self.on_statusBarEnabledChk_toggled)
+        # PRIMARY CARRIER
+        self.ui.pDefaultRdo.clicked.connect(self.on_pDefaultRdo_clicked)
+        self.ui.pShowRdo.clicked.connect(self.on_pShowRdo_clicked)
+        self.ui.pHideRdo.clicked.connect(self.on_pHideRdo_clicked)
+        self.ui.pCarrierChk.toggled.connect(self.on_pCarrierChk_clicked)
+        self.ui.pCarrierTxt.textEdited.connect(self.on_pCarrierTxt_textEdited)
 
 
     ## GENERAL INTERFACE FUNCTIONS
@@ -364,13 +368,22 @@ class MainWindow(QtWidgets.QMainWindow):
         self.device_manager.data_singleton.set_tweak_enabled(tweak=Tweak.StatusBar, enabled=checked)
         self.update_enabled_tweaks()
 
+    # PRIMARY CARRIER
+    def on_pDefaultRdo_clicked(self):
+        if self.status_manager != None:
+            self.status_manager.unset_cellular_service()
+    def on_pShowRdo_clicked(self):
+        if self.status_manager != None:
+            self.status_manager.set_cellular_service(True)
+    def on_pHideRdo_clicked(self):
+        if self.status_manager != None:
+            self.status_manager.set_cellular_service(False)
     def on_pCarrierChk_clicked(self, checked: bool):
         if self.status_manager != None:
             if checked:
                 self.status_manager.set_carrier_override(str(self.ui.pCarrierTxt.text()))
             else:
                 self.status_manager.unset_carrier_override()
-        
     def on_pCarrierTxt_textEdited(self, text: str):
         if self.status_manager != None:
             if self.ui.pCarrierChk.checkState():
@@ -383,7 +396,14 @@ class MainWindow(QtWidgets.QMainWindow):
         if ws == None:
             return
         self.status_manager = StatusSetter(self.device_manager.get_current_device_version(), ws)
-        # Load carrier settings
+        # Load primary carrier settings
+        if self.status_manager.is_cellular_service_overridden():
+            if self.status_manager.get_cellular_service_override():
+                self.ui.pShowRdo.setChecked(True)
+            else:
+                self.ui.pHideRdo.setChecked(True)
+        else:
+            self.ui.pDefaultRdo.setChecked(True)
         self.ui.pCarrierChk.setChecked(self.status_manager.is_carrier_overridden())
         self.ui.pCarrierTxt.setText(self.status_manager.get_carrier_override())
         
