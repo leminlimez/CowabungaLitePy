@@ -421,7 +421,7 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 self.status_manager.unset_gsm_signal_strength_bars()
     def on_pStrengthSld_sliderMoved(self, pos: int):
-        self.ui.pStrengthLbl.setText(str(pos) + " Bar" if pos == 1 else " Bars")
+        self.ui.pStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
         if self.status_manager != None:
             if self.ui.pStrengthChk.isChecked():
                 self.status_manager.set_gsm_signal_strength_bars(pos)
@@ -452,7 +452,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.pStrengthChk.setChecked(self.status_manager.is_gsm_signal_strength_bars_overridden())
         pos: int = self.status_manager.get_gsm_signal_strength_bars_override()
         self.ui.pStrengthSld.setValue(pos)
-        self.ui.pStrengthLbl.setText(str(pos) + " Bar" if pos == 1 else " Bars")
+        self.ui.pStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
         
     
     ## SPRINGBOARD OPTIONS PAGE
