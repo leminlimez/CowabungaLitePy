@@ -4,10 +4,10 @@ import os
 from devicemanagement.constants import FileLocation
 
 class StatusBarRawData(Structure):
+    _pack_ = 2
     _fields_ = [
         ("itemIsEnabled", c_bool * 45),
-        ("padding1", c_char),
-        ("padding2", c_char),
+        ("padding", c_char * 9),
         ("timeString", c_char * 64),
         ("shortTimeString", c_char * 64),
         ("dateString", c_char * 256),
@@ -67,9 +67,10 @@ class StatusBarRawData(Structure):
 # End of StatusBarRawData struct
 
 class StatusBarOverrideData(Structure):
+    _pack_ = 2
     _fields_ = [
         ("overrideItemIsEnabled", c_bool * 45),
-        ("padding1", c_char),
+        ("padding", c_char),
         ("overrideTimeString", c_uint, 1),
         ("overrideDateString", c_uint, 1),
         ("overrideGsmSignalStrengthRaw", c_uint, 1),
@@ -119,8 +120,9 @@ class Setter:
         try:
             with open(path, "wb") as out_file:
                 out_file.write(overrides)
-                padding = create_string_buffer(256)
-                padding.raw = b'\0' * 256
+                padding_size = 250
+                padding = create_string_buffer(padding_size)
+                padding.raw = b'\0' * padding_size
                 out_file.write(padding)
         except IOError:
             print(f"Failed to open file: {path}")

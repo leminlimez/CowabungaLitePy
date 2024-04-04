@@ -24,7 +24,7 @@ class StatusSetter:
         overrides.values.serviceCrossfadeString = text.encode()
         self.setter.apply_changes(overrides)
 
-    def unset_carrier(self) -> None:
+    def unset_carrier_override(self) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideServiceString = 0
         self.setter.apply_changes(overrides)
