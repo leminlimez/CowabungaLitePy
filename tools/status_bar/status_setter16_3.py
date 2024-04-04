@@ -173,7 +173,7 @@ class Setter:
                 padding = create_string_buffer(padding_size)
                 padding.raw = b'\0' * padding_size
                 out_file.write(padding)
-            self.current_overrides = None
+            self.current_overrides = overrides
         except IOError:
             print(f"Failed to open file: {path}")
 
