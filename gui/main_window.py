@@ -133,6 +133,18 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.pTypeDrp.activated.connect(self.on_pTypeDrp_activated)
         self.ui.pStrengthChk.toggled.connect(self.on_pStrengthChk_clicked)
         self.ui.pStrengthSld.sliderMoved.connect(self.on_pStrengthSld_sliderMoved)
+        # SECONDARY CARRIER
+        self.ui.sDefaultRdo.clicked.connect(self.on_sDefaultRdo_clicked)
+        self.ui.sShowRdo.clicked.connect(self.on_sShowRdo_clicked)
+        self.ui.sHideRdo.clicked.connect(self.on_sHideRdo_clicked)
+        self.ui.sCarrierChk.toggled.connect(self.on_sCarrierChk_clicked)
+        self.ui.sCarrierTxt.textEdited.connect(self.on_sCarrierTxt_textEdited)
+        self.ui.sBadgeChk.toggled.connect(self.on_sBadgeChk_clicked)
+        self.ui.sBadgeTxt.textEdited.connect(self.on_sBadgeTxt_textEdited)
+        self.ui.sTypeChk.toggled.connect(self.on_sTypeChk_clicked)
+        self.ui.sTypeDrp.activated.connect(self.on_sTypeDrp_activated)
+        self.ui.sStrengthChk.toggled.connect(self.on_sStrengthChk_clicked)
+        self.ui.sStrengthSld.sliderMoved.connect(self.on_sStrengthSld_sliderMoved)
 
 
     ## GENERAL INTERFACE FUNCTIONS
@@ -426,6 +438,58 @@ class MainWindow(QtWidgets.QMainWindow):
             if self.ui.pStrengthChk.isChecked():
                 self.status_manager.set_gsm_signal_strength_bars(pos)
 
+    # SECONDARY CARRIER
+    def on_sDefaultRdo_clicked(self):
+        if self.status_manager != None:
+            self.status_manager.unset_secondary_cellular_service()
+    def on_sShowRdo_clicked(self):
+        if self.status_manager != None:
+            self.status_manager.set_secondary_cellular_service(True)
+    def on_sHideRdo_clicked(self):
+        if self.status_manager != None:
+            self.status_manager.set_secondary_cellular_service(False)
+    def on_sCarrierChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_secondary_carrier_override(str(self.ui.sCarrierTxt.text()))
+            else:
+                self.status_manager.unset_secondary_carrier_override()
+    def on_sCarrierTxt_textEdited(self, text: str):
+        if self.status_manager != None:
+            if self.ui.sCarrierChk.isChecked():
+                self.status_manager.set_secondary_carrier_override(text)
+    def on_sBadgeChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_secondary_service_badge(str(self.ui.sBadgeTxt.text()))
+            else:
+                self.status_manager.unset_secondary_service_badge()
+    def on_sBadgeTxt_textEdited(self, text: str):
+        if self.status_manager != None:
+            if self.ui.sBadgeChk.isChecked():
+                self.status_manager.set_secondary_service_badge(text)
+    def on_sTypeChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_secondary_data_network_type(self.ui.sTypeDrp.currentIndex())
+            else:
+                self.status_manager.unset_secondary_data_network_type()
+    def on_sTypeDrp_activated(self, index: int):
+        if self.status_manager != None:
+            if self.ui.sTypeChk.isChecked():
+                self.status_manager.set_secondary_data_network_type(self.ui.sTypeDrp.currentIndex())
+    def on_sStrengthChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_secondary_gsm_signal_strength_bars(self.ui.sStrengthSld.value())
+            else:
+                self.status_manager.unset_secondary_gsm_signal_strength_bars()
+    def on_sStrengthSld_sliderMoved(self, pos: int):
+        self.ui.sStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
+        if self.status_manager != None:
+            if self.ui.sStrengthChk.isChecked():
+                self.status_manager.set_secondary_gsm_signal_strength_bars(pos)
+
         
     ## LOADING STATUS BAR
     def load_status_bar(self):
@@ -453,6 +517,24 @@ class MainWindow(QtWidgets.QMainWindow):
         pos: int = self.status_manager.get_gsm_signal_strength_bars_override()
         self.ui.pStrengthSld.setValue(pos)
         self.ui.pStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
+        # Load secondary carrier settings
+        if self.status_manager.is_secondary_cellular_service_overridden():
+            if self.status_manager.get_secondary_cellular_service_override():
+                self.ui.sShowRdo.setChecked(True)
+            else:
+                self.ui.sHideRdo.setChecked(True)
+        else:
+            self.ui.sDefaultRdo.setChecked(True)
+        self.ui.sCarrierChk.setChecked(self.status_manager.is_secondary_carrier_overridden())
+        self.ui.sCarrierTxt.setText(self.status_manager.get_secondary_carrier_override())
+        self.ui.sBadgeChk.setChecked(self.status_manager.is_secondary_service_badge_overridden())
+        self.ui.sBadgeTxt.setText(self.status_manager.get_secondary_service_badge_override())
+        self.ui.sTypeChk.setChecked(self.status_manager.is_secondary_data_network_type_overridden())
+        self.ui.sTypeDrp.setCurrentIndex(self.status_manager.get_secondary_data_network_type_override())
+        self.ui.sStrengthChk.setChecked(self.status_manager.is_secondary_gsm_signal_strength_bars_overridden())
+        pos = self.status_manager.get_secondary_gsm_signal_strength_bars_override()
+        self.ui.sStrengthSld.setValue(pos)
+        self.ui.sStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
         
     
     ## SPRINGBOARD OPTIONS PAGE
