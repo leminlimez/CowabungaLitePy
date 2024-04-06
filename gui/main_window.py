@@ -160,6 +160,18 @@ class MainWindow(QtWidgets.QMainWindow):
         # RAW SIGNAL STRENGTH INPUTS
         self.ui.numericWifiChk.clicked.connect(self.on_numericWifiChk_clicked)
         self.ui.numericCellChk.clicked.connect(self.on_numericCellChk_clicked)
+        # HIDE OPTION INPUTS
+        self.ui.hideDNDChk.clicked.connect(self.on_hideDNDChk_clicked)
+        self.ui.hideAirplaneChk.clicked.connect(self.on_hideAirplaneChk_clicked)
+        self.ui.hideWifiChk.clicked.connect(self.on_hideWifiChk_clicked)
+        self.ui.hideBatteryChk.clicked.connect(self.on_hideBatteryChk_clicked)
+        self.ui.hideBluetoothChk.clicked.connect(self.on_hideBatteryChk_clicked)
+        self.ui.hideAlarmChk.clicked.connect(self.on_hideAlarmChk_clicked)
+        self.ui.hideLocationChk.clicked.connect(self.on_hideLocationChk_clicked)
+        self.ui.hideRotationChk.clicked.connect(self.on_hideRotationChk_clicked)
+        self.ui.hideAirPlayChk.clicked.connect(self.on_hideAirPlayChk_clicked)
+        self.ui.hideCarPlayChk.clicked.connect(self.on_hideCarPlayChk_clicked)
+        self.ui.hideVPNChk.clicked.connect(self.on_hideVPNChk_clicked)
 
 
     ## GENERAL INTERFACE FUNCTIONS
@@ -572,6 +584,41 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.status_manager != None:
             self.status_manager.show_raw_gsm_signal(checked)
 
+    # Hiding Option Inputs
+    def on_hideDNDChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_dnd(checked)
+    def on_hideAirplaneChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_airplane(checked)
+    def on_hideWifiChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_wifi(checked)
+    def on_hideBatteryChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_battery(checked)
+    def on_hideBluetoothChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_bluetooth(checked)
+    def on_hideAlarmChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_alarm(checked)
+    def on_hideLocationChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_location(checked)
+    def on_hideRotationChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_rotation(checked)
+    def on_hideAirPlayChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_airplay(checked)
+    def on_hideCarPlayChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_carplay(checked)
+    def on_hideVPNChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_vpn(checked)
+
         
     ## LOADING STATUS BAR
     def load_status_bar(self):
@@ -641,6 +688,19 @@ class MainWindow(QtWidgets.QMainWindow):
         # Load raw signal strength inputs
         self.ui.numericWifiChk.setChecked(self.status_manager.is_raw_wifi_signal_shown())
         self.ui.numericCellChk.setChecked(self.status_manager.is_raw_gsm_signal_shown())
+
+        # Load hiding option inputs
+        self.ui.hideDNDChk.setChecked(self.status_manager.is_dnd_hidden())
+        self.ui.hideAirplaneChk.setChecked(self.status_manager.is_airplane_hidden())
+        self.ui.hideWifiChk.setChecked(self.status_manager.is_wifi_hidden())
+        self.ui.hideBatteryChk.setChecked(self.status_manager.is_battery_hidden())
+        self.ui.hideBluetoothChk.setChecked(self.status_manager.is_bluetooth_hidden())
+        self.ui.hideAlarmChk.setChecked(self.status_manager.is_alarm_hidden())
+        self.ui.hideLocationChk.setChecked(self.status_manager.is_location_hidden())
+        self.ui.hideRotationChk.setChecked(self.status_manager.is_rotation_hidden())
+        self.ui.hideAirPlayChk.setChecked(self.status_manager.is_airplay_hidden())
+        self.ui.hideCarPlayChk.setChecked(self.status_manager.is_carplay_hidden())
+        self.ui.hideVPNChk.setChecked(self.status_manager.is_vpn_hidden())
         
     
     ## SPRINGBOARD OPTIONS PAGE
