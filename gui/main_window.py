@@ -148,6 +148,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # MISC TEXT INPUTS
         self.ui.timeChk.clicked.connect(self.on_timeChk_clicked)
         self.ui.timeTxt.textEdited.connect(self.on_timeTxt_textEdited)
+        self.ui.breadcrumbChk.clicked.connect(self.on_breadcrumbChk_clicked)
+        self.ui.breadcrumbTxt.textEdited.connect(self.on_breadcrumbTxt_textEdited)
 
 
     ## GENERAL INTERFACE FUNCTIONS
@@ -505,6 +507,17 @@ class MainWindow(QtWidgets.QMainWindow):
             if self.ui.timeChk.isChecked():
                 self.status_manager.set_time(text)
 
+    def on_breadcrumbChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_crumb(self.ui.breadcrumbTxt.text())
+            else:
+                self.status_manager.unset_crumb()
+    def on_breadcrumbTxt_textEdited(self, text: str):
+        if self.status_manager != None:
+            if self.ui.breadcrumbChk.isChecked():
+                self.status_manager.set_crumb(text)
+
         
     ## LOADING STATUS BAR
     def load_status_bar(self):
@@ -554,6 +567,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # Load misc text inputs
         self.ui.timeChk.setChecked(self.status_manager.is_time_overridden())
         self.ui.timeTxt.setText(self.status_manager.get_time_override())
+        self.ui.breadcrumbChk.setChecked(self.status_manager.is_crumb_overridden())
+        self.ui.breadcrumbTxt.setText(self.status_manager.get_crumb_override())
         
     
     ## SPRINGBOARD OPTIONS PAGE

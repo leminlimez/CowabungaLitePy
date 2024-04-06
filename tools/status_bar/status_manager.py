@@ -224,3 +224,27 @@ class StatusSetter:
         overrides = self.setter.get_overrides()
         overrides.overrideTimeString = 0
         self.setter.apply_changes(overrides)
+
+    # BREADCRUMB STRING
+    def is_crumb_overridden(self) -> bool:
+        overrides = self.setter.get_overrides()
+        return overrides.overrideBreadcrumb == 1
+    def get_crumb_override(self) -> str:
+        overrides = self.setter.get_overrides()
+        text: str = overrides.values.breadcrumbTitle.decode()
+        if len(text) > 1:
+            return text[:len(text) - 4]
+        return ""
+    def set_crumb(self, text: str) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideBreadcrumb = 1
+        new_crumb = ""
+        if text != "":
+            new_crumb: str = text + " ▶"
+        overrides.values.breadcrumbTitle = new_crumb.encode()
+        self.setter.apply_changes(overrides)
+    def unset_crumb(self) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideBreadcrumb = 0
+        overrides.values.breadcrumbTitle = ""
+        self.setter.apply_changes(overrides)
