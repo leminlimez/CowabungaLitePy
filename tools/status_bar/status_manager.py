@@ -246,5 +246,22 @@ class StatusSetter:
     def unset_crumb(self) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideBreadcrumb = 0
-        overrides.values.breadcrumbTitle = ""
+        overrides.values.breadcrumbTitle = "".encode()
+        self.setter.apply_changes(overrides)
+
+    # BATTERY DETAIL STRING
+    def is_battery_detail_overridden(self) -> bool:
+        overrides = self.setter.get_overrides()
+        return overrides.overrideBatteryDetailString == 1
+    def get_battery_detail_override(self) -> str:
+        overrides = self.setter.get_overrides()
+        return overrides.values.batteryDetailString.decode()
+    def set_battery_detail(self, text: str) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideBatteryDetailString = 1
+        overrides.values.batteryDetailString = text.encode()
+        self.setter.apply_changes(overrides)
+    def unset_battery_detail(self) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideBatteryDetailString = 0
         self.setter.apply_changes(overrides)

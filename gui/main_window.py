@@ -150,6 +150,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.timeTxt.textEdited.connect(self.on_timeTxt_textEdited)
         self.ui.breadcrumbChk.clicked.connect(self.on_breadcrumbChk_clicked)
         self.ui.breadcrumbTxt.textEdited.connect(self.on_breadcrumbTxt_textEdited)
+        self.ui.batteryDetailChk.clicked.connect(self.on_batteryDetailChk_clicked)
+        self.ui.batteryDetailTxt.textEdited.connect(self.on_batteryDetailTxt_textEdited)
 
 
     ## GENERAL INTERFACE FUNCTIONS
@@ -518,11 +520,23 @@ class MainWindow(QtWidgets.QMainWindow):
             if self.ui.breadcrumbChk.isChecked():
                 self.status_manager.set_crumb(text)
 
+    def on_batteryDetailChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_battery_detail(self.ui.batteryDetailTxt.text())
+            else:
+                self.status_manager.unset_battery_detail()
+    def on_batteryDetailTxt_textEdited(self, text: str):
+        if self.status_manager != None:
+            if self.ui.batteryDetailChk.isChecked():
+                self.status_manager.set_battery_detail(text)
+
         
     ## LOADING STATUS BAR
     def load_status_bar(self):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
+            self.status_manager = None
             return
         self.status_manager = StatusSetter(self.device_manager.get_current_device_version(), ws)
         if self.status_manager == None:
@@ -569,6 +583,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.timeTxt.setText(self.status_manager.get_time_override())
         self.ui.breadcrumbChk.setChecked(self.status_manager.is_crumb_overridden())
         self.ui.breadcrumbTxt.setText(self.status_manager.get_crumb_override())
+        self.ui.batteryDetailChk.setChecked(self.status_manager.is_battery_detail_overridden())
+        self.ui.batteryDetailTxt.setText(self.status_manager.get_battery_detail_override())
         
     
     ## SPRINGBOARD OPTIONS PAGE
