@@ -265,3 +265,22 @@ class StatusSetter:
         overrides = self.setter.get_overrides()
         overrides.overrideBatteryDetailString = 0
         self.setter.apply_changes(overrides)
+
+
+    ## MISC SLIDER INPUTS
+    # BATTERY CAPACITY
+    def is_battery_capacity_overridden(self) -> bool:
+        overrides = self.setter.get_overrides()
+        return overrides.overrideBatteryCapacity == 1
+    def get_battery_capacity_override(self) -> int:
+        overrides = self.setter.get_overrides()
+        return overrides.values.batteryCapacity
+    def set_battery_capacity(self, id: int) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideBatteryCapacity = 1
+        overrides.values.batteryCapacity = id
+        self.setter.apply_changes(overrides)
+    def unset_battery_capacity(self) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideBatteryCapacity = 0
+        self.setter.apply_changes(overrides)

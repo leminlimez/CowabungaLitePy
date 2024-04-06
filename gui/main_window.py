@@ -152,6 +152,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.breadcrumbTxt.textEdited.connect(self.on_breadcrumbTxt_textEdited)
         self.ui.batteryDetailChk.clicked.connect(self.on_batteryDetailChk_clicked)
         self.ui.batteryDetailTxt.textEdited.connect(self.on_batteryDetailTxt_textEdited)
+        # MISC SLIDER INPUTS
+        self.ui.batteryCapacityChk.clicked.connect(self.on_batteryCapacityChk_clicked)
+        self.ui.batteryCapacitySld.sliderMoved.connect(self.on_batteryCapacitySld_sliderMoved)
 
 
     ## GENERAL INTERFACE FUNCTIONS
@@ -531,6 +534,19 @@ class MainWindow(QtWidgets.QMainWindow):
             if self.ui.batteryDetailChk.isChecked():
                 self.status_manager.set_battery_detail(text)
 
+    # Misc Slider Inputs
+    def on_batteryCapacityChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_battery_capacity(self.ui.batteryCapacitySld.value())
+            else:
+                self.status_manager.unset_battery_capacity()
+    def on_batteryCapacitySld_sliderMoved(self, pos: int):
+        self.ui.batteryCapacityLbl.setText(str(pos) + "%")
+        if self.status_manager != None:
+            if self.ui.batteryCapacityChk.isChecked():
+                self.status_manager.set_battery_capacity(pos)
+
         
     ## LOADING STATUS BAR
     def load_status_bar(self):
@@ -585,6 +601,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.breadcrumbTxt.setText(self.status_manager.get_crumb_override())
         self.ui.batteryDetailChk.setChecked(self.status_manager.is_battery_detail_overridden())
         self.ui.batteryDetailTxt.setText(self.status_manager.get_battery_detail_override())
+
+        # Load misc slider inputs
+        self.ui.batteryCapacityChk.setChecked(self.status_manager.is_battery_capacity_overridden())
+        pos = self.status_manager.get_battery_capacity_override()
+        self.ui.batteryCapacitySld.setValue(pos)
+        self.ui.batteryCapacityLbl.setText(str(pos) + "%")
         
     
     ## SPRINGBOARD OPTIONS PAGE
