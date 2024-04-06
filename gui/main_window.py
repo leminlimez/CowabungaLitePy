@@ -155,6 +155,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # MISC SLIDER INPUTS
         self.ui.batteryCapacityChk.clicked.connect(self.on_batteryCapacityChk_clicked)
         self.ui.batteryCapacitySld.sliderMoved.connect(self.on_batteryCapacitySld_sliderMoved)
+        self.ui.wifiStrengthChk.clicked.connect(self.on_wifiStrengthChk_clicked)
+        self.ui.wifiStrengthSld.sliderMoved.connect(self.on_wifiStrengthSld_sliderMoved)
 
 
     ## GENERAL INTERFACE FUNCTIONS
@@ -547,6 +549,18 @@ class MainWindow(QtWidgets.QMainWindow):
             if self.ui.batteryCapacityChk.isChecked():
                 self.status_manager.set_battery_capacity(pos)
 
+    def on_wifiStrengthChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_wifi_signal_strength_bars(self.ui.wifiStrengthSld.value())
+            else:
+                self.status_manager.unset_wifi_signal_strength_bars()
+    def on_wifiStrengthSld_sliderMoved(self, pos: int):
+        self.ui.wifiStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
+        if self.status_manager != None:
+            if self.ui.wifiStrengthChk.isChecked():
+                self.status_manager.set_wifi_signal_strength_bars(pos)
+
         
     ## LOADING STATUS BAR
     def load_status_bar(self):
@@ -607,6 +621,10 @@ class MainWindow(QtWidgets.QMainWindow):
         pos = self.status_manager.get_battery_capacity_override()
         self.ui.batteryCapacitySld.setValue(pos)
         self.ui.batteryCapacityLbl.setText(str(pos) + "%")
+        self.ui.wifiStrengthChk.setChecked(self.status_manager.is_wifi_signal_strength_bars_overridden())
+        pos = self.status_manager.get_wifi_signal_strength_bars_override()
+        self.ui.wifiStrengthSld.setValue(pos)
+        self.ui.wifiStrengthSld.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
         
     
     ## SPRINGBOARD OPTIONS PAGE

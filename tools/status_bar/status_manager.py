@@ -284,3 +284,20 @@ class StatusSetter:
         overrides = self.setter.get_overrides()
         overrides.overrideBatteryCapacity = 0
         self.setter.apply_changes(overrides)
+
+    # WIFI SIGNAL STRENGTH
+    def is_wifi_signal_strength_bars_overridden(self) -> bool:
+        overrides = self.setter.get_overrides()
+        return overrides.overrideWiFiSignalStrengthBars == 1
+    def get_wifi_signal_strength_bars_override(self) -> int:
+        overrides = self.setter.get_overrides()
+        return overrides.values.WiFiSignalStrengthBars
+    def set_wifi_signal_strength_bars(self, id: int) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideWiFiSignalStrengthBars = 1
+        overrides.values.WiFiSignalStrengthBars = id
+        self.setter.apply_changes(overrides)
+    def unset_wifi_signal_strength_bars(self) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideWiFiSignalStrengthBars = 0
+        self.setter.apply_changes(overrides)
