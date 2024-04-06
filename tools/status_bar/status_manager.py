@@ -188,3 +188,39 @@ class StatusSetter:
         overrides.overrideItemIsEnabled[self.setter.StatusBarItem.SecondaryCellularSignalStrengthStatusBarItem.value] = 0
         overrides.overrideSecondaryGSMSignalStrengthBars = 0
         self.setter.apply_changes(overrides)
+
+
+    ### MISC TEXT INPUTS
+    # DATE STRING (Unused)
+    def is_date_overridden(self) -> bool:
+        overrides = self.setter.get_overrides()
+        return overrides.overrideDateString == 1
+    def get_date_override(self) -> str:
+        overrides = self.setter.get_overrides()
+        return overrides.values.dateString.decode()
+    def set_date(self, text: str) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideDateString = 1
+        overrides.values.dateString = text.encode()
+        self.setter.apply_changes(overrides)
+    def unset_date(self) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideDateString = 0
+        self.setter.apply_changes(overrides)
+
+    # TIME STRING
+    def is_time_overridden(self) -> bool:
+        overrides = self.setter.get_overrides()
+        return overrides.overrideTimeString == 1
+    def get_time_override(self) -> str:
+        overrides = self.setter.get_overrides()
+        return overrides.values.timeString.decode()
+    def set_time(self, text: str) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideTimeString = 1
+        overrides.values.timeString = text.encode()
+        self.setter.apply_changes(overrides)
+    def unset_time(self) -> None:
+        overrides = self.setter.get_overrides()
+        overrides.overrideTimeString = 0
+        self.setter.apply_changes(overrides)

@@ -145,6 +145,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.sTypeDrp.activated.connect(self.on_sTypeDrp_activated)
         self.ui.sStrengthChk.toggled.connect(self.on_sStrengthChk_clicked)
         self.ui.sStrengthSld.sliderMoved.connect(self.on_sStrengthSld_sliderMoved)
+        # MISC TEXT INPUTS
+        self.ui.timeChk.clicked.connect(self.on_timeChk_clicked)
+        self.ui.timeTxt.textEdited.connect(self.on_timeTxt_textEdited)
 
 
     ## GENERAL INTERFACE FUNCTIONS
@@ -477,7 +480,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_sTypeDrp_activated(self, index: int):
         if self.status_manager != None:
             if self.ui.sTypeChk.isChecked():
-                self.status_manager.set_secondary_data_network_type(self.ui.sTypeDrp.currentIndex())
+                self.status_manager.set_secondary_data_network_type(index)
     def on_sStrengthChk_clicked(self, checked: bool):
         if self.status_manager != None:
             if checked:
@@ -489,6 +492,18 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.status_manager != None:
             if self.ui.sStrengthChk.isChecked():
                 self.status_manager.set_secondary_gsm_signal_strength_bars(pos)
+
+    # Misc Text Inputs
+    def on_timeChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_time(self.ui.timeTxt.text())
+            else:
+                self.status_manager.unset_time()
+    def on_timeTxt_textEdited(self, text: str):
+        if self.status_manager != None:
+            if self.ui.timeChk.isChecked():
+                self.status_manager.set_time(text)
 
         
     ## LOADING STATUS BAR
@@ -535,6 +550,10 @@ class MainWindow(QtWidgets.QMainWindow):
         pos = self.status_manager.get_secondary_gsm_signal_strength_bars_override()
         self.ui.sStrengthSld.setValue(pos)
         self.ui.sStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
+
+        # Load misc text inputs
+        self.ui.timeChk.setChecked(self.status_manager.is_time_overridden())
+        self.ui.timeTxt.setText(self.status_manager.get_time_override())
         
     
     ## SPRINGBOARD OPTIONS PAGE
