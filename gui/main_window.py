@@ -157,6 +157,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.batteryCapacitySld.sliderMoved.connect(self.on_batteryCapacitySld_sliderMoved)
         self.ui.wifiStrengthChk.clicked.connect(self.on_wifiStrengthChk_clicked)
         self.ui.wifiStrengthSld.sliderMoved.connect(self.on_wifiStrengthSld_sliderMoved)
+        # RAW SIGNAL STRENGTH INPUTS
+        self.ui.numericWifiChk.clicked.connect(self.on_numericWifiChk_clicked)
+        self.ui.numericCellChk.clicked.connect(self.on_numericCellChk_clicked)
 
 
     ## GENERAL INTERFACE FUNCTIONS
@@ -561,6 +564,14 @@ class MainWindow(QtWidgets.QMainWindow):
             if self.ui.wifiStrengthChk.isChecked():
                 self.status_manager.set_wifi_signal_strength_bars(pos)
 
+    # Raw Signal Strength Inputs
+    def on_numericWifiChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.show_raw_wifi_signal(checked)
+    def on_numericCellChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.show_raw_gsm_signal(checked)
+
         
     ## LOADING STATUS BAR
     def load_status_bar(self):
@@ -589,6 +600,7 @@ class MainWindow(QtWidgets.QMainWindow):
         pos: int = self.status_manager.get_gsm_signal_strength_bars_override()
         self.ui.pStrengthSld.setValue(pos)
         self.ui.pStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
+
         # Load secondary carrier settings
         if self.status_manager.is_secondary_cellular_service_overridden():
             if self.status_manager.get_secondary_cellular_service_override():
@@ -625,6 +637,10 @@ class MainWindow(QtWidgets.QMainWindow):
         pos = self.status_manager.get_wifi_signal_strength_bars_override()
         self.ui.wifiStrengthSld.setValue(pos)
         self.ui.wifiStrengthSld.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
+
+        # Load raw signal strength inputs
+        self.ui.numericWifiChk.setChecked(self.status_manager.is_raw_wifi_signal_shown())
+        self.ui.numericCellChk.setChecked(self.status_manager.is_raw_gsm_signal_shown())
         
     
     ## SPRINGBOARD OPTIONS PAGE

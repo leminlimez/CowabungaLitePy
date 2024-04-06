@@ -301,3 +301,30 @@ class StatusSetter:
         overrides = self.setter.get_overrides()
         overrides.overrideWiFiSignalStrengthBars = 0
         self.setter.apply_changes(overrides)
+
+
+    ## RAW SIGNAL STRENGTH TOGGLES
+    # WIFI
+    def is_raw_wifi_signal_shown(self) -> bool:
+        overrides = self.setter.get_overrides()
+        return overrides.overrideDisplayRawWiFiSignal == 1
+    def show_raw_wifi_signal(self, shown: bool) -> None:
+        overrides = self.setter.get_overrides()
+        if shown:
+            overrides.overrideDisplayRawWiFiSignal = 1
+            overrides.values.displayRawWiFiSignal = 1
+        else:
+            overrides.overrideDisplayRawWiFiSignal = 0
+        self.setter.apply_changes(overrides)
+    # GSM
+    def is_raw_gsm_signal_shown(self) -> bool:
+        overrides = self.setter.get_overrides()
+        return overrides.overrideDisplayRawGSMSignal == 1
+    def show_raw_gsm_signal(self, shown: bool) -> None:
+        overrides = self.setter.get_overrides()
+        if shown:
+            overrides.overrideDisplayRawGSMSignal = 1
+            overrides.values.displayRawGSMSignal = 1
+        else:
+            overrides.overrideDisplayRawGSMSignal = 0
+        self.setter.apply_changes(overrides)
