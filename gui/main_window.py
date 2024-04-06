@@ -636,7 +636,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.wifiStrengthChk.setChecked(self.status_manager.is_wifi_signal_strength_bars_overridden())
         pos = self.status_manager.get_wifi_signal_strength_bars_override()
         self.ui.wifiStrengthSld.setValue(pos)
-        self.ui.wifiStrengthSld.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
+        self.ui.wifiStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
 
         # Load raw signal strength inputs
         self.ui.numericWifiChk.setChecked(self.status_manager.is_raw_wifi_signal_shown())

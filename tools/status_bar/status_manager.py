@@ -288,18 +288,18 @@ class StatusSetter:
     # WIFI SIGNAL STRENGTH
     def is_wifi_signal_strength_bars_overridden(self) -> bool:
         overrides = self.setter.get_overrides()
-        return overrides.overrideWiFiSignalStrengthBars == 1
+        return overrides.overrideWifiSignalStrengthBars == 1
     def get_wifi_signal_strength_bars_override(self) -> int:
         overrides = self.setter.get_overrides()
-        return overrides.values.WiFiSignalStrengthBars
+        return overrides.values.wifiSignalStrengthBars
     def set_wifi_signal_strength_bars(self, id: int) -> None:
         overrides = self.setter.get_overrides()
-        overrides.overrideWiFiSignalStrengthBars = 1
-        overrides.values.WiFiSignalStrengthBars = id
+        overrides.overrideWifiSignalStrengthBars = 1
+        overrides.values.wifiSignalStrengthBars = id
         self.setter.apply_changes(overrides)
     def unset_wifi_signal_strength_bars(self) -> None:
         overrides = self.setter.get_overrides()
-        overrides.overrideWiFiSignalStrengthBars = 0
+        overrides.overrideWifiSignalStrengthBars = 0
         self.setter.apply_changes(overrides)
 
 
@@ -307,14 +307,14 @@ class StatusSetter:
     # WIFI
     def is_raw_wifi_signal_shown(self) -> bool:
         overrides = self.setter.get_overrides()
-        return overrides.overrideDisplayRawWiFiSignal == 1
+        return overrides.overrideDisplayRawWifiSignal == 1
     def show_raw_wifi_signal(self, shown: bool) -> None:
         overrides = self.setter.get_overrides()
         if shown:
-            overrides.overrideDisplayRawWiFiSignal = 1
+            overrides.overrideDisplayRawWifiSignal = 1
             overrides.values.displayRawWiFiSignal = 1
         else:
-            overrides.overrideDisplayRawWiFiSignal = 0
+            overrides.overrideDisplayRawWifiSignal = 0
         self.setter.apply_changes(overrides)
     # GSM
     def is_raw_gsm_signal_shown(self) -> bool:
