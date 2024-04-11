@@ -63,7 +63,7 @@ class StatusBarRawData(Structure):
         ("primaryServiceBadgeString", c_char * 100),
         ("secondaryServiceBadgeString", c_char * 100),
         ("quietModeImage", c_char * 256),
-        ("extra1", c_uint, 1)
+        ("quietModeName", c_char * 256)
     ]
 # End of StatusBarRawData struct
 
@@ -107,7 +107,7 @@ class StatusBarOverrideData(Structure):
         ("overridePrimaryServiceBadgeString", c_uint, 1),
         ("overrideSecondaryServiceBadgeString", c_uint, 1),
         ("overrideQuietModeImage", c_uint, 1),
-        ("overrideExtra1", c_uint, 1),
+        ("overrideQuietModeName", c_uint, 1),
         ("values", StatusBarRawData)
     ]
 # End of StatusBarOverrideData struct
@@ -169,10 +169,10 @@ class Setter:
         try:
             with open(path, "wb") as out_file:
                 out_file.write(overrides)
-                padding_size = 250
-                padding = create_string_buffer(padding_size)
-                padding.raw = b'\0' * padding_size
-                out_file.write(padding)
+                #padding_size = 250
+                #padding = create_string_buffer(padding_size)
+                #padding.raw = b'\0' * padding_size
+                #out_file.write(padding)
             self.current_overrides = overrides
         except IOError:
             print(f"Failed to open file: {path}")
