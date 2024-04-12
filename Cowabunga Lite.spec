@@ -1,12 +1,16 @@
 # -*- mode: python ; coding: utf-8 -*-
+from PyInstaller.utils.hooks import copy_metadata
+
+datas = []
+datas += copy_metadata('pyimg4')
 
 
 a = Analysis(
     ['main_app.py'],
     pathex=[],
     binaries=[],
-    datas=[],
-    hiddenimports=[],
+    datas=datas,
+    hiddenimports=['ipsw_parser', 'zeroconf', 'pyimg4', 'zeroconf._utils.ipaddress', 'zeroconf._handlers.answers'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
