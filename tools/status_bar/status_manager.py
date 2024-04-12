@@ -1,15 +1,12 @@
 import tools.status_bar.status_setter15 as status_setter15
 import tools.status_bar.status_setter16 as status_setter16
 import tools.status_bar.status_setter16_1 as status_setter16_1
-import tools.status_bar.status_setter16_3 as status_setter16_3
 from devicemanagement.constants import Version
 
 class StatusSetter:
     def __init__(self, version: str, workspace: str):
         parsed_ver: Version = Version(version)
-        if parsed_ver >= Version("16.3"):
-            self.setter = status_setter16_3.Setter(workspace)
-        elif parsed_ver >= Version("16.1"):
+        if parsed_ver >= Version("16.1"):
             self.setter = status_setter16_1.Setter(workspace)
         elif parsed_ver >= Version("16.0"):
             self.setter = status_setter16.Setter(workspace)
