@@ -36,12 +36,11 @@ class StatusBarRawData(Structure):
         ("batteryState", c_uint),
         ("batteryDetailString", c_char * 150),
         ("bluetoothBatteryCapacity", c_int),
-        ("padding", c_char * 2),
         ("thermalColor", c_int),
         ("thermalSunlightMode", c_uint, 1),
         ("slowActivity", c_uint, 1),
         ("syncActivity", c_uint, 1),
-        ("activityDisplayId", c_char * 256),
+        ("activityDisplayId", c_char * 251),
         ("bluetoothConnected", c_uint, 1),
         ("displayRawGSMSignal", c_uint, 1),
         ("displayRawWifiSignal", c_uint, 1),
@@ -54,7 +53,7 @@ class StatusBarRawData(Structure):
         ("lock", c_uint, 1),
         ("breadcrumbTitle", c_char * 256),
         ("breadcrumbSecondaryTitle", c_char * 256),
-        ("personName", c_char * 100),
+        ("personName", c_char * 96),
         ("electronicTollCollectionAvailable", c_uint, 1),
         ("radarAvailable", c_uint, 1),
         ("wifiLinkWarning", c_uint, 1),
@@ -65,7 +64,7 @@ class StatusBarRawData(Structure):
         ("primaryServiceBadgeString", c_char * 100),
         ("secondaryServiceBadgeString", c_char * 100),
         ("quietModeImage", c_char * 256),
-        ("quietModeName", c_char * 252)
+        ("quietModeName", c_char * 256)
     ]
 # End of StatusBarRawData struct
 
@@ -171,6 +170,10 @@ class Setter:
         try:
             with open(path, "wb") as out_file:
                 out_file.write(overrides)
+                padding_size = 7
+                padding = create_string_buffer(padding_size)
+                padding.raw = b'\0' * padding_size
+                out_file.write(padding)
             self.current_overrides = overrides
         except IOError:
             print(f"Failed to open file: {path}")

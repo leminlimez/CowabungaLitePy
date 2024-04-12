@@ -42,6 +42,7 @@ class StatusSetter:
     def set_carrier_override(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideServiceString = 1
+        # TODO: Truncate strings
         overrides.values.serviceString = text.encode()
         overrides.values.serviceCrossfadeString = text.encode()
         self.setter.apply_changes(overrides)
@@ -117,10 +118,13 @@ class StatusSetter:
         overrides = self.setter.get_overrides()
         overrides.overrideItemIsEnabled[self.setter.StatusBarItem.SecondaryCellularServiceStatusBarItem.value] = 1
         overrides.values.itemIsEnabled[self.setter.StatusBarItem.SecondaryCellularServiceStatusBarItem.value] = 1 if shown else 0
+        overrides.overrideSecondaryCellularConfigured = 1
+        overrides.values.secondaryCellularConfigured = 1 if shown else 0
         self.setter.apply_changes(overrides)
     def unset_secondary_cellular_service(self) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideItemIsEnabled[self.setter.StatusBarItem.SecondaryCellularServiceStatusBarItem.value] = 0
+        overrides.overrideSecondaryCellularConfigured = 0
         self.setter.apply_changes(overrides)
             
     # SERVICE STRING
