@@ -45,9 +45,9 @@ class StatusSetter:
     def set_carrier_override(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideServiceString = 1
-        # TODO: Truncate strings
-        overrides.values.serviceString = text.encode()
-        overrides.values.serviceCrossfadeString = text.encode()
+        truncated = text[:100]
+        overrides.values.serviceString = truncated.encode()
+        overrides.values.serviceCrossfadeString = truncated.encode()
         self.setter.apply_changes(overrides)
     def unset_carrier_override(self) -> None:
         overrides = self.setter.get_overrides()
@@ -64,7 +64,7 @@ class StatusSetter:
     def set_primary_service_badge(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overridePrimaryServiceBadgeString = 1
-        overrides.values.primaryServiceBadgeString = text.encode()
+        overrides.values.primaryServiceBadgeString = text[:100].encode()
         self.setter.apply_changes(overrides)
     def unset_primary_service_badge(self) -> None:
         overrides = self.setter.get_overrides()
@@ -140,8 +140,9 @@ class StatusSetter:
     def set_secondary_carrier_override(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideSecondaryServiceString = 1
-        overrides.values.secondaryServiceString = text.encode()
-        overrides.values.secondaryServiceCrossfadeString = text.encode()
+        truncated = text[:100]
+        overrides.values.secondaryServiceString = truncated.encode()
+        overrides.values.secondaryServiceCrossfadeString = truncated.encode()
         self.setter.apply_changes(overrides)
     def unset_secondary_carrier_override(self) -> None:
         overrides = self.setter.get_overrides()
@@ -158,7 +159,7 @@ class StatusSetter:
     def set_secondary_service_badge(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideSecondaryServiceBadgeString = 1
-        overrides.values.secondaryServiceBadgeString = text.encode()
+        overrides.values.secondaryServiceBadgeString = text[:100].encode()
         self.setter.apply_changes(overrides)
     def unset_secondary_service_badge(self) -> None:
         overrides = self.setter.get_overrides()
@@ -214,7 +215,7 @@ class StatusSetter:
     def set_date(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideDateString = 1
-        overrides.values.dateString = text.encode()
+        overrides.values.dateString = text[:256].encode()
         self.setter.apply_changes(overrides)
     def unset_date(self) -> None:
         overrides = self.setter.get_overrides()
@@ -231,7 +232,7 @@ class StatusSetter:
     def set_time(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideTimeString = 1
-        overrides.values.timeString = text.encode()
+        overrides.values.timeString = text[:64].encode()
         self.setter.apply_changes(overrides)
     def unset_time(self) -> None:
         overrides = self.setter.get_overrides()
@@ -253,7 +254,7 @@ class StatusSetter:
         overrides.overrideBreadcrumb = 1
         new_crumb = ""
         if text != "":
-            new_crumb: str = text + " ▶"
+            new_crumb: str = text[:254] + " ▶"
         overrides.values.breadcrumbTitle = new_crumb.encode()
         self.setter.apply_changes(overrides)
     def unset_crumb(self) -> None:
@@ -272,7 +273,7 @@ class StatusSetter:
     def set_battery_detail(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideBatteryDetailString = 1
-        overrides.values.batteryDetailString = text.encode()
+        overrides.values.batteryDetailString = text[:150].encode()
         self.setter.apply_changes(overrides)
     def unset_battery_detail(self) -> None:
         overrides = self.setter.get_overrides()
