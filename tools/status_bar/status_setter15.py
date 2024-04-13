@@ -1,115 +1,111 @@
-from ctypes import Structure, c_bool, c_char, c_int, c_uint, c_double, create_string_buffer
 import os
 from enum import Enum
+from cffi import FFI
+ffi = FFI()
 
 from devicemanagement.constants import FileLocation
 
-class StatusBarRawData(Structure):
-    _pack_ = 1
-    _fields_ = [
-        ("itemIsEnabled", c_bool * 44),
-        ("timeString", c_char * 64),
-        ("shortTimeString", c_char * 64),
-        ("dateString", c_char * 256),
-        ("GSMSignalStrengthRaw", c_int),
-        ("secondaryGSMSignalStrengthRaw", c_int),
-        ("GSMSignalStrengthBars", c_int),
-        ("secondaryGSMSignalStrengthBars", c_int),
-        ("serviceString", c_char * 100),
-        ("secondaryServiceString", c_char * 100),
-        ("serviceCrossfadeString", c_char * 100),
-        ("secondaryServiceCrossfadeString", c_char * 100),
-        ("serviceImages", c_char * 2 * 100),
-        ("operatorDirectory", c_char * 1024),
-        ("serviceContentType", c_uint),
-        ("secondaryServiceContentType", c_uint),
-        ("cellLowDataModeActive", c_uint, 1),
-        ("secondaryCellLowDataModeActive", c_uint, 1),
-        ("wifiSignalStrengthRaw", c_int),
-        ("wifiSignalStrengthBars", c_int),
-        ("wifiLowDataModeActive", c_uint, 1),
-        ("dataNetworkType", c_uint),
-        ("secondaryDataNetworkType", c_uint),
-        ("batteryCapacity", c_int),
-        ("batteryState", c_uint),
-        ("batteryDetailString", c_char * 150),
-        ("bluetoothBatteryCapacity", c_int),
-        ("padding", c_char * 2),
-        ("thermalColor", c_int),
-        ("thermalSunlightMode", c_uint, 1),
-        ("slowActivity", c_uint, 1),
-        ("syncActivity", c_uint, 1),
-        ("activityDisplayId", c_char * 256),
-        ("bluetoothConnected", c_uint, 1),
-        ("displayRawGSMSignal", c_uint, 1),
-        ("displayRawWifiSignal", c_uint, 1),
-        ("locationIconType", c_uint, 1),
-        ("voiceControlIconType", c_uint, 2),
-        ("quietModeInactive", c_uint, 1),
-        ("tetheringConnectionCount", c_uint),
-        ("batterySaverModeActive", c_uint, 1),
-        ("deviceIsRTL", c_uint, 1),
-        ("lock", c_uint, 1),
-        ("breadcrumbTitle", c_char * 256),
-        ("breadcrumbSecondaryTitle", c_char * 256),
-        ("personName", c_char * 100),
-        ("electronicTollCollectionAvailable", c_uint, 1),
-        ("radarAvailable", c_uint, 1),
-        ("wifiLinkWarning", c_uint, 1),
-        ("wifiSearching", c_uint, 1),
-        ("backgroundActivityDisplayStartDate", c_double),
-        ("shouldShowEmergencyOnlyStatus", c_uint, 1),
-        ("secondaryCellularConfigured", c_uint, 1),
-        ("primaryServiceBadgeString", c_char * 100),
-        ("secondaryServiceBadgeString", c_char * 100),
-        ("quietModeImage", c_char * 256),
-        ("quietModeName", c_char * 256)
-    ]
-# End of StatusBarRawData struct
+ffi.cdef("""
+    typedef struct
+    {
+        bool itemIsEnabled[44];
+        char timeString[64];
+        char shortTimeString[64];
+        char dateString[256];
+        int GSMSignalStrengthRaw;
+        int secondaryGSMSignalStrengthRaw;
+        int GSMSignalStrengthBars;
+        int secondaryGSMSignalStrengthBars;
+        char serviceString[100];
+        char secondaryServiceString[100];
+        char serviceCrossfadeString[100];
+        char secondaryServiceCrossfadeString[100];
+        char serviceImages[2][100];
+        char operatorDirectory[1024];
+        unsigned int serviceContentType;
+        unsigned int secondaryServiceContentType;
+        unsigned int cellLowDataModeActive : 1;
+        unsigned int secondaryCellLowDataModeActive : 1;
+        int wifiSignalStrengthRaw;
+        int wifiSignalStrengthBars;
+        unsigned int wifiLowDataModeActive : 1;
+        unsigned int dataNetworkType;
+        unsigned int secondaryDataNetworkType;
+        int batteryCapacity;
+        unsigned int batteryState;
+        char batteryDetailString[150];
+        int bluetoothBatteryCapacity;
+        int thermalColor;
+        unsigned int thermalSunlightMode : 1;
+        unsigned int slowActivity : 1;
+        unsigned int syncActivity : 1;
+        char activityDisplayId[256];
+        unsigned int bluetoothConnected : 1;
+        unsigned int displayRawGSMSignal : 1;
+        unsigned int displayRawWifiSignal : 1;
+        unsigned int locationIconType : 1;
+        unsigned int voiceControlIconType : 2;
+        unsigned int quietModeInactive : 1;
+        unsigned int tetheringConnectionCount;
+        unsigned int batterySaverModeActive : 1;
+        unsigned int deviceIsRTL : 1;
+        unsigned int lock : 1;
+        char breadcrumbTitle[256];
+        char breadcrumbSecondaryTitle[256];
+        char personName[100];
+        unsigned int electronicTollCollectionAvailable : 1;
+        unsigned int radarAvailable : 1;
+        unsigned int wifiLinkWarning : 1;
+        unsigned int wifiSearching : 1;
+        double backgroundActivityDisplayStartDate;
+        unsigned int shouldShowEmergencyOnlyStatus : 1;
+        unsigned int secondaryCellularConfigured : 1;
+        char primaryServiceBadgeString[100];
+        char secondaryServiceBadgeString[100];
+        char quietModeImage[256];
+    } StatusBarRawData;
 
-class StatusBarOverrideData(Structure):
-    _pack_ = 1
-    _fields_ = [
-        ("overrideItemIsEnabled", c_bool * 44),
-        ("overrideTimeString", c_uint, 1),
-        ("overrideDateString", c_uint, 1),
-        ("overrideGsmSignalStrengthRaw", c_uint, 1),
-        ("overrideSecondaryGsmSignalStrengthRaw", c_uint, 1),
-        ("overrideGSMSignalStrengthBars", c_uint, 1),
-        ("overrideSecondaryGSMSignalStrengthBars", c_uint, 1),
-        ("overrideServiceString", c_uint, 1),
-        ("overrideSecondaryServiceString", c_uint, 1),
-        ("overrideServiceImages", c_uint, 2),
-        ("overrideOperatorDirectory", c_uint, 1),
-        ("overrideServiceContentType", c_uint, 1),
-        ("overrideSecondaryServiceContentType", c_uint, 1),
-        ("overrideWifiSignalStrengthRaw", c_uint, 1),
-        ("overrideWifiSignalStrengthBars", c_uint, 1),
-        ("overrideDataNetworkType", c_uint, 1),
-        ("overrideSecondaryDataNetworkType", c_uint, 1),
-        ("disallowsCellularDataNetworkTypes", c_uint, 1),
-        ("overrideBatteryCapacity", c_uint, 1),
-        ("overrideBatteryState", c_uint, 1),
-        ("overrideBatteryDetailString", c_uint, 1),
-        ("overrideBluetoothBatteryCapacity", c_uint, 1),
-        ("overrideThermalColor", c_uint, 1),
-        ("overrideSlowActivity", c_uint, 1),
-        ("overrideActivityDisplayId", c_uint, 1),
-        ("overrideBluetoothConnected", c_uint, 1),
-        ("overrideBreadcrumb", c_uint, 1),
-        ("overrideLock", c_uint),
-        ("overrideDisplayRawGSMSignal", c_uint, 1),
-        ("overrideDisplayRawWifiSignal", c_uint, 1),
-        ("overridePersonName", c_uint, 1),
-        ("overrideWifiLinkWarning", c_uint, 1),
-        ("overrideSecondaryCellularConfigured", c_uint, 1),
-        ("overridePrimaryServiceBadgeString", c_uint, 1),
-        ("overrideSecondaryServiceBadgeString", c_uint, 1),
-        ("overrideQuietModeImage", c_uint, 1),
-        ("overrideQuietModeName", c_uint, 1),
-        ("values", StatusBarRawData)
-    ]
-# End of StatusBarOverrideData struct
+    typedef struct
+    {
+        bool overrideItemIsEnabled[44];
+        unsigned int overrideTimeString : 1;
+        unsigned int overrideDateString : 1;
+        unsigned int overrideGSMSignalStrengthRaw : 1;
+        unsigned int overrideSecondaryGSMSignalStrengthRaw : 1;
+        unsigned int overrideGSMSignalStrengthBars : 1;
+        unsigned int overrideSecondaryGSMSignalStrengthBars : 1;
+        unsigned int overrideServiceString : 1;
+        unsigned int overrideSecondaryServiceString : 1;
+        unsigned int overrideServiceImages : 2;
+        unsigned int overrideOperatorDirectory : 1;
+        unsigned int overrideServiceContentType : 1;
+        unsigned int overrideSecondaryServiceContentType : 1;
+        unsigned int overrideWifiSignalStrengthRaw : 1;
+        unsigned int overrideWifiSignalStrengthBars : 1;
+        unsigned int overrideDataNetworkType : 1;
+        unsigned int overrideSecondaryDataNetworkType : 1;
+        unsigned int disallowsCellularDataNetworkTypes : 1;
+        unsigned int overrideBatteryCapacity : 1;
+        unsigned int overrideBatteryState : 1;
+        unsigned int overrideBatteryDetailString : 1;
+        unsigned int overrideBluetoothBatteryCapacity : 1;
+        unsigned int overrideThermalColor : 1;
+        unsigned int overrideSlowActivity : 1;
+        unsigned int overrideActivityDisplayId : 1;
+        unsigned int overrideBluetoothConnected : 1;
+        unsigned int overrideBreadcrumb : 1;
+        unsigned int overrideLock;
+        unsigned int overrideDisplayRawGSMSignal : 1;
+        unsigned int overrideDisplayRawWifiSignal : 1;
+        unsigned int overridePersonName : 1;
+        unsigned int overrideWifiLinkWarning : 1;
+        unsigned int overrideSecondaryCellularConfigured : 1;
+        unsigned int overridePrimaryServiceBadgeString : 1;
+        unsigned int overrideSecondaryServiceBadgeString : 1;
+        unsigned int overrideQuietModeImage : 1;
+        StatusBarRawData values;
+    } StatusBarOverrideData;
+""")
     
 class Setter:
     class StatusBarItem(Enum):
@@ -160,29 +156,25 @@ class Setter:
         self.ws = workspace
         self.current_overrides = None
 
-    def apply_changes(self, overrides: StatusBarOverrideData):
+    def apply_changes(self, overrides):
         path = os.path.join(self.ws, FileLocation.status_bar.value)
         try:
             with open(path, "wb") as out_file:
-                out_file.write(overrides)
-                padding_size = 256
-                padding = create_string_buffer(padding_size)
-                padding.raw = b'\0' * padding_size
-                out_file.write(padding)
+                out_file.write(ffi.buffer(overrides))
             self.current_overrides = overrides
         except IOError:
             print(f"Failed to open file: {path}")
 
-    def get_overrides(self) -> StatusBarOverrideData:
+    def get_overrides(self):
         if self.current_overrides != None:
             return self.current_overrides
         path = os.path.join(self.ws, FileLocation.status_bar.value)
-        overrides = StatusBarOverrideData()
+        overrides = ffi.new("StatusBarOverrideData *")
         if os.path.exists(path):
             # read and map the file
             try:
                 with open(path, "rb") as in_file:
-                    in_file.readinto(overrides)
+                    in_file.readinto(ffi.buffer(overrides))
             except IOError:
                 print(f"Failed to open file: {path}")
         return overrides
