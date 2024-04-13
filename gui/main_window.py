@@ -118,6 +118,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         ## APPLY PAGE ACTIONS
         self.ui.applyTweaksBtn.clicked.connect(self.on_applyPageBtn_clicked)
+        self.ui.removeTweaksBtn.clicked.connect(self.on_removeTweaksBtn_clicked)
+        self.ui.deepCleanBtn.clicked.connect(self.on_deepCleanBtn_clicked)
 
         ## STATUS BAR PAGE ACTIONS
         self.ui.statusBarEnabledChk.toggled.connect(self.on_statusBarEnabledChk_toggled)
@@ -201,7 +203,7 @@ class MainWindow(QtWidgets.QMainWindow):
         label_txt = ""
         if len(tweaks) == 0:
             label_txt = "None"
-            self.ui.applyPage.setDisabled(True)
+            self.ui.applyTweaksBtn.setDisabled(True)
         else:
             first_tweak: bool = True
             for tweak in tweaks:
@@ -210,7 +212,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 else:
                     first_tweak = False
                 label_txt += tweak.value
-            self.ui.applyPage.setDisabled(False)
+            self.ui.applyTweaksBtn.setDisabled(False)
             
         self.ui.enabledTweaksLbl.setText(label_txt)
 
@@ -977,14 +979,22 @@ class MainWindow(QtWidgets.QMainWindow):
     
     
     ## APPLY PAGE
+    def update_label(self, txt: str):
+        self.ui.statusLbl.setText(txt)
+        if "Restoring" in txt:
+            self.ui.restoreProgressBar.setValue(0)
+            self.ui.restoreProgressBar.show()
+    def update_bar(self, percent):
+        self.ui.restoreProgressBar.setValue(int(percent))
+    def on_removeTweaksBtn_clicked(self):
+        # TODO: Add safety here
+        self.device_manager.remove_tweaks(deep_clean=False, update_label=self.update_label, update_bar=self.update_bar)
+
+    def on_deepCleanBtn_clicked(self):
+        # TODO: Add safety here
+        self.device_manager.remove_tweaks(deep_clean=True, update_label=self.update_label, update_bar=self.update_bar)
+
     @QtCore.Slot()
     def on_applyTweaksBtn_clicked(self):
         # TODO: Add safety here
-        def update_label(txt: str):
-            self.ui.statusLbl.setText(txt)
-            if "Restoring" in txt:
-                self.ui.restoreProgressBar.setValue(0)
-                self.ui.restoreProgressBar.show()
-        def update_bar(percent):
-            self.ui.restoreProgressBar.setValue(int(percent))
-        self.device_manager.apply_tweaks(update_label=update_label, update_bar=update_bar)
+        self.device_manager.apply_tweaks(update_label=self.update_label, update_bar=self.update_bar)

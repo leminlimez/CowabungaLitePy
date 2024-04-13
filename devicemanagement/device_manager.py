@@ -117,10 +117,35 @@ class DeviceManager:
             folder_path = Path(ws).joinpath(tweak.name)
             copytree(src=folder_path, dst=enabled_tweaks_dir, dirs_exist_ok=True)
 
+        self.generate_and_restore(update_label, update_bar)
+
+    ## REMOVING TWEAKS
+    def remove_tweaks(self, deep_clean: bool, update_label=lambda x: None, update_bar=lambda y: None):
+        source_dir: str
+        if QCoreApplication.applicationName() == "Python":
+            source_dir = os.path.join(os.getcwd(), "file_folders")
+        else:
+            source_dir = os.path.join(sys._MEIPASS, "file_folders")
+        if deep_clean:
+            source_dir = os.path.join(source_dir, 'restore-deepclean')
+        else:
+            source_dir = os.path.join(source_dir, 'restore')
+
+        # Erase backup folder
+        enabled_tweaks_dir = Path(QStandardPaths.writableLocation(QStandardPaths.AppDataLocation)).joinpath("CowabungaLiteData").joinpath("EnabledTweaks")
+        rmtree(enabled_tweaks_dir, ignore_errors=True)
+
+        # Add files to the enabled tweaks folder
+        copytree(src=source_dir, dst=enabled_tweaks_dir, dirs_exist_ok=True)
+
+        self.generate_and_restore(update_label, update_bar)
+
+    def generate_and_restore(self, update_label=lambda x: None, update_bar=lambda y: None):
         # Generate backup
         update_label("Generating backup...")
         backup_dir = Path(QStandardPaths.writableLocation(QStandardPaths.AppDataLocation)).joinpath("CowabungaLiteData").joinpath("Backup")
         rmtree(path=backup_dir, ignore_errors=True)
+        enabled_tweaks_dir = Path(QStandardPaths.writableLocation(QStandardPaths.AppDataLocation)).joinpath("CowabungaLiteData").joinpath("EnabledTweaks")
         backup_created = create_backup(src=enabled_tweaks_dir, dst=backup_dir.joinpath(self.get_current_device_uuid()))
         if not backup_created:
             update_label("Failed to generate backup...")
