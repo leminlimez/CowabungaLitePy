@@ -1,17 +1,20 @@
-import tools.status_bar.status_setter15 as status_setter15
-import tools.status_bar.status_setter16 as status_setter16
+#import tools.status_bar.status_setter15 as status_setter15
+#import tools.status_bar.status_setter16 as status_setter16
 import tools.status_bar.status_setter16_1 as status_setter16_1
 from devicemanagement.constants import Version
+
+from cffi import FFI
+ffi = FFI()
 
 class StatusSetter:
     def __init__(self, version: str, workspace: str):
         parsed_ver: Version = Version(version)
         if parsed_ver >= Version("16.1"):
             self.setter = status_setter16_1.Setter(workspace)
-        elif parsed_ver >= Version("16.0"):
-            self.setter = status_setter16.Setter(workspace)
-        else:
-            self.setter = status_setter15.Setter(workspace)
+        # elif parsed_ver >= Version("16.0"):
+        #     self.setter = status_setter16.Setter(workspace)
+        # else:
+        #     self.setter = status_setter15.Setter(workspace)
 
         
     ### PRIMARY CARRIER
@@ -38,7 +41,7 @@ class StatusSetter:
         return overrides.overrideServiceString == 1
     def get_carrier_override(self) -> str:
         overrides = self.setter.get_overrides()
-        return overrides.values.serviceString.decode()
+        return ffi.string(overrides.values.serviceString).decode()
     def set_carrier_override(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideServiceString = 1
@@ -57,7 +60,7 @@ class StatusSetter:
         return overrides.overridePrimaryServiceBadgeString == 1
     def get_primary_service_badge_override(self) -> str:
         overrides = self.setter.get_overrides()
-        return overrides.values.primaryServiceBadgeString.decode()
+        return ffi.string(overrides.values.primaryServiceBadgeString).decode()
     def set_primary_service_badge(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overridePrimaryServiceBadgeString = 1
@@ -133,7 +136,7 @@ class StatusSetter:
         return overrides.overrideSecondaryServiceString == 1
     def get_secondary_carrier_override(self) -> str:
         overrides = self.setter.get_overrides()
-        return overrides.values.secondaryServiceString.decode()
+        return ffi.string(overrides.values.secondaryServiceString).decode()
     def set_secondary_carrier_override(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideSecondaryServiceString = 1
@@ -151,7 +154,7 @@ class StatusSetter:
         return overrides.overrideSecondaryServiceBadgeString == 1
     def get_secondary_service_badge_override(self) -> str:
         overrides = self.setter.get_overrides()
-        return overrides.values.secondaryServiceBadgeString.decode()
+        return ffi.string(overrides.values.secondaryServiceBadgeString).decode()
     def set_secondary_service_badge(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideSecondaryServiceBadgeString = 1
@@ -207,7 +210,7 @@ class StatusSetter:
         return overrides.overrideDateString == 1
     def get_date_override(self) -> str:
         overrides = self.setter.get_overrides()
-        return overrides.values.dateString.decode()
+        return ffi.string(overrides.values.dateString).decode()
     def set_date(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideDateString = 1
@@ -224,7 +227,7 @@ class StatusSetter:
         return overrides.overrideTimeString == 1
     def get_time_override(self) -> str:
         overrides = self.setter.get_overrides()
-        return overrides.values.timeString.decode()
+        return ffi.string(overrides.values.timeString).decode()
     def set_time(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideTimeString = 1
@@ -241,7 +244,7 @@ class StatusSetter:
         return overrides.overrideBreadcrumb == 1
     def get_crumb_override(self) -> str:
         overrides = self.setter.get_overrides()
-        text: str = overrides.values.breadcrumbTitle.decode()
+        text: str = ffi.string(overrides.values.breadcrumbTitle).decode()
         if len(text) > 1:
             return text[:len(text) - 4]
         return ""
@@ -265,7 +268,7 @@ class StatusSetter:
         return overrides.overrideBatteryDetailString == 1
     def get_battery_detail_override(self) -> str:
         overrides = self.setter.get_overrides()
-        return overrides.values.batteryDetailString.decode()
+        return ffi.string(overrides.values.batteryDetailString).decode()
     def set_battery_detail(self, text: str) -> None:
         overrides = self.setter.get_overrides()
         overrides.overrideBatteryDetailString = 1
@@ -322,7 +325,7 @@ class StatusSetter:
         overrides = self.setter.get_overrides()
         if shown:
             overrides.overrideDisplayRawWifiSignal = 1
-            overrides.values.displayRawWiFiSignal = 1
+            overrides.values.displayRawWifiSignal = 1
         else:
             overrides.overrideDisplayRawWifiSignal = 0
         self.setter.apply_changes(overrides)
