@@ -10,6 +10,7 @@ args = [
     '--hidden-import=zeroconf._utils.ipaddress',
     '--hidden-import=zeroconf._handlers.answers',
     '--hidden-import=_cffi_backend',
+    '--add-data=file_folders/:./file_folders',
     '--copy-metadata=pyimg4',
     '--onedir',
     '--name=Cowabunga Lite',

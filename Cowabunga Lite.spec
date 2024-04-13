@@ -1,7 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 from PyInstaller.utils.hooks import copy_metadata
 
-datas = []
+datas = [('file_folders/', './file_folders')]
 datas += copy_metadata('pyimg4')
 
 
@@ -10,7 +10,7 @@ a = Analysis(
     pathex=[],
     binaries=[],
     datas=datas,
-    hiddenimports=['ipsw_parser', 'zeroconf', 'pyimg4', 'zeroconf._utils.ipaddress', 'zeroconf._handlers.answers'],
+    hiddenimports=['ipsw_parser', 'zeroconf', 'pyimg4', 'zeroconf._utils.ipaddress', 'zeroconf._handlers.answers', '_cffi_backend'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
