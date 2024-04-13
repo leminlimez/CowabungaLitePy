@@ -12,6 +12,7 @@ from devicemanagement.constants import Version, Tweak, FileLocation
 from devicemanagement.device_manager import DeviceManager
 
 from tools.locsim import mount_dev_disk, LocSimManager
+from tools.status_bar.status_manager import StatusSetter
 
 from utils.plist_manager import get_plist_value, set_plist_value, delete_plist_key
 
@@ -118,6 +119,60 @@ class MainWindow(QtWidgets.QMainWindow):
         ## APPLY PAGE ACTIONS
         self.ui.applyTweaksBtn.clicked.connect(self.on_applyPageBtn_clicked)
 
+        ## STATUS BAR PAGE ACTIONS
+        self.ui.statusBarEnabledChk.toggled.connect(self.on_statusBarEnabledChk_toggled)
+        # PRIMARY CARRIER
+        self.ui.pDefaultRdo.clicked.connect(self.on_pDefaultRdo_clicked)
+        self.ui.pShowRdo.clicked.connect(self.on_pShowRdo_clicked)
+        self.ui.pHideRdo.clicked.connect(self.on_pHideRdo_clicked)
+        self.ui.pCarrierChk.toggled.connect(self.on_pCarrierChk_clicked)
+        self.ui.pCarrierTxt.textEdited.connect(self.on_pCarrierTxt_textEdited)
+        self.ui.pBadgeChk.toggled.connect(self.on_pBadgeChk_clicked)
+        self.ui.pBadgeTxt.textEdited.connect(self.on_pBadgeTxt_textEdited)
+        self.ui.pTypeChk.toggled.connect(self.on_pTypeChk_clicked)
+        self.ui.pTypeDrp.activated.connect(self.on_pTypeDrp_activated)
+        self.ui.pStrengthChk.toggled.connect(self.on_pStrengthChk_clicked)
+        self.ui.pStrengthSld.sliderMoved.connect(self.on_pStrengthSld_sliderMoved)
+        # SECONDARY CARRIER
+        self.ui.sDefaultRdo.clicked.connect(self.on_sDefaultRdo_clicked)
+        self.ui.sShowRdo.clicked.connect(self.on_sShowRdo_clicked)
+        self.ui.sHideRdo.clicked.connect(self.on_sHideRdo_clicked)
+        self.ui.sCarrierChk.toggled.connect(self.on_sCarrierChk_clicked)
+        self.ui.sCarrierTxt.textEdited.connect(self.on_sCarrierTxt_textEdited)
+        self.ui.sBadgeChk.toggled.connect(self.on_sBadgeChk_clicked)
+        self.ui.sBadgeTxt.textEdited.connect(self.on_sBadgeTxt_textEdited)
+        self.ui.sTypeChk.toggled.connect(self.on_sTypeChk_clicked)
+        self.ui.sTypeDrp.activated.connect(self.on_sTypeDrp_activated)
+        self.ui.sStrengthChk.toggled.connect(self.on_sStrengthChk_clicked)
+        self.ui.sStrengthSld.sliderMoved.connect(self.on_sStrengthSld_sliderMoved)
+        # MISC TEXT INPUTS
+        self.ui.timeChk.clicked.connect(self.on_timeChk_clicked)
+        self.ui.timeTxt.textEdited.connect(self.on_timeTxt_textEdited)
+        self.ui.breadcrumbChk.clicked.connect(self.on_breadcrumbChk_clicked)
+        self.ui.breadcrumbTxt.textEdited.connect(self.on_breadcrumbTxt_textEdited)
+        self.ui.batteryDetailChk.clicked.connect(self.on_batteryDetailChk_clicked)
+        self.ui.batteryDetailTxt.textEdited.connect(self.on_batteryDetailTxt_textEdited)
+        # MISC SLIDER INPUTS
+        self.ui.batteryCapacityChk.clicked.connect(self.on_batteryCapacityChk_clicked)
+        self.ui.batteryCapacitySld.sliderMoved.connect(self.on_batteryCapacitySld_sliderMoved)
+        self.ui.wifiStrengthChk.clicked.connect(self.on_wifiStrengthChk_clicked)
+        self.ui.wifiStrengthSld.sliderMoved.connect(self.on_wifiStrengthSld_sliderMoved)
+        # RAW SIGNAL STRENGTH INPUTS
+        self.ui.numericWifiChk.clicked.connect(self.on_numericWifiChk_clicked)
+        self.ui.numericCellChk.clicked.connect(self.on_numericCellChk_clicked)
+        # HIDE OPTION INPUTS
+        self.ui.hideDNDChk.clicked.connect(self.on_hideDNDChk_clicked)
+        self.ui.hideAirplaneChk.clicked.connect(self.on_hideAirplaneChk_clicked)
+        self.ui.hideWifiChk.clicked.connect(self.on_hideWifiChk_clicked)
+        self.ui.hideBatteryChk.clicked.connect(self.on_hideBatteryChk_clicked)
+        self.ui.hideBluetoothChk.clicked.connect(self.on_hideBatteryChk_clicked)
+        self.ui.hideAlarmChk.clicked.connect(self.on_hideAlarmChk_clicked)
+        self.ui.hideLocationChk.clicked.connect(self.on_hideLocationChk_clicked)
+        self.ui.hideRotationChk.clicked.connect(self.on_hideRotationChk_clicked)
+        self.ui.hideAirPlayChk.clicked.connect(self.on_hideAirPlayChk_clicked)
+        self.ui.hideCarPlayChk.clicked.connect(self.on_hideCarPlayChk_clicked)
+        self.ui.hideVPNChk.clicked.connect(self.on_hideVPNChk_clicked)
+
 
     ## GENERAL INTERFACE FUNCTIONS
     def updateInterfaceForNewDevice(self):
@@ -133,6 +188,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.location_loading = False
 
             # TODO: Load Pages
+            self.load_status_bar()
             self.load_springboard_options()
             self.load_internal_options()
             self.load_setup_options()
@@ -159,16 +215,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.enabledTweaksLbl.setText(label_txt)
 
         #self.ui.themesEnabledChk.setChecked()
-        #self.ui.statusBarEnabledChk.setChecked()
+        self.ui.statusBarEnabledChk.setChecked(Tweak.StatusBar in tweaks)
         self.ui.springboardOptionsEnabledChk.setChecked(Tweak.SpringboardOptions in tweaks)
         self.ui.internalOptionsEnabledChk.setChecked(Tweak.InternalOptions in tweaks)
         self.ui.setupOptionsEnabledChk.setChecked(Tweak.SkipSetup in tweaks)
 
-    def set_key(self, key: str, checked: bool, loc: str):
+    def set_key(self, key: str, checked: bool, loc: FileLocation):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, loc)
+        location = os.path.join(ws, loc.value)
         if checked:
             set_plist_value(location, key, checked)
         else:
@@ -349,6 +405,302 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_resetLocationBtn_clicked(self):
         if self.locsim_manager != None:
             self.locsim_manager.reset()
+
+
+    ## STATUS BAR PAGE
+    def on_statusBarEnabledChk_toggled(self, checked: bool):
+        self.ui.statusBarPageContent.setDisabled(not checked)
+        self.device_manager.data_singleton.set_tweak_enabled(tweak=Tweak.StatusBar, enabled=checked)
+        self.update_enabled_tweaks()
+
+    # PRIMARY CARRIER
+    def on_pDefaultRdo_clicked(self):
+        if self.status_manager != None:
+            self.status_manager.unset_cellular_service()
+    def on_pShowRdo_clicked(self):
+        if self.status_manager != None:
+            self.status_manager.set_cellular_service(True)
+    def on_pHideRdo_clicked(self):
+        if self.status_manager != None:
+            self.status_manager.set_cellular_service(False)
+    def on_pCarrierChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_carrier_override(str(self.ui.pCarrierTxt.text()))
+            else:
+                self.status_manager.unset_carrier_override()
+    def on_pCarrierTxt_textEdited(self, text: str):
+        if self.status_manager != None:
+            if self.ui.pCarrierChk.isChecked():
+                self.status_manager.set_carrier_override(text)
+    def on_pBadgeChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_primary_service_badge(str(self.ui.pBadgeTxt.text()))
+            else:
+                self.status_manager.unset_primary_service_badge()
+    def on_pBadgeTxt_textEdited(self, text: str):
+        if self.status_manager != None:
+            if self.ui.pBadgeChk.isChecked():
+                self.status_manager.set_primary_service_badge(text)
+    def on_pTypeChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_data_network_type(self.ui.pTypeDrp.currentIndex())
+            else:
+                self.status_manager.unset_data_network_type()
+    def on_pTypeDrp_activated(self, index: int):
+        if self.status_manager != None:
+            if self.ui.pTypeChk.isChecked():
+                self.status_manager.set_data_network_type(self.ui.pTypeDrp.currentIndex())
+    def on_pStrengthChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_gsm_signal_strength_bars(self.ui.pStrengthSld.value())
+            else:
+                self.status_manager.unset_gsm_signal_strength_bars()
+    def on_pStrengthSld_sliderMoved(self, pos: int):
+        self.ui.pStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
+        if self.status_manager != None:
+            if self.ui.pStrengthChk.isChecked():
+                self.status_manager.set_gsm_signal_strength_bars(pos)
+
+    # SECONDARY CARRIER
+    def on_sDefaultRdo_clicked(self):
+        if self.status_manager != None:
+            self.status_manager.unset_secondary_cellular_service()
+    def on_sShowRdo_clicked(self):
+        if self.status_manager != None:
+            self.status_manager.set_secondary_cellular_service(True)
+    def on_sHideRdo_clicked(self):
+        if self.status_manager != None:
+            self.status_manager.set_secondary_cellular_service(False)
+    def on_sCarrierChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_secondary_carrier_override(str(self.ui.sCarrierTxt.text()))
+            else:
+                self.status_manager.unset_secondary_carrier_override()
+    def on_sCarrierTxt_textEdited(self, text: str):
+        if self.status_manager != None:
+            if self.ui.sCarrierChk.isChecked():
+                self.status_manager.set_secondary_carrier_override(text)
+    def on_sBadgeChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_secondary_service_badge(str(self.ui.sBadgeTxt.text()))
+            else:
+                self.status_manager.unset_secondary_service_badge()
+    def on_sBadgeTxt_textEdited(self, text: str):
+        if self.status_manager != None:
+            if self.ui.sBadgeChk.isChecked():
+                self.status_manager.set_secondary_service_badge(text)
+    def on_sTypeChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_secondary_data_network_type(self.ui.sTypeDrp.currentIndex())
+            else:
+                self.status_manager.unset_secondary_data_network_type()
+    def on_sTypeDrp_activated(self, index: int):
+        if self.status_manager != None:
+            if self.ui.sTypeChk.isChecked():
+                self.status_manager.set_secondary_data_network_type(index)
+    def on_sStrengthChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_secondary_gsm_signal_strength_bars(self.ui.sStrengthSld.value())
+            else:
+                self.status_manager.unset_secondary_gsm_signal_strength_bars()
+    def on_sStrengthSld_sliderMoved(self, pos: int):
+        self.ui.sStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
+        if self.status_manager != None:
+            if self.ui.sStrengthChk.isChecked():
+                self.status_manager.set_secondary_gsm_signal_strength_bars(pos)
+
+    # Misc Text Inputs
+    def on_timeChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_time(self.ui.timeTxt.text())
+            else:
+                self.status_manager.unset_time()
+    def on_timeTxt_textEdited(self, text: str):
+        if self.status_manager != None:
+            if self.ui.timeChk.isChecked():
+                self.status_manager.set_time(text)
+
+    def on_breadcrumbChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_crumb(self.ui.breadcrumbTxt.text())
+            else:
+                self.status_manager.unset_crumb()
+    def on_breadcrumbTxt_textEdited(self, text: str):
+        if self.status_manager != None:
+            if self.ui.breadcrumbChk.isChecked():
+                self.status_manager.set_crumb(text)
+
+    def on_batteryDetailChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_battery_detail(self.ui.batteryDetailTxt.text())
+            else:
+                self.status_manager.unset_battery_detail()
+    def on_batteryDetailTxt_textEdited(self, text: str):
+        if self.status_manager != None:
+            if self.ui.batteryDetailChk.isChecked():
+                self.status_manager.set_battery_detail(text)
+
+    # Misc Slider Inputs
+    def on_batteryCapacityChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_battery_capacity(self.ui.batteryCapacitySld.value())
+            else:
+                self.status_manager.unset_battery_capacity()
+    def on_batteryCapacitySld_sliderMoved(self, pos: int):
+        self.ui.batteryCapacityLbl.setText(str(pos) + "%")
+        if self.status_manager != None:
+            if self.ui.batteryCapacityChk.isChecked():
+                self.status_manager.set_battery_capacity(pos)
+
+    def on_wifiStrengthChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            if checked:
+                self.status_manager.set_wifi_signal_strength_bars(self.ui.wifiStrengthSld.value())
+            else:
+                self.status_manager.unset_wifi_signal_strength_bars()
+    def on_wifiStrengthSld_sliderMoved(self, pos: int):
+        self.ui.wifiStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
+        if self.status_manager != None:
+            if self.ui.wifiStrengthChk.isChecked():
+                self.status_manager.set_wifi_signal_strength_bars(pos)
+
+    # Raw Signal Strength Inputs
+    def on_numericWifiChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.show_raw_wifi_signal(checked)
+    def on_numericCellChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.show_raw_gsm_signal(checked)
+
+    # Hiding Option Inputs
+    def on_hideDNDChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_dnd(checked)
+    def on_hideAirplaneChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_airplane(checked)
+    def on_hideWifiChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_wifi(checked)
+    def on_hideBatteryChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_battery(checked)
+    def on_hideBluetoothChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_bluetooth(checked)
+    def on_hideAlarmChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_alarm(checked)
+    def on_hideLocationChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_location(checked)
+    def on_hideRotationChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_rotation(checked)
+    def on_hideAirPlayChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_airplay(checked)
+    def on_hideCarPlayChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_carplay(checked)
+    def on_hideVPNChk_clicked(self, checked: bool):
+        if self.status_manager != None:
+            self.status_manager.hide_vpn(checked)
+
+        
+    ## LOADING STATUS BAR
+    def load_status_bar(self):
+        ws = self.device_manager.data_singleton.current_workspace
+        if ws == None:
+            self.status_manager = None
+            return
+        self.status_manager = StatusSetter(self.device_manager.get_current_device_version(), ws)
+        if self.status_manager == None:
+            return
+        # Load primary carrier settings
+        if self.status_manager.is_cellular_service_overridden():
+            if self.status_manager.get_cellular_service_override():
+                self.ui.pShowRdo.setChecked(True)
+            else:
+                self.ui.pHideRdo.setChecked(True)
+        else:
+            self.ui.pDefaultRdo.setChecked(True)
+        self.ui.pCarrierChk.setChecked(self.status_manager.is_carrier_overridden())
+        self.ui.pCarrierTxt.setText(self.status_manager.get_carrier_override())
+        self.ui.pBadgeChk.setChecked(self.status_manager.is_primary_service_badge_overridden())
+        self.ui.pBadgeTxt.setText(self.status_manager.get_primary_service_badge_override())
+        self.ui.pTypeChk.setChecked(self.status_manager.is_data_network_type_overridden())
+        self.ui.pTypeDrp.setCurrentIndex(self.status_manager.get_data_network_type_override())
+        self.ui.pStrengthChk.setChecked(self.status_manager.is_gsm_signal_strength_bars_overridden())
+        pos: int = self.status_manager.get_gsm_signal_strength_bars_override()
+        self.ui.pStrengthSld.setValue(pos)
+        self.ui.pStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
+
+        # Load secondary carrier settings
+        if self.status_manager.is_secondary_cellular_service_overridden():
+            if self.status_manager.get_secondary_cellular_service_override():
+                self.ui.sShowRdo.setChecked(True)
+            else:
+                self.ui.sHideRdo.setChecked(True)
+        else:
+            self.ui.sDefaultRdo.setChecked(True)
+        self.ui.sCarrierChk.setChecked(self.status_manager.is_secondary_carrier_overridden())
+        self.ui.sCarrierTxt.setText(self.status_manager.get_secondary_carrier_override())
+        self.ui.sBadgeChk.setChecked(self.status_manager.is_secondary_service_badge_overridden())
+        self.ui.sBadgeTxt.setText(self.status_manager.get_secondary_service_badge_override())
+        self.ui.sTypeChk.setChecked(self.status_manager.is_secondary_data_network_type_overridden())
+        self.ui.sTypeDrp.setCurrentIndex(self.status_manager.get_secondary_data_network_type_override())
+        self.ui.sStrengthChk.setChecked(self.status_manager.is_secondary_gsm_signal_strength_bars_overridden())
+        pos = self.status_manager.get_secondary_gsm_signal_strength_bars_override()
+        self.ui.sStrengthSld.setValue(pos)
+        self.ui.sStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
+
+        # Load misc text inputs
+        self.ui.timeChk.setChecked(self.status_manager.is_time_overridden())
+        self.ui.timeTxt.setText(self.status_manager.get_time_override())
+        self.ui.breadcrumbChk.setChecked(self.status_manager.is_crumb_overridden())
+        self.ui.breadcrumbTxt.setText(self.status_manager.get_crumb_override())
+        self.ui.batteryDetailChk.setChecked(self.status_manager.is_battery_detail_overridden())
+        self.ui.batteryDetailTxt.setText(self.status_manager.get_battery_detail_override())
+
+        # Load misc slider inputs
+        self.ui.batteryCapacityChk.setChecked(self.status_manager.is_battery_capacity_overridden())
+        pos = self.status_manager.get_battery_capacity_override()
+        self.ui.batteryCapacitySld.setValue(pos)
+        self.ui.batteryCapacityLbl.setText(str(pos) + "%")
+        self.ui.wifiStrengthChk.setChecked(self.status_manager.is_wifi_signal_strength_bars_overridden())
+        pos = self.status_manager.get_wifi_signal_strength_bars_override()
+        self.ui.wifiStrengthSld.setValue(pos)
+        self.ui.wifiStrengthLbl.setText(str(pos) + (" Bar" if pos == 1 else " Bars"))
+
+        # Load raw signal strength inputs
+        self.ui.numericWifiChk.setChecked(self.status_manager.is_raw_wifi_signal_shown())
+        self.ui.numericCellChk.setChecked(self.status_manager.is_raw_gsm_signal_shown())
+
+        # Load hiding option inputs
+        self.ui.hideDNDChk.setChecked(self.status_manager.is_dnd_hidden())
+        self.ui.hideAirplaneChk.setChecked(self.status_manager.is_airplane_hidden())
+        self.ui.hideWifiChk.setChecked(self.status_manager.is_wifi_hidden())
+        self.ui.hideBatteryChk.setChecked(self.status_manager.is_battery_hidden())
+        self.ui.hideBluetoothChk.setChecked(self.status_manager.is_bluetooth_hidden())
+        self.ui.hideAlarmChk.setChecked(self.status_manager.is_alarm_hidden())
+        self.ui.hideLocationChk.setChecked(self.status_manager.is_location_hidden())
+        self.ui.hideRotationChk.setChecked(self.status_manager.is_rotation_hidden())
+        self.ui.hideAirPlayChk.setChecked(self.status_manager.is_airplay_hidden())
+        self.ui.hideCarPlayChk.setChecked(self.status_manager.is_carplay_hidden())
+        self.ui.hideVPNChk.setChecked(self.status_manager.is_vpn_hidden())
         
     
     ## SPRINGBOARD OPTIONS PAGE
@@ -365,7 +717,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, FileLocation.uikit)
+        location = os.path.join(ws, FileLocation.uikit.value)
         if speed != 1:
             set_plist_value(location, "UIAnimationDragCoefficient", speed)
         else:
@@ -375,7 +727,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, FileLocation.footnote)
+        location = os.path.join(ws, FileLocation.footnote.value)
         if text != "":
             set_plist_value(location, "LockScreenFootnote", text)
         else:
@@ -400,7 +752,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, FileLocation.airdrop)
+        location = os.path.join(ws, FileLocation.airdrop.value)
         if checked:
             set_plist_value(location, "DiscoverableMode", "Everyone")
         else:
@@ -413,7 +765,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if ws == None:
             return
         # load all the files
-        location = os.path.join(ws, FileLocation.uikit)
+        location = os.path.join(ws, FileLocation.uikit.value)
         value = get_plist_value(location, "UIAnimationDragCoefficient")
         if value != None:
             speed_txt = "Default" if value == 1 else "Slow" if value > 1 else "Fast"
@@ -422,11 +774,11 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.ui.UIAnimSpeedLbl.setText("1 (Default)")
             self.ui.UIAnimSpeedSld.setValue(100)
-        location = os.path.join(ws, FileLocation.footnote)
+        location = os.path.join(ws, FileLocation.footnote.value)
         value = get_plist_value(location, "LockScreenFootnote")
         self.ui.footnoteTxt.setText("" if value == None else str(value))
 
-        location = os.path.join(ws, FileLocation.springboard)
+        location = os.path.join(ws, FileLocation.springboard.value)
         value = get_plist_value(location, "SBDontLockAfterCrash")
         self.ui.disableLockRespringChk.setChecked(value if value else False)
         value = get_plist_value(location, "SBDontDimOrLockOnAC")
@@ -438,15 +790,15 @@ class MainWindow(QtWidgets.QMainWindow):
         value = get_plist_value(location, "SBShowSupervisionTextOnLockScreen")
         self.ui.enableSupervisionTextChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.wifi_debug)
+        location = os.path.join(ws, FileLocation.wifi_debug.value)
         value = get_plist_value(location, "WiFiManagerLoggingEnabled")
         self.ui.enableWiFiDebuggerChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.accessibility)
+        location = os.path.join(ws, FileLocation.accessibility.value)
         value = get_plist_value(location, "StartupSoundEnabled")
         self.ui.enableShutdownSoundChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.airdrop)
+        location = os.path.join(ws, FileLocation.airdrop.value)
         value = get_plist_value(location, "DiscoverableMode")
         self.ui.allowAirDropEveryoneChk.setChecked(value if value == "Everyone" else False)
 
@@ -495,7 +847,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if ws == None:
             return
         # load all the files
-        location = os.path.join(ws, FileLocation.global_prefs)
+        location = os.path.join(ws, FileLocation.global_prefs.value)
         value = get_plist_value(location, "UIStatusBarShowBuildVersion")
         self.ui.buildVersionChk.setChecked(value if value else False)
         value = get_plist_value(location, "NSForceRightToLeftWritingDirection")
@@ -511,25 +863,25 @@ class MainWindow(QtWidgets.QMainWindow):
         value = get_plist_value(location, "VCDiagnosticsEnabled")
         self.ui.VCChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.app_store)
+        location = os.path.join(ws, FileLocation.app_store.value)
         value = get_plist_value(location, "debugGestureEnabled")
         self.ui.appStoreChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.notes)
+        location = os.path.join(ws, FileLocation.notes.value)
         value = get_plist_value(location, "DebugModeEnabled")
         self.ui.notesChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.backboardd)
+        location = os.path.join(ws, FileLocation.backboardd.value)
         value = get_plist_value(location, "BKDigitizerVisualizeTouches")
         self.ui.showTouchesChk.setChecked(value if value else False)
         value = get_plist_value(location, "BKHideAppleLogoOnLaunch")
         self.ui.hideRespringChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.core_motion)
+        location = os.path.join(ws, FileLocation.core_motion.value)
         value = get_plist_value(location, "EnableWakeGestureHaptic")
         self.ui.enableWakeVibrateChk.setChecked(value if value else False)
 
-        location = os.path.join(ws, FileLocation.pasteboard)
+        location = os.path.join(ws, FileLocation.pasteboard.value)
         value = get_plist_value(location, "PlaySoundOnPaste")
         self.ui.pasteSoundChk.setChecked(value if value else False)
         value = get_plist_value(location, "AnnounceAllPastes")
@@ -546,7 +898,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, FileLocation.cloud_config)
+        location = os.path.join(ws, FileLocation.cloud_config.value)
         if checked:
             set_plist_value(location, "CloudConfigurationUIComplete", True)
             to_skip = [
@@ -603,7 +955,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ws = self.device_manager.data_singleton.current_workspace
         if ws == None:
             return
-        location = os.path.join(ws, FileLocation.cloud_config)
+        location = os.path.join(ws, FileLocation.cloud_config.value)
         if text != "":
             set_plist_value(location, "OrganizationName", text)
         else:
@@ -614,7 +966,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def load_setup_options(self):
         ws = self.device_manager.data_singleton.current_workspace
         # load all the files
-        location = os.path.join(ws, FileLocation.cloud_config)
+        location = os.path.join(ws, FileLocation.cloud_config.value)
         skip_setup = get_plist_value(location, "SkipSetup")
         is_supervised = get_plist_value(location, "IsSupervised")
         org_name = get_plist_value(location, "OrganizationName")
