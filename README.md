@@ -8,6 +8,14 @@ Requirements:
 - pymobiledevice3
 - PyInstaller (for compiling an executable)
 
+Note: It is highly recommended to use a virtual environment:
+```
+python3 -m venv env # only needed once
+source env/bin/active
+pip3 install -r requirements.txt # only needed once
+python3 main_app.py
+```
+
 To compile `mainwindow.ui` for Python, run the following command:
 `pyside6-uic mainwindow.ui -o ui_mainwindow.py`
 

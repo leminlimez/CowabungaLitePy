@@ -4,3 +4,4 @@ __pycache__
 build
 dist
 mainwindow.ui.autosave
+/env
