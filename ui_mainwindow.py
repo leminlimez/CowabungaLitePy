@@ -342,13 +342,26 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout.addWidget(self.sidebarDiv1)
 
+        self.customOperationsPageBtn = QToolButton(self.sidebar)
+        self.customOperationsPageBtn.setObjectName(u"customOperationsPageBtn")
+        sizePolicy2.setHeightForWidth(self.customOperationsPageBtn.sizePolicy().hasHeightForWidth())
+        self.customOperationsPageBtn.setSizePolicy(sizePolicy2)
+        icon5 = QIcon()
+        icon5.addFile(u":/icon/pencil.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.customOperationsPageBtn.setIcon(icon5)
+        self.customOperationsPageBtn.setCheckable(True)
+        self.customOperationsPageBtn.setAutoExclusive(True)
+        self.customOperationsPageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+
+        self.verticalLayout.addWidget(self.customOperationsPageBtn)
+
         self.themesPageBtn = QToolButton(self.sidebar)
         self.themesPageBtn.setObjectName(u"themesPageBtn")
         sizePolicy2.setHeightForWidth(self.themesPageBtn.sizePolicy().hasHeightForWidth())
         self.themesPageBtn.setSizePolicy(sizePolicy2)
-        icon5 = QIcon()
-        icon5.addFile(u":/icon/brush.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.themesPageBtn.setIcon(icon5)
+        icon6 = QIcon()
+        icon6.addFile(u":/icon/brush.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.themesPageBtn.setIcon(icon6)
         self.themesPageBtn.setCheckable(True)
         self.themesPageBtn.setAutoExclusive(True)
         self.themesPageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -360,27 +373,14 @@ class Ui_CowabungaLite(object):
         self.statusBarPageBtn.setObjectName(u"statusBarPageBtn")
         sizePolicy2.setHeightForWidth(self.statusBarPageBtn.sizePolicy().hasHeightForWidth())
         self.statusBarPageBtn.setSizePolicy(sizePolicy2)
-        icon6 = QIcon()
-        icon6.addFile(u":/icon/wifi.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.statusBarPageBtn.setIcon(icon6)
+        icon7 = QIcon()
+        icon7.addFile(u":/icon/wifi.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.statusBarPageBtn.setIcon(icon7)
         self.statusBarPageBtn.setCheckable(True)
         self.statusBarPageBtn.setAutoExclusive(True)
         self.statusBarPageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
         self.verticalLayout.addWidget(self.statusBarPageBtn)
-
-        self.controlCenterPageBtn = QToolButton(self.sidebar)
-        self.controlCenterPageBtn.setObjectName(u"controlCenterPageBtn")
-        sizePolicy2.setHeightForWidth(self.controlCenterPageBtn.sizePolicy().hasHeightForWidth())
-        self.controlCenterPageBtn.setSizePolicy(sizePolicy2)
-        icon7 = QIcon()
-        icon7.addFile(u":/icon/toggles.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.controlCenterPageBtn.setIcon(icon7)
-        self.controlCenterPageBtn.setCheckable(True)
-        self.controlCenterPageBtn.setAutoExclusive(True)
-        self.controlCenterPageBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-
-        self.verticalLayout.addWidget(self.controlCenterPageBtn)
 
         self.springboardOptionsPageBtn = QToolButton(self.sidebar)
         self.springboardOptionsPageBtn.setObjectName(u"springboardOptionsPageBtn")
@@ -1115,7 +1115,7 @@ class Ui_CowabungaLite(object):
 "	padding-right: 5px;\n"
 "	border-radius: 0px;\n"
 "}")
-        self.themesBtn.setIcon(icon5)
+        self.themesBtn.setIcon(icon6)
 
         self.horizontalLayout_23.addWidget(self.themesBtn)
 
@@ -1278,7 +1278,7 @@ class Ui_CowabungaLite(object):
 "	padding-right: 5px;\n"
 "	border-radius: 0px;\n"
 "}")
-        self.toolButton_8.setIcon(icon6)
+        self.toolButton_8.setIcon(icon7)
 
         self.horizontalLayout_5.addWidget(self.toolButton_8)
 
@@ -1833,12 +1833,12 @@ class Ui_CowabungaLite(object):
         self.verticalLayout_4.addWidget(self.scrollArea)
 
         self.pages.addWidget(self.statusBarPage)
-        self.controlCenterPage = QWidget()
-        self.controlCenterPage.setObjectName(u"controlCenterPage")
-        self.verticalLayout_20 = QVBoxLayout(self.controlCenterPage)
+        self.customOperationsPage = QWidget()
+        self.customOperationsPage.setObjectName(u"customOperationsPage")
+        self.verticalLayout_20 = QVBoxLayout(self.customOperationsPage)
         self.verticalLayout_20.setObjectName(u"verticalLayout_20")
         self.verticalLayout_20.setContentsMargins(0, 0, 0, 0)
-        self.horizontalWidget_7 = QWidget(self.controlCenterPage)
+        self.horizontalWidget_7 = QWidget(self.customOperationsPage)
         self.horizontalWidget_7.setObjectName(u"horizontalWidget_7")
         self.horizontalLayout_22 = QHBoxLayout(self.horizontalWidget_7)
         self.horizontalLayout_22.setSpacing(10)
@@ -1854,7 +1854,8 @@ class Ui_CowabungaLite(object):
 "	padding-right: 5px;\n"
 "	border-radius: 0px;\n"
 "}")
-        self.toolButton_12.setIcon(icon7)
+        self.toolButton_12.setIcon(icon5)
+        self.toolButton_12.setIconSize(QSize(25, 25))
 
         self.horizontalLayout_22.addWidget(self.toolButton_12)
 
@@ -1864,16 +1865,16 @@ class Ui_CowabungaLite(object):
         self.verticalLayout_18.setSpacing(6)
         self.verticalLayout_18.setObjectName(u"verticalLayout_18")
         self.verticalLayout_18.setContentsMargins(0, 0, 0, 0)
-        self.controlCenterLbl = QLabel(self.verticalWidget_6)
-        self.controlCenterLbl.setObjectName(u"controlCenterLbl")
-        self.controlCenterLbl.setFont(font)
+        self.customOperationsLbl = QLabel(self.verticalWidget_6)
+        self.customOperationsLbl.setObjectName(u"customOperationsLbl")
+        self.customOperationsLbl.setFont(font)
 
-        self.verticalLayout_18.addWidget(self.controlCenterLbl)
+        self.verticalLayout_18.addWidget(self.customOperationsLbl)
 
-        self.controlCenterEnabledChk = QCheckBox(self.verticalWidget_6)
-        self.controlCenterEnabledChk.setObjectName(u"controlCenterEnabledChk")
+        self.label_14 = QLabel(self.verticalWidget_6)
+        self.label_14.setObjectName(u"label_14")
 
-        self.verticalLayout_18.addWidget(self.controlCenterEnabledChk)
+        self.verticalLayout_18.addWidget(self.label_14)
 
 
         self.horizontalLayout_22.addWidget(self.verticalWidget_6)
@@ -1885,7 +1886,7 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_20.addWidget(self.horizontalWidget_7)
 
-        self.line_14 = QFrame(self.controlCenterPage)
+        self.line_14 = QFrame(self.customOperationsPage)
         self.line_14.setObjectName(u"line_14")
         self.line_14.setStyleSheet(u"QFrame {\n"
 "	color: #414141;\n"
@@ -1895,25 +1896,64 @@ class Ui_CowabungaLite(object):
 
         self.verticalLayout_20.addWidget(self.line_14)
 
-        self.controlCenterPageContent = QWidget(self.controlCenterPage)
-        self.controlCenterPageContent.setObjectName(u"controlCenterPageContent")
-        self.controlCenterPageContent.setEnabled(False)
-        self.verticalLayout_19 = QVBoxLayout(self.controlCenterPageContent)
+        self.customOperationsPageContent = QWidget(self.customOperationsPage)
+        self.customOperationsPageContent.setObjectName(u"customOperationsPageContent")
+        self.customOperationsPageContent.setEnabled(False)
+        self.verticalLayout_19 = QVBoxLayout(self.customOperationsPageContent)
         self.verticalLayout_19.setObjectName(u"verticalLayout_19")
         self.verticalLayout_19.setContentsMargins(0, 0, 0, 0)
-        self.hideConferenceModulesChk = QCheckBox(self.controlCenterPageContent)
-        self.hideConferenceModulesChk.setObjectName(u"hideConferenceModulesChk")
+        self.customOpsTopBtns = QHBoxLayout()
+#ifndef Q_OS_MAC
+        self.customOpsTopBtns.setSpacing(-1)
+#endif
+        self.customOpsTopBtns.setObjectName(u"customOpsTopBtns")
+        self.customOpsTopBtns.setContentsMargins(-1, -1, -1, 0)
+        self.horizontalSpacer_17 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.verticalLayout_19.addWidget(self.hideConferenceModulesChk)
+        self.customOpsTopBtns.addItem(self.horizontalSpacer_17)
 
-        self.verticalSpacer_8 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.importOperationBtn = QToolButton(self.customOperationsPageContent)
+        self.importOperationBtn.setObjectName(u"importOperationBtn")
+        self.importOperationBtn.setEnabled(False)
+        icon22 = QIcon()
+        icon22.addFile(u":/icon/import.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.importOperationBtn.setIcon(icon22)
+        self.importOperationBtn.setIconSize(QSize(20, 20))
+        self.importOperationBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
-        self.verticalLayout_19.addItem(self.verticalSpacer_8)
+        self.customOpsTopBtns.addWidget(self.importOperationBtn, 0, Qt.AlignLeft)
+
+        self.newOperationBtn = QToolButton(self.customOperationsPageContent)
+        self.newOperationBtn.setObjectName(u"newOperationBtn")
+        self.newOperationBtn.setEnabled(False)
+        sizePolicy2.setHeightForWidth(self.newOperationBtn.sizePolicy().hasHeightForWidth())
+        self.newOperationBtn.setSizePolicy(sizePolicy2)
+        self.newOperationBtn.setMinimumSize(QSize(0, 35))
+        icon23 = QIcon()
+        icon23.addFile(u":/icon/plus.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.newOperationBtn.setIcon(icon23)
+        self.newOperationBtn.setIconSize(QSize(16, 16))
+        self.newOperationBtn.setCheckable(False)
+        self.newOperationBtn.setAutoExclusive(True)
+        self.newOperationBtn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+
+        self.customOpsTopBtns.addWidget(self.newOperationBtn, 0, Qt.AlignLeft)
 
 
-        self.verticalLayout_20.addWidget(self.controlCenterPageContent)
+        self.verticalLayout_19.addLayout(self.customOpsTopBtns)
 
-        self.pages.addWidget(self.controlCenterPage)
+        self.operationsCnt = QWidget(self.customOperationsPageContent)
+        self.operationsCnt.setObjectName(u"operationsCnt")
+        self.operationsCnt.setEnabled(False)
+        sizePolicy5.setHeightForWidth(self.operationsCnt.sizePolicy().hasHeightForWidth())
+        self.operationsCnt.setSizePolicy(sizePolicy5)
+
+        self.verticalLayout_19.addWidget(self.operationsCnt)
+
+
+        self.verticalLayout_20.addWidget(self.customOperationsPageContent)
+
+        self.pages.addWidget(self.customOperationsPage)
         self.springboardOptionsPage = QWidget()
         self.springboardOptionsPage.setObjectName(u"springboardOptionsPage")
         self.verticalLayout_10 = QVBoxLayout(self.springboardOptionsPage)
@@ -2552,12 +2592,12 @@ class Ui_CowabungaLite(object):
         self.explorePageBtn.setProperty("cls", QCoreApplication.translate("CowabungaLite", u"sidebarBtn", None))
         self.locSimPageBtn.setText(QCoreApplication.translate("CowabungaLite", u"    Location Simulation", None))
         self.locSimPageBtn.setProperty("cls", QCoreApplication.translate("CowabungaLite", u"sidebarBtn", None))
+        self.customOperationsPageBtn.setText(QCoreApplication.translate("CowabungaLite", u"    Custom Operations", None))
+        self.customOperationsPageBtn.setProperty("cls", QCoreApplication.translate("CowabungaLite", u"sidebarBtn", None))
         self.themesPageBtn.setText(QCoreApplication.translate("CowabungaLite", u"    Icon Theming", None))
         self.themesPageBtn.setProperty("cls", QCoreApplication.translate("CowabungaLite", u"sidebarBtn", None))
         self.statusBarPageBtn.setText(QCoreApplication.translate("CowabungaLite", u"    Status Bar", None))
         self.statusBarPageBtn.setProperty("cls", QCoreApplication.translate("CowabungaLite", u"sidebarBtn", None))
-        self.controlCenterPageBtn.setText(QCoreApplication.translate("CowabungaLite", u"    Control Center", None))
-        self.controlCenterPageBtn.setProperty("cls", QCoreApplication.translate("CowabungaLite", u"sidebarBtn", None))
         self.springboardOptionsPageBtn.setText(QCoreApplication.translate("CowabungaLite", u"    Springboard Options", None))
         self.springboardOptionsPageBtn.setProperty("cls", QCoreApplication.translate("CowabungaLite", u"sidebarBtn", None))
         self.internalOptionsPageBtn.setText(QCoreApplication.translate("CowabungaLite", u"    Internal Options", None))
@@ -2688,9 +2728,10 @@ class Ui_CowabungaLite(object):
         self.hideCarPlayChk.setText(QCoreApplication.translate("CowabungaLite", u"Hide CarPlay", None))
         self.hideVPNChk.setText(QCoreApplication.translate("CowabungaLite", u"Hide VPN", None))
         self.label_12.setText(QCoreApplication.translate("CowabungaLite", u"^Will also hide cellular data indicator.", None))
-        self.controlCenterLbl.setText(QCoreApplication.translate("CowabungaLite", u"Control Center", None))
-        self.controlCenterEnabledChk.setText(QCoreApplication.translate("CowabungaLite", u"Modify", None))
-        self.hideConferenceModulesChk.setText(QCoreApplication.translate("CowabungaLite", u"Hide \"Video Effects\" and \"Mic Mode\" Modules", None))
+        self.customOperationsLbl.setText(QCoreApplication.translate("CowabungaLite", u"Custom Operations", None))
+        self.label_14.setText("")
+        self.importOperationBtn.setText(QCoreApplication.translate("CowabungaLite", u"  Import .cowperation", None))
+        self.newOperationBtn.setText(QCoreApplication.translate("CowabungaLite", u"  New Operation", None))
         self.springboardOptionsLbl.setText(QCoreApplication.translate("CowabungaLite", u"Springboard Options", None))
         self.springboardOptionsEnabledChk.setText(QCoreApplication.translate("CowabungaLite", u"Modify", None))
         self.label_8.setText(QCoreApplication.translate("CowabungaLite", u"UI Animation Speed", None))

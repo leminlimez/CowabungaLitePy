@@ -20,9 +20,9 @@ class Page(Enum):
     Home = 0
     Explore = 1
     LocSim = 2
+    CustomOperations = 5
     Themes = 3
     StatusBar = 4
-    ControlCenter = 5
     SpringboardOptions = 6
     InternalOptions = 7
     SetupOptions = 8
@@ -50,7 +50,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.locSimPageBtn.clicked.connect(self.on_locSimPageBtn_clicked)
         self.ui.themesPageBtn.clicked.connect(self.on_themesPageBtn_clicked)
         self.ui.statusBarPageBtn.clicked.connect(self.on_statusBarPageBtn_clicked)
-        self.ui.controlCenterPageBtn.clicked.connect(self.on_controlCenterPageBtn_clicked)
+        self.ui.customOperationsPageBtn.clicked.connect(self.on_customOperationsPageBtn_clicked)
         self.ui.springboardOptionsPageBtn.clicked.connect(self.on_springboardOptionsPageBtn_clicked)
         self.ui.internalOptionsPageBtn.clicked.connect(self.on_internalOptionsPageBtn_clicked)
         self.ui.setupOptionsPageBtn.clicked.connect(self.on_setupOptionsPageBtn_clicked)
@@ -252,7 +252,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.sidebarDiv1.hide()
             self.ui.themesPageBtn.hide()
             self.ui.statusBarPageBtn.hide()
-            self.ui.controlCenterPageBtn.hide()
+            self.ui.customOperationsPageBtn.hide()
             self.ui.springboardOptionsPageBtn.hide()
             self.ui.internalOptionsPageBtn.hide()
             self.ui.setupOptionsPageBtn.hide()
@@ -269,7 +269,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.sidebarDiv1.show()
             self.ui.themesPageBtn.show()
             self.ui.statusBarPageBtn.show()
-            self.ui.controlCenterPageBtn.show()
+            self.ui.customOperationsPageBtn.show()
             self.ui.springboardOptionsPageBtn.show()
             self.ui.internalOptionsPageBtn.show()
             self.ui.setupOptionsPageBtn.show()
@@ -306,8 +306,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def on_statusBarPageBtn_clicked(self):
         self.ui.pages.setCurrentIndex(Page.StatusBar.value)
     
-    def on_controlCenterPageBtn_clicked(self):
-        self.ui.pages.setCurrentIndex(Page.ControlCenter.value)
+    def on_customOperationsPageBtn_clicked(self):
+        self.ui.pages.setCurrentIndex(Page.CustomOperations.value)
 
     def on_springboardOptionsPageBtn_clicked(self):
         self.ui.pages.setCurrentIndex(Page.SpringboardOptions.value)

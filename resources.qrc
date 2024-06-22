@@ -30,5 +30,8 @@
         <file>cowlite.ico</file>
         <file>missing.png</file>
         <file>icon/star.svg</file>
+        <file>icon/pencil.svg</file>
+        <file>icon/import.svg</file>
+        <file>icon/plus.svg</file>
     </qresource>
 </RCC>

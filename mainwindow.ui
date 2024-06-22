@@ -506,6 +506,35 @@ QSlider::tick:horizontal {
            </widget>
           </item>
           <item>
+           <widget class="QToolButton" name="customOperationsPageBtn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>    Custom Operations</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/icon/pencil.svg</normaloff>:/icon/pencil.svg</iconset>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
+            </property>
+            <property name="cls" stdset="0">
+             <string>sidebarBtn</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QToolButton" name="themesPageBtn">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -551,35 +580,6 @@ QSlider::tick:horizontal {
             <property name="icon">
              <iconset resource="resources.qrc">
               <normaloff>:/icon/wifi.svg</normaloff>:/icon/wifi.svg</iconset>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="autoExclusive">
-             <bool>true</bool>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonTextBesideIcon</enum>
-            </property>
-            <property name="cls" stdset="0">
-             <string>sidebarBtn</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="controlCenterPageBtn">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>    Control Center</string>
-            </property>
-            <property name="icon">
-             <iconset resource="resources.qrc">
-              <normaloff>:/icon/toggles.svg</normaloff>:/icon/toggles.svg</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -3326,7 +3326,7 @@ QComboBox QAbstractItemView::item:hover {
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="controlCenterPage">
+            <widget class="QWidget" name="customOperationsPage">
              <layout class="QVBoxLayout" name="verticalLayout_20">
               <property name="leftMargin">
                <number>0</number>
@@ -3374,7 +3374,13 @@ QComboBox QAbstractItemView::item:hover {
                    </property>
                    <property name="icon">
                     <iconset resource="resources.qrc">
-                     <normaloff>:/icon/toggles.svg</normaloff>:/icon/toggles.svg</iconset>
+                     <normaloff>:/icon/pencil.svg</normaloff>:/icon/pencil.svg</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
                    </property>
                   </widget>
                  </item>
@@ -3397,7 +3403,7 @@ QComboBox QAbstractItemView::item:hover {
                      <number>0</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="controlCenterLbl">
+                     <widget class="QLabel" name="customOperationsLbl">
                       <property name="font">
                        <font>
                         <pointsize>-1</pointsize>
@@ -3405,14 +3411,14 @@ QComboBox QAbstractItemView::item:hover {
                        </font>
                       </property>
                       <property name="text">
-                       <string>Control Center</string>
+                       <string>Custom Operations</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QCheckBox" name="controlCenterEnabledChk">
+                     <widget class="QLabel" name="label_14">
                       <property name="text">
-                       <string>Modify</string>
+                       <string/>
                       </property>
                      </widget>
                     </item>
@@ -3451,7 +3457,7 @@ QComboBox QAbstractItemView::item:hover {
                </widget>
               </item>
               <item>
-               <widget class="QWidget" name="controlCenterPageContent" native="true">
+               <widget class="QWidget" name="customOperationsPageContent" native="true">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -3469,24 +3475,104 @@ QComboBox QAbstractItemView::item:hover {
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QCheckBox" name="hideConferenceModulesChk">
-                   <property name="text">
-                    <string>Hide &quot;Video Effects&quot; and &quot;Mic Mode&quot; Modules</string>
+                  <layout class="QHBoxLayout" name="customOpsTopBtns">
+                   <property name="spacing">
+                    <number>-1</number>
                    </property>
-                  </widget>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <spacer name="horizontalSpacer_17">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item alignment="Qt::AlignLeft">
+                    <widget class="QToolButton" name="importOperationBtn">
+                     <property name="enabled">
+                      <bool>false</bool>
+                     </property>
+                     <property name="text">
+                      <string>  Import .cowperation</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="resources.qrc">
+                       <normaloff>:/icon/import.svg</normaloff>:/icon/import.svg</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>20</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                     <property name="toolButtonStyle">
+                      <enum>Qt::ToolButtonTextBesideIcon</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item alignment="Qt::AlignLeft">
+                    <widget class="QToolButton" name="newOperationBtn">
+                     <property name="enabled">
+                      <bool>false</bool>
+                     </property>
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>  New Operation</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="resources.qrc">
+                       <normaloff>:/icon/plus.svg</normaloff>:/icon/plus.svg</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>16</width>
+                       <height>16</height>
+                      </size>
+                     </property>
+                     <property name="checkable">
+                      <bool>false</bool>
+                     </property>
+                     <property name="autoExclusive">
+                      <bool>true</bool>
+                     </property>
+                     <property name="toolButtonStyle">
+                      <enum>Qt::ToolButtonTextBesideIcon</enum>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                  <item>
-                  <spacer name="verticalSpacer_8">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
+                  <widget class="QWidget" name="operationsCnt" native="true">
+                   <property name="enabled">
+                    <bool>false</bool>
                    </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
                    </property>
-                  </spacer>
+                  </widget>
                  </item>
                 </layout>
                </widget>
