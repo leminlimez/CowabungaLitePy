@@ -2,6 +2,7 @@ import os
 from enum import Enum
 from cffi import FFI
 ffi = FFI()
+ffi.set_source("status_manager", "", extra_compile_args=["-mno-ms-bitfields", "-malign-double"])
 
 from devicemanagement.constants import FileLocation
 
