@@ -11,7 +11,7 @@ Requirements:
 Note: It is highly recommended to use a virtual environment:
 ```
 python3 -m venv env # only needed once
-source env/bin/active
+source env/bin/activate
 pip3 install -r requirements.txt # only needed once
 python3 main_app.py
 ```
