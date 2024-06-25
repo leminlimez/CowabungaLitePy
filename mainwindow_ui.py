@@ -1898,7 +1898,7 @@ class Ui_CowabungaLite(object):
 
         self.customOperationsPageContent = QWidget(self.customOperationsPage)
         self.customOperationsPageContent.setObjectName(u"customOperationsPageContent")
-        self.customOperationsPageContent.setEnabled(False)
+        self.customOperationsPageContent.setEnabled(True)
         self.verticalLayout_19 = QVBoxLayout(self.customOperationsPageContent)
         self.verticalLayout_19.setObjectName(u"verticalLayout_19")
         self.verticalLayout_19.setContentsMargins(0, 0, 0, 0)
@@ -1914,7 +1914,7 @@ class Ui_CowabungaLite(object):
 
         self.importOperationBtn = QToolButton(self.customOperationsPageContent)
         self.importOperationBtn.setObjectName(u"importOperationBtn")
-        self.importOperationBtn.setEnabled(False)
+        self.importOperationBtn.setEnabled(True)
         icon22 = QIcon()
         icon22.addFile(u":/icon/import.svg", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.importOperationBtn.setIcon(icon22)
@@ -1925,7 +1925,7 @@ class Ui_CowabungaLite(object):
 
         self.newOperationBtn = QToolButton(self.customOperationsPageContent)
         self.newOperationBtn.setObjectName(u"newOperationBtn")
-        self.newOperationBtn.setEnabled(False)
+        self.newOperationBtn.setEnabled(True)
         sizePolicy2.setHeightForWidth(self.newOperationBtn.sizePolicy().hasHeightForWidth())
         self.newOperationBtn.setSizePolicy(sizePolicy2)
         self.newOperationBtn.setMinimumSize(QSize(0, 35))
@@ -1944,7 +1944,7 @@ class Ui_CowabungaLite(object):
 
         self.operationsCnt = QWidget(self.customOperationsPageContent)
         self.operationsCnt.setObjectName(u"operationsCnt")
-        self.operationsCnt.setEnabled(False)
+        self.operationsCnt.setEnabled(True)
         sizePolicy5.setHeightForWidth(self.operationsCnt.sizePolicy().hasHeightForWidth())
         self.operationsCnt.setSizePolicy(sizePolicy5)
 

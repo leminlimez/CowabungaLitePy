@@ -3459,7 +3459,7 @@ QComboBox QAbstractItemView::item:hover {
               <item>
                <widget class="QWidget" name="customOperationsPageContent" native="true">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_19">
                  <property name="leftMargin">
@@ -3498,7 +3498,7 @@ QComboBox QAbstractItemView::item:hover {
                    <item alignment="Qt::AlignLeft">
                     <widget class="QToolButton" name="importOperationBtn">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="text">
                       <string>  Import .cowperation</string>
@@ -3521,7 +3521,7 @@ QComboBox QAbstractItemView::item:hover {
                    <item alignment="Qt::AlignLeft">
                     <widget class="QToolButton" name="newOperationBtn">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -3564,7 +3564,7 @@ QComboBox QAbstractItemView::item:hover {
                  <item>
                   <widget class="QWidget" name="operationsCnt" native="true">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">

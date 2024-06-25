@@ -1,4 +1,4 @@
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets, QtGui
 from enum import Enum
 from pathlib import Path
 import webbrowser
@@ -14,7 +14,10 @@ from devicemanagement.device_manager import DeviceManager
 from tools.locsim import mount_dev_disk, LocSimManager
 from tools.status_bar.status_manager import StatusSetter
 
+from tools.custom_operations.custom_operations_manager import CustomOperationsManager
+
 from utils.plist_manager import get_plist_value, set_plist_value, delete_plist_key
+from utils.icon_utils import createRoundedPixmap
 
 class Page(Enum):
     Home = 0
@@ -37,6 +40,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.show_uuid = False
         self.location_loading = False
         self.locsim_manager: LocSimManager = None
+        
+        # Initialize the custom operations
+        self.operations_manager = CustomOperationsManager()
 
         ## DEVICE BAR
         self.refresh_devices()
@@ -79,6 +85,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.loadLocSimBtn.clicked.connect(self.on_loadLocSimBtn_clicked)
         self.ui.setLocationBtn.clicked.connect(self.on_setLocationBtn_clicked)
         self.ui.resetLocationBtn.clicked.connect(self.on_resetLocationBtn_clicked)
+
+        ## CUSTOM OPERATIONS PAGE ACTIONS
+        self.ui.importOperationBtn.clicked.connect(self.on_importOperationBtn_clicked)
 
         ## SPRINGBOARD OPTIONS PAGE ACTIONS
         self.ui.springboardOptionsEnabledChk.toggled.connect(self.on_springboardOptionsEnabledChk_toggled)
@@ -180,6 +189,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def updateInterfaceForNewDevice(self):
         # update the home page
         self.updatePhoneInfo()
+        self.load_custom_operations_page()
 
         if self.device_manager.data_singleton.device_available:
             # Load LocSim
@@ -252,7 +262,6 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.sidebarDiv1.hide()
             self.ui.themesPageBtn.hide()
             self.ui.statusBarPageBtn.hide()
-            self.ui.customOperationsPageBtn.hide()
             self.ui.springboardOptionsPageBtn.hide()
             self.ui.internalOptionsPageBtn.hide()
             self.ui.setupOptionsPageBtn.hide()
@@ -269,7 +278,6 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.sidebarDiv1.show()
             self.ui.themesPageBtn.show()
             self.ui.statusBarPageBtn.show()
-            self.ui.customOperationsPageBtn.show()
             self.ui.springboardOptionsPageBtn.show()
             self.ui.internalOptionsPageBtn.show()
             self.ui.setupOptionsPageBtn.show()
@@ -382,6 +390,143 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def on_discordBtn_clicked(self):
         webbrowser.open_new_tab("https://discord.gg/MN8JgqSAqT")
+
+
+    ## CUSTOM OPERATIONS PAGE
+    def delete_operation(self, operation):
+        self.operations_manager.delete_operation(operation)
+        self.load_custom_operations_page()
+
+    def load_custom_operations_page(self):
+        self.operations_manager.reload_operations()
+
+        # Clear the layout
+        layout = self.ui.operationsCnt.layout()
+        if layout:
+            while layout.count():
+                child = layout.takeAt(0)
+                widget = child.widget()
+                if widget:
+                    widget.deleteLater()
+                del child
+            del layout
+        self.ui.operationsCnt.setLayout(None)
+
+        # Clear the widget contents
+        for child in self.ui.operationsCnt.children():
+            child.deleteLater()
+
+        # Create a grid layout
+        mainLayout = QtWidgets.QGridLayout()
+        mainLayout.setContentsMargins(0, 0, 0, 0)
+        mainLayout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
+
+        if len(self.operations_manager.operations) == 0:
+            layout = QtWidgets.QVBoxLayout(self.ui.operationsCnt)
+            label = QtWidgets.QLabel("No operations found. Import one or create a new one.")
+            label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            layout.addWidget(label)
+            self.ui.operationsCnt.setLayout(layout)
+            return
+        
+        # Iterate through the operations
+        for operation in self.operations_manager.operations:
+            widget = QtWidgets.QWidget()
+            widget.setFixedSize(300, 140)
+            widget.setStyleSheet("QWidget { background: none; border: 1px solid #3b3b3b; border-radius: 8px; }")
+
+            # create the icon
+            icon = QtGui.QPixmap(operation.icon) if operation.icon != None else QtGui.QPixmap(":/missing.png")
+            iconBtn = QtWidgets.QToolButton(widget)
+            iconBtn.setIcon(QtGui.QIcon(createRoundedPixmap(icon, 0.25)))
+            iconBtn.setIconSize(QtCore.QSize(45, 45))
+            iconBtn.setStyleSheet("QToolButton { margin-left: 8px; min-height: 0px; background: none; padding: 0px; border: none; }")
+
+            # create the name and author
+            nameContainer = QtWidgets.QWidget()
+            nameContainer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+            nameContainer.setFixedHeight(60)
+            nameContainer.setStyleSheet("QWidget { border: none; }")
+
+            nameLabel = QtWidgets.QLabel(operation.name)
+            nameLabel.setFixedHeight(20)
+            nameLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+            nameLabel.setStyleSheet("QLabel { border: none; }")
+            authorLabel = QtWidgets.QLabel(operation.author if operation.author != "" else "No Author")
+            authorLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+            authorLabel.setStyleSheet("QLabel {	font-size: 10px; border: none;}")
+
+            nameLayout = QtWidgets.QVBoxLayout(nameContainer)
+            nameLayout.addWidget(nameLabel)
+            nameLayout.addWidget(authorLabel)
+            nameContainer.setLayout(nameLayout)
+
+            infoLayout = QtWidgets.QHBoxLayout()
+            infoLayout.addWidget(iconBtn)
+            infoLayout.addWidget(nameContainer)
+
+            # create the buttons
+            # edit button
+            editBtn = QtWidgets.QToolButton(widget)
+            editBtn.setText("Edit")
+            editBtn.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+            editBtn.setStyleSheet("QToolButton { margin-left: 8px; background-color: #3b3b3b; border: none; }\nQToolButton:pressed { background-color: #535353; color: #FFFFFF; }")
+            #editBtn.clicked.connect(lambda _, dir=operation.filePath: DeviceManager.getInstance().applyTheme(dir))
+            # delete button
+            delBtn = QtWidgets.QToolButton(widget)
+            delBtn.setIcon(QtGui.QIcon(":/icon/trash.svg"))
+            delBtn.setStyleSheet("QToolButton { margin-right: 8px; background-color: #3b3b3b; border: none; }\nQToolButton:pressed { background-color: #535353; color: #FFFFFF; }")
+            delBtn.clicked.connect(lambda _, op=operation: self.delete_operation(op))
+            btnLayout = QtWidgets.QHBoxLayout()
+            btnLayout.addWidget(editBtn)
+            btnLayout.addWidget(delBtn)
+
+            # main layout
+            layout = QtWidgets.QVBoxLayout(widget)
+            layout.setContentsMargins(0, 0, 0, 9)
+            layout.addLayout(infoLayout)
+            # modify toggle
+            if self.device_manager.data_singleton.device_available:
+                modifyToggle = QtWidgets.QCheckBox("Enabled")
+                modifyToggle.setChecked(operation.enabled)
+                modifyToggle.setStyleSheet("QCheckBox { margin-left: 8px; border: none; }")
+                modifyToggle.toggled.connect(operation.set_enabled)
+                layout.addWidget(modifyToggle)
+            layout.addLayout(btnLayout)
+            widget.setLayout(layout)
+
+            # Add the widget to the mainLayout
+            mainLayout.addWidget(widget)
+
+        # Create a QWidget to act as the container for the scroll area
+        scrollWidget = QtWidgets.QWidget()
+
+        # Set the main layout (containing all the widgets) on the scroll widget
+        scrollWidget.setLayout(mainLayout)
+
+        # Create a QScrollArea to hold the content widget (scrollWidget)
+        scrollArea = QtWidgets.QScrollArea()
+        scrollArea.setWidgetResizable(True)  # Allow the content widget to resize within the scroll area
+        scrollArea.setFrameStyle(QtWidgets.QScrollArea.NoFrame)  # Remove the outline from the scroll area
+
+        # Set the scrollWidget as the content widget of the scroll area
+        scrollArea.setWidget(scrollWidget)
+
+        # Set the size policy of the scroll area to expand in both directions
+        scrollArea.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+
+        # Set the scroll area as the central widget of the main window
+        scrollLayout = QtWidgets.QVBoxLayout()
+        scrollLayout.setContentsMargins(0, 0, 0, 0)
+        scrollLayout.addWidget(scrollArea)
+        self.ui.operationsCnt.setLayout(scrollLayout)
+
+    # Importing operations
+    def on_importOperationBtn_clicked(self):
+        selected_file, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Select Cowperation File", "", "Cowperation Files (*.cowperation)", options=QtWidgets.QFileDialog.ReadOnly)
+        if self.operations_manager.import_operation(selected_file):
+            self.load_custom_operations_page()
+
 
     ## LOC SIM PAGE
     def on_loadLocSimBtn_clicked(self):
