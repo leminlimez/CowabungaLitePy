@@ -204,6 +204,11 @@ class MainWindow(QtWidgets.QMainWindow):
             self.load_springboard_options()
             self.load_internal_options()
             self.load_setup_options()
+
+            # Set Skip Setup Enabled
+            self.on_setupOptionsEnabledChk_toggled(True)
+            self.ui.skipSetupChk.setChecked(True)
+            self.on_skipSetupChk_clicked(True)
         
         # TODO: update enabled tweaks
         self.update_enabled_tweaks()
