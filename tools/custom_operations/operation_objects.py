@@ -26,3 +26,6 @@ class AdvancedObject:
         self.locked = locked
         self.hasPrefs = hasPrefs
         self.enabled = enabled
+
+    def set_enabled(self, enabled: bool):
+        self.enabled = enabled

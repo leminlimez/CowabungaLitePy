@@ -484,7 +484,9 @@ class MainWindow(QtWidgets.QMainWindow):
             # modify toggle
             if self.device_manager.data_singleton.device_available:
                 modifyToggle = QtWidgets.QCheckBox("Enabled")
+                modifyToggle.setChecked(operation.enabled)
                 modifyToggle.setStyleSheet("QCheckBox { margin-left: 8px; border: none; }")
+                modifyToggle.toggled.connect(operation.set_enabled)
                 layout.addWidget(modifyToggle)
             layout.addLayout(btnLayout)
             widget.setLayout(layout)
