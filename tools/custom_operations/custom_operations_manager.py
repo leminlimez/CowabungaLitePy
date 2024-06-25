@@ -1,10 +1,12 @@
 import os
 import plistlib
+import shutil
 from pathlib import Path
 
-from PySide6.QtCore import QStandardPaths, QCoreApplication, QDir
+from PySide6.QtCore import QStandardPaths, QDir, QFileInfo, QStandardPaths
 
 from tools.custom_operations.operation_objects import AdvancedObject
+from utils.icon_utils import unzip
 
 class CustomOperationsManager:
     def __init__(self):
@@ -39,3 +41,31 @@ class CustomOperationsManager:
         if operation in self.operations:
             self.operations.remove(operation)
             QDir(operation.filePath).removeRecursively()
+
+    def import_operation(self, selected_file: str) -> bool:
+        if selected_file:
+            fileInfo = QFileInfo(selected_file)
+            regex = "\\.(cowperation)$"
+            zipName = fileInfo.fileName().replace(regex, "")
+
+            cblDataPath = os.path.join(QStandardPaths.writableLocation(QStandardPaths.AppDataLocation), "CowabungaLiteData")
+            operationsDir = os.path.join(cblDataPath, "Operations")
+            tempDirPath = os.path.join(cblDataPath, "temp")
+            operationDirPath = os.path.join(tempDirPath, zipName)
+            operationDir = QDir(operationDirPath)
+
+            if operationDir.exists():
+                operationDir.removeRecursively()
+            else:
+                if not operationDir.mkpath("."):
+                    print("Failed to create the directory:", operationDir)
+                else:
+                    unzip(selected_file, operationDirPath)
+                    for child in os.listdir(operationDirPath):
+                        op_path = os.path.join(str(operationDirPath), child)
+                        if os.path.isdir(op_path) and not child.startswith('.'):
+                            shutil.move(op_path, os.path.join(operationsDir, child))
+                    shutil.rmtree(tempDirPath)
+                    self.reload_operations()
+                    return True
+        return False

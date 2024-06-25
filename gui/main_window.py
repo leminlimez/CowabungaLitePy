@@ -86,6 +86,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setLocationBtn.clicked.connect(self.on_setLocationBtn_clicked)
         self.ui.resetLocationBtn.clicked.connect(self.on_resetLocationBtn_clicked)
 
+        ## CUSTOM OPERATIONS PAGE ACTIONS
+        self.ui.importOperationBtn.clicked.connect(self.on_importOperationBtn_clicked)
+
         ## SPRINGBOARD OPTIONS PAGE ACTIONS
         self.ui.springboardOptionsEnabledChk.toggled.connect(self.on_springboardOptionsEnabledChk_toggled)
         self.ui.UIAnimSpeedSld.sliderMoved.connect(self.on_UIAnimSpeedSld_sliderMoved)
@@ -407,6 +410,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     widget.deleteLater()
                 del child
             del layout
+        self.ui.operationsCnt.setLayout(None)
 
         # Clear the widget contents
         for child in self.ui.operationsCnt.children():
@@ -516,6 +520,12 @@ class MainWindow(QtWidgets.QMainWindow):
         scrollLayout.setContentsMargins(0, 0, 0, 0)
         scrollLayout.addWidget(scrollArea)
         self.ui.operationsCnt.setLayout(scrollLayout)
+
+    # Importing operations
+    def on_importOperationBtn_clicked(self):
+        selected_file, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Select Cowperation File", "", "Cowperation Files (*.cowperation)", options=QtWidgets.QFileDialog.ReadOnly)
+        if self.operations_manager.import_operation(selected_file):
+            self.load_custom_operations_page()
 
 
     ## LOC SIM PAGE

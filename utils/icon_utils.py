@@ -1,5 +1,7 @@
+import zipfile
+
 from PySide6.QtGui import QPixmap, QPainter, QPainterPath
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QDir, QProcess, QFileInfo
 
 def createRoundedPixmap(pixmap, roundnessPercentage):
     roundedPixmap = QPixmap(pixmap.size())
@@ -19,3 +21,7 @@ def createRoundedPixmap(pixmap, roundnessPercentage):
     painter.drawPixmap(0, 0, pixmap)
 
     return roundedPixmap
+
+def unzip(zip_file, output_dir):
+        with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+            zip_ref.extractall(output_dir)
