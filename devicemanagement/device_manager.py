@@ -166,9 +166,9 @@ class DeviceManager:
 
     def restore_backup_to_device(self, backup_dir: str, update_bar=lambda x: None) -> bool:
         # restore args: -u [udid] -s Backup restore --system --skip-apps [backup directory]
-        ld = create_using_usbmux(serial=self.get_current_device_uuid())
-        backup_client = Mobilebackup2Service(lockdown=ld)
         try:
+            ld = create_using_usbmux(serial=self.get_current_device_uuid())
+            backup_client = Mobilebackup2Service(lockdown=ld)
             backup_client.restore(
                 backup_directory=backup_dir, progress_callback=update_bar,
                 system=True, reboot=True, copy=False, settings=False, remove=False)

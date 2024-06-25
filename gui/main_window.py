@@ -204,6 +204,11 @@ class MainWindow(QtWidgets.QMainWindow):
             self.load_springboard_options()
             self.load_internal_options()
             self.load_setup_options()
+
+            # Set Skip Setup Enabled
+            self.on_setupOptionsEnabledChk_toggled(True)
+            self.ui.skipSetupChk.setChecked(True)
+            self.on_skipSetupChk_clicked(True)
         
         # TODO: update enabled tweaks
         self.update_enabled_tweaks()
@@ -211,6 +216,12 @@ class MainWindow(QtWidgets.QMainWindow):
     def update_enabled_tweaks(self):
         tweaks = self.device_manager.data_singleton.enabled_tweaks
         label_txt = ""
+        sideBtns = {
+            Tweak.StatusBar: self.ui.statusBarPageBtn,
+            Tweak.InternalOptions: self.ui.internalOptionsPageBtn,
+            Tweak.SpringboardOptions: self.ui.springboardOptionsPageBtn,
+            Tweak.SkipSetup: self.ui.setupOptionsPageBtn
+        }
         if len(tweaks) == 0:
             label_txt = "None"
             self.ui.applyTweaksBtn.setDisabled(True)
@@ -223,6 +234,10 @@ class MainWindow(QtWidgets.QMainWindow):
                     first_tweak = False
                 label_txt += tweak.value
             self.ui.applyTweaksBtn.setDisabled(False)
+
+        # set the ui colors
+        for tweak in sideBtns:
+            self.update_side_btn_color(sideBtns[tweak], tweak in tweaks)
             
         self.ui.enabledTweaksLbl.setText(label_txt)
 
@@ -328,6 +343,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def on_applyPageBtn_clicked(self):
         self.ui.pages.setCurrentIndex(Page.Apply.value)
+
+    def update_side_btn_color(self, btn: QtWidgets.QToolButton, toggled: bool):
+        if toggled:
+            btn.setStyleSheet("QToolButton {\ncolor: #00FF00;\n}")
+        else:
+            btn.setStyleSheet("")
     
 
     ## HOME PAGE
