@@ -2,7 +2,7 @@ import os
 import plistlib
 from pathlib import Path
 
-from PySide6.QtCore import QStandardPaths, QCoreApplication
+from PySide6.QtCore import QStandardPaths, QCoreApplication, QDir
 
 from tools.custom_operations.operation_objects import AdvancedObject
 
@@ -34,3 +34,8 @@ class CustomOperationsManager:
                     self.operations.append(new_op)
                 except:
                     pass
+
+    def delete_operation(self, operation: AdvancedObject):
+        if operation in self.operations:
+            self.operations.remove(operation)
+            QDir(operation.filePath).removeRecursively()

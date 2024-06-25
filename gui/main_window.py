@@ -390,6 +390,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
     ## CUSTOM OPERATIONS PAGE
+    def delete_operation(self, operation):
+        self.operations_manager.delete_operation(operation)
+        self.load_custom_operations_page()
+
     def load_custom_operations_page(self):
         self.operations_manager.reload_operations()
 
@@ -462,26 +466,26 @@ class MainWindow(QtWidgets.QMainWindow):
             editBtn = QtWidgets.QToolButton(widget)
             editBtn.setText("Edit")
             editBtn.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-            editBtn.setStyleSheet("QToolButton { margin-left: 8px; background-color: #3b3b3b; border: none; }")
+            editBtn.setStyleSheet("QToolButton { margin-left: 8px; background-color: #3b3b3b; border: none; }\nQToolButton:pressed { background-color: #535353; color: #FFFFFF; }")
             #editBtn.clicked.connect(lambda _, dir=operation.filePath: DeviceManager.getInstance().applyTheme(dir))
             # delete button
             delBtn = QtWidgets.QToolButton(widget)
             delBtn.setIcon(QtGui.QIcon(":/icon/trash.svg"))
-            delBtn.setStyleSheet("QToolButton { margin-right: 8px; background-color: #3b3b3b; border: none; }")
-            # delBtn.clicked.connect(lambda _, dir=directory: QDir(dir).removeRecursively())
+            delBtn.setStyleSheet("QToolButton { margin-right: 8px; background-color: #3b3b3b; border: none; }\nQToolButton:pressed { background-color: #535353; color: #FFFFFF; }")
+            delBtn.clicked.connect(lambda _, op=operation: self.delete_operation(op))
             btnLayout = QtWidgets.QHBoxLayout()
             btnLayout.addWidget(editBtn)
             btnLayout.addWidget(delBtn)
-
-            # modify toggle
-            modifyToggle = QtWidgets.QCheckBox("Enabled")
-            modifyToggle.setStyleSheet("QCheckBox { margin-left: 8px; border: none; }")
 
             # main layout
             layout = QtWidgets.QVBoxLayout(widget)
             layout.setContentsMargins(0, 0, 0, 9)
             layout.addLayout(infoLayout)
-            layout.addWidget(modifyToggle)
+            # modify toggle
+            if self.device_manager.data_singleton.device_available:
+                modifyToggle = QtWidgets.QCheckBox("Enabled")
+                modifyToggle.setStyleSheet("QCheckBox { margin-left: 8px; border: none; }")
+                layout.addWidget(modifyToggle)
             layout.addLayout(btnLayout)
             widget.setLayout(layout)
 
