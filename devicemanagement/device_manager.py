@@ -15,6 +15,8 @@ from devicemanagement.constants import Device, Version
 from devicemanagement.data_singleton import DataSingleton
 from devicemanagement.create_backup import create_backup
 
+from tools.custom_operations.custom_operations_manager import CustomOperationsManager
+
 class DeviceManager:
     last_tested_version: Version = Version("17.4")
     min_version: Version = Version("15")
@@ -100,19 +102,24 @@ class DeviceManager:
 
     
     ## APPLYING TWEAKS AND RESTORING
-    def apply_tweaks(self, update_label=lambda x: None, update_bar=lambda y: None):
+    def apply_tweaks(self, operations_manager: CustomOperationsManager, update_label=lambda x: None, update_bar=lambda y: None):
         ws = self.data_singleton.current_workspace
 
         # TODO: Apply Theming
-
-        # Copy enabled tweaks
-        update_label("Copying enabled tweaks...")
 
         # Erase backup folder
         enabled_tweaks_dir = Path(QStandardPaths.writableLocation(QStandardPaths.AppDataLocation)).joinpath("CowabungaLiteData").joinpath("EnabledTweaks")
         rmtree(enabled_tweaks_dir, ignore_errors=True)
 
-        # Copy enabled tweak files
+        # Apply Custom Operations
+        update_label("Copying custom operations...")
+        for operation in operations_manager.operations:
+            if operation.enabled:
+                domain_path = Path(operation.filePath).joinpath("Domains")
+                copytree(src=domain_path, dst=enabled_tweaks_dir, dirs_exist_ok=True)
+
+        # Copy enabled tweaks
+        update_label("Copying enabled tweaks...")
         for tweak in self.data_singleton.enabled_tweaks:
             folder_path = Path(ws).joinpath(tweak.name)
             copytree(src=folder_path, dst=enabled_tweaks_dir, dirs_exist_ok=True)
