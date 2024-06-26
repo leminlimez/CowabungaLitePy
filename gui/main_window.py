@@ -1163,4 +1163,4 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.Slot()
     def on_applyTweaksBtn_clicked(self):
         # TODO: Add safety here
-        self.device_manager.apply_tweaks(update_label=self.update_label, update_bar=self.update_bar)
+        self.device_manager.apply_tweaks(operations_manager=self.operations_manager, update_label=self.update_label, update_bar=self.update_bar)
