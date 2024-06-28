@@ -93,10 +93,10 @@ class DeviceManager:
         # Copy subfolders of files into path if not there
         # TODO: Only copy if it was updated
         source_dir: str
-        if QCoreApplication.applicationName() == "Python":
-            source_dir = os.path.join(os.getcwd(), "file_folders/files")
-        else:
+        try:
             source_dir = os.path.join(sys._MEIPASS, "file_folders/files")
+        except:
+            source_dir = os.path.join(os.getcwd(), "file_folders/files")
         copytree(src=source_dir, dst=path, dirs_exist_ok=True)
         self.data_singleton.current_workspace = path
 
