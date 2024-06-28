@@ -18,7 +18,7 @@ from devicemanagement.create_backup import create_backup
 from tools.custom_operations.custom_operations_manager import CustomOperationsManager
 
 class DeviceManager:
-    last_tested_version: Version = Version("17.4")
+    last_tested_version: Version = Version("17.6")
     min_version: Version = Version("15")
 
     ## Class Functions
