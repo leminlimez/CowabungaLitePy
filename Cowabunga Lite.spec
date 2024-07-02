@@ -3,6 +3,7 @@ from PyInstaller.utils.hooks import copy_metadata
 
 datas = [('file_folders/', './file_folders')]
 datas += copy_metadata('pyimg4')
+datas += copy_metadata('apple_compress')
 
 
 a = Analysis(
@@ -16,6 +17,7 @@ a = Analysis(
     runtime_hooks=[],
     excludes=[],
     noarchive=False,
+    optimize=0,
 )
 pyz = PYZ(a.pure)
 

@@ -12,6 +12,7 @@ args = [
     '--hidden-import=_cffi_backend',
     '--add-data=file_folders/:./file_folders',
     '--copy-metadata=pyimg4',
+    '--copy-metadata=apple_compress',
     '--onedir',
     '--name=Cowabunga Lite',
     '--icon=cowlite.ico'
