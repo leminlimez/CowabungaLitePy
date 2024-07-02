@@ -1070,6 +1070,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if checked:
             set_plist_value(location, "CloudConfigurationUIComplete", True)
             to_skip = [
+                "WiFi",
                 "Location",
                 "Restore",
                 "SIMSetup",
