@@ -2,27 +2,30 @@
 
 The Python rewrite of Cowabunga Lite.
 
-## Building
+## Running the Program
 Requirements:
 - PySide6
 - pymobiledevice3
 - PyInstaller (for compiling an executable)
 
+*Detailed install guide to go here later*
+
 Note: It is highly recommended to use a virtual environment:
 ```
-python3 -m venv env # only needed once
+python -m venv env # only needed once
 source env/bin/activate
-pip3 install -r requirements.txt # only needed once
-python3 main_app.py
+pip install -r requirements.txt # only needed once
+python main_app.py
 ```
 
+## Building
 To compile `mainwindow.ui` for Python, run the following command:
 `pyside6-uic mainwindow.ui -o ui_mainwindow.py`
 
 To compile the resources file for Python, run the following command:
 `pyside6-rcc resources.qrc -o resources_rc.py`
 
-The application can be compiled by running `compile.py`.
+The application itself can be compiled by running `compile.py`.
 
 ## Credits
 - [Avangelista](https://github.com/Avangelista) and [Cowabunga Lite Windows](https://github.com/Avangelista/CowabungaLiteWindows) for the GUI.
