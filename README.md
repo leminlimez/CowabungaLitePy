@@ -1,6 +1,11 @@
 # Cowabunga Lite Py
 
-The Python rewrite of Cowabunga Lite.
+The Python rewrite of Cowabunga Lite. Works on Windows, macOS, and Linux.
+
+
+**Note:** Windows requires the [Apple Devices](https://apps.microsoft.com/detail/9np83lwlpz9k?hl=en-US&gl=US) app from the Microsoft Store. After installing, reboot your pc.
+
+If you are not seeing the phone after installing, try downloading [iTunes for Windows](https://support.apple.com/en-us/106372) from the apple site (NOT the Windows Store version).
 
 ## Running the Program
 Requirements:
