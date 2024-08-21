@@ -1,7 +1,6 @@
 # Cowabunga Lite Py
 
-The Python rewrite of Cowabunga Lite. Works on Windows, macOS, and Linux.
-
+The *(unfinished)* Python rewrite of Cowabunga Lite. Works on Windows, macOS, and Linux.
 
 **Note:** Windows requires the [Apple Devices](https://apps.microsoft.com/detail/9np83lwlpz9k?hl=en-US&gl=US) app from the Microsoft Store. After installing, reboot your pc.
 
